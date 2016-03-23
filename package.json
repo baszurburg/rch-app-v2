@@ -1,0 +1,23 @@
+{
+	"name": "sample-TelerikNEXT",
+	"description": "Telerik ...",
+	"version": "1.0.0",
+	"nativescript": {
+		"id": "org.nativescript.TelerikNEXT",
+		"tns-android": {
+			"version": "1.7.1"
+		},
+		"tns-ios": {
+			"version": "1.7.0"
+		}
+	},
+	"dependencies": {
+		"teleriknext-options": "file:options",
+		"nativescript-telerik-ui": "^0.1.1",
+		"tns-core-modules": "1.7.0"
+	},
+	"devDependencies": {
+		"nativescript-dev-typescript": "^0.2.2",
+		"typescript": "^1.8.9"
+	}
+}
