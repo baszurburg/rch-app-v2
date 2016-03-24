@@ -1,7 +1,4 @@
 /* Page */
-Page {
-    background-color: white;
-}
 
 SegmentedBar {
     background-color: transparent;
@@ -177,7 +174,7 @@ SegmentedBar {
 }
 
 .content-offset {
-    padding: 16 16 16 72;
+    padding: 16 16 16 16;
     background-color: #ffffff;
 }
 
