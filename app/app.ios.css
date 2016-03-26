@@ -128,6 +128,11 @@ SegmentedBar {
     margin: 0;
 }
 
+.info-blue {
+    font-size: 12;
+    color: #1188CC;
+}
+
 .description {
     font-size: 15;
     color: #555555;

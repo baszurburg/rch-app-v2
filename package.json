@@ -1,6 +1,6 @@
 {
-	"name": "sample-TelerikNEXT",
-	"description": "Telerik ...",
+	"name": "RCH-APP-v2",
+	"description": "RCH Mobiel app",
 	"version": "1.0.0",
 	"nativescript": {
 		"id": "org.nativescript.TelerikNEXT",
@@ -12,8 +12,9 @@
 		}
 	},
 	"dependencies": {
-		"teleriknext-options": "file:options",
+		"nativescript-plugin-firebase": "^2.1.1",
 		"nativescript-telerik-ui": "^0.2.4",
+		"teleriknext-options": "file:options",
 		"tns-core-modules": "1.7.0"
 	},
 	"devDependencies": {

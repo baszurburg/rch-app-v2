@@ -7,6 +7,7 @@ import view = require("ui/core/view");
 import search = require("ui/search-bar");
 import platform = require("platform");
 import button = require("ui/button");
+import scrollView = require("ui/scroll-view");
 import appViewModel = require("../../shared/view-models/app-view-model");
 
 export function pageLoaded(args: observable.EventData) {

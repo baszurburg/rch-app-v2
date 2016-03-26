@@ -11,10 +11,11 @@
           <Image src="res://logo" class="slide-out-img" stretch="none" />
           <Button tap="selectView" tag="0" class="{{ selectedViewIndex === 0 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="My agenda" />
           <Button tap="selectView" tag="1" class="{{ selectedViewIndex === 1 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="All sessions" />
+          <Button tap="selectView" tag="10" class="{{ selectedViewIndex === 10 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Nieuws" />
           <Button tap="selectView" tag="2" class="{{ selectedViewIndex === 2 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Workshop Hackaton" />
           <Button tap="selectView" tag="3" class="{{ selectedViewIndex === 3 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Contact" />
           <Button tap="selectView" tag="55" class="{{ selectedViewIndex === 55 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="TESTING" />
-          <Button tap="selectView" tag="60" class="{{ selectedViewIndex === 60 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Over R.C.H" />
+          <Button tap="selectView" tag="60" class="{{ selectedViewIndex === 60 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Over R.C.H." />
           <Button tap="selectView" tag="4" class="{{ selectedViewIndex === 4 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Sponsors" />
         </StackLayout>
         <StackLayout style="background-color: #053140;" row="1">
@@ -43,6 +44,9 @@
             <Label text="{{ actionBarTitle }}" class="action-bar-title" />
           </GridLayout>
 
+<!-- ToDo: can we wrap this in a container ? with a class darker and group per type -->
+
+          <!-- Tabs Session Day -->
           <GridLayout class="darker" visibility="{{ isSessionsPage ? 'visible' : 'collapsed' }}">
             <SegmentedBar selectedBackgroundColor="#fac950" selectedIndex="{{ selectedIndex }}">
               <SegmentedBar.items>
@@ -52,6 +56,20 @@
               </SegmentedBar.items>
             </SegmentedBar>
           </GridLayout>
+          
+          
+          <!-- Tabs News Type -->
+          <GridLayout class="darker" visibility="{{ isNewsPage ? 'visible' : 'collapsed' }}">
+            <SegmentedBar selectedBackgroundColor="#fac950" selectedIndex="{{ selectedNewsIndex }}">
+              <SegmentedBar.items>
+                <SegmentedBarItem title="Algemeen" />
+                <SegmentedBarItem title="Jeugd" />
+                <SegmentedBarItem title="Verslagen" />
+              </SegmentedBar.items>
+            </SegmentedBar>
+          </GridLayout>
+          
+          
           <Label class="page-title" horizontalAlignment="center" margin="15" visibility="{{ isSessionsPage ? 'visible' : 'collapsed' }}">
             <Label.formattedText>
               <FormattedString>
@@ -61,12 +79,27 @@
               </FormattedString>
             </Label.formattedText>
           </Label>
-        </StackLayout>
 
+        <!-- ToDo: Set up the page title for news here -->
+            <Label class="page-title" horizontalAlignment="center" margin="15" visibility="{{ isNewsPage ? 'visible' : 'collapsed' }}">
+            <Label.formattedText>
+              <FormattedString>
+                <FormattedString.spans>
+                  <Span text="{{ newsHeader }}" fontAttributes="Bold" />
+                </FormattedString.spans>
+              </FormattedString>
+            </Label.formattedText>
+          </Label>
+          
+        </StackLayout>
+        
+        <!-- ToDo: Clean up the session - clean! -->
+        
+        
         <!-- Sessions Views -->
         <GridLayout  rows="auto, *" row="1" visibility="{{ isSessionsPage ? 'visible' : 'collapsed' }}">
           <!-- Search -->
-          <SearchBar text="{{ search }}" hint="Search" class="search" textFieldBackgroundColor="white" id="search"/>
+          <SearchBar text="{{ search }}" hint="Zoeken" class="search" textFieldBackgroundColor="white" id="search"/>
 
           <!-- List -->
           <ListView items="{{ sessions }}" row="1" separatorColor="#fac950" itemTap="selectSession" class="listView">
@@ -103,6 +136,58 @@
 
           <ActivityIndicator busy="{{ isLoading }}" row="1" horizontalAlignment="center" verticalAlignment="center" />
         </GridLayout>
+
+
+        <!-- News Views -->
+        <GridLayout  rows="auto, *" row="1" visibility="{{ isNewsPage ? 'visible' : 'collapsed' }}">
+          <!-- Search -->
+          <SearchBar text="{{ search }}" hint="Zoek nieuws" class="search" textFieldBackgroundColor="white" id="search"/>
+
+
+
+          <!-- List -->
+          <ListView items="{{ sessions }}" row="1" separatorColor="#fac950" class="listView">
+            <ListView.itemTemplate>
+              <GridLayout columns="auto, *" class="{{ isBreak ? 'break-row' : 'list-view-row' }}">
+
+                <GridLayout visibility="{{ isBreak ? 'collapsed' : 'visible' }}"
+                  class="favourite-wrap" tap="toggleFavorite" columns="auto" rows="auto">
+                  <Image stretch="none" class="icon-image"
+                    src="{{ favorite ? 'res://ic_add_to_fav_1' : 'res://ic_add_to_fav' }}" />
+                </GridLayout>
+
+                <StackLayout col="1">
+
+                  <Label class="info-blue">
+                    <Label.formattedText>
+                      <FormattedString>
+                        <FormattedString.spans>
+                          <Span text="{{ range }}" fontAttributes="Bold" />
+                        </FormattedString.spans>
+                      </FormattedString>
+                    </Label.formattedText>
+                  </Label>
+
+                  <Label text="{{ title }}" textWrap="true" class="info-bigger"/>
+
+                  <Label visibility="{{ room ? 'visible' : 'collapsed' }}" text="{{ room }}" class="info-orange" />
+                  
+                          <Button  text="init firebase - do this first" tap="firebase.doInit" cssClass="button button-positive" />
+                          <Button  text="init firebase - do this first 1" tap="firebaseModel.doInit" cssClass="button button-positive" />
+                          <Button  text="init firebase - do this first 2" tap="doInit" cssClass="button button-positive" />
+        <Button text="store by setValue" tap="firebase.doStoreCompaniesBySetValue" cssClass="button button-company" />
+                <Button text="store by setValue 1" tap="firebaseModel.doStoreCompaniesBySetValue" cssClass="button button-company" />
+        <Button text="store by setValue 2" tap="doStoreCompaniesBySetValue" cssClass="button button-company" />
+
+                </StackLayout>
+
+              </GridLayout>
+            </ListView.itemTemplate>
+          </ListView>
+
+          <ActivityIndicator busy="{{ isLoading }}" row="1" horizontalAlignment="center" verticalAlignment="center" />
+        </GridLayout>
+
 
         <!-- Workshop View -->
         <StackLayout row="1" visibility="{{ selectedViewIndex === 2 ? 'visible' : 'collapsed'}}" class="content-offset">
@@ -238,54 +323,50 @@ Space is limited, so be sure to pick up your entry pass by stopping by at the Re
         </StackLayout>
 
         <!-- Over R.C.H. -->
-        <StackLayout row="1" visibility="{{ selectedViewIndex === 60 ? 'visible' : 'collapsed'}}" class="content-offset">
-          <Label class="info-page-header" textWrap="true" text="Over R.C.H." />
-          <Label class="info-orange" textWrap="true" >
-            <Label.formattedText>
-              <FormattedString>
-                <FormattedString.spans>
-                  <Span text="R.C.H. is opgericht in 1911 en is nog een echte sfeervolle voetbalclub waar jong en oud al meer dan honderd jaar sporten, spelen en samenkomen." fontAttributes="Bold" />
-                </FormattedString.spans>
-              </FormattedString>
-            </Label.formattedText>
-          </Label>
+        <ScrollView row="1" id="scroll2" visibility="{{ selectedViewIndex === 60 ? 'visible' : 'collapsed'}}">
+            <StackLayout row="1" class="content-offset">
+            <Label class="info-page-header" textWrap="true" text="Over R.C.H." />
+            <Label class="info-orange" textWrap="true" >
+                <Label.formattedText>
+                <FormattedString>
+                    <FormattedString.spans>
+                    <Span text="R.C.H. is opgericht in 1911 en is nog een echte sfeervolle voetbalclub waar jong en oud al meer dan honderd jaar sporten, spelen en samenkomen." fontAttributes="Bold" />
+                    </FormattedString.spans>
+                </FormattedString>
+                </Label.formattedText>
+            </Label>
 
-          <Label class="info" textWrap="true" >
-            <Label.formattedText>
-              <FormattedString>
-                <FormattedString.spans>
-                  <Span text="De club koestert de locatie, het traditievolle shirt en iconen als Loek Biesbrouck, Johan Neeskens en Barry van Galen. Zoals zij zijn er velen: goede voetballers die ooit zelf voor R.C.H. speelden en hun ervaring doorgeven aan nieuwe generaties voetballers, onder wie vaak ook hun kinderen en kleinkinderen." />
-                </FormattedString.spans>
-              </FormattedString>
-            </Label.formattedText>
-          </Label>
-          
-          <Label class="info-orange" textWrap="true" >
-            <Label.formattedText>
-              <FormattedString>
-                <FormattedString.spans>
-                  <Span text="Voetballen bij R.C.H" fontAttributes="Bold" />
-                </FormattedString.spans>
-              </FormattedString>
-            </Label.formattedText>
-          </Label>
- 
-           <Label class="info" textWrap="true" >
-            <Label.formattedText>
-              <FormattedString>
-                <FormattedString.spans>
-                  <Span text="R.C.H. heeft een compleet aanbod. Een goede voetbalopleiding staat centraal.
-                  
-                  Met elftallen in elke leeftijdsklasse van mini’s tot senioren en veteranen, E-top, 7x7-, meiden-, zaal- en borrelvoetbal, het Thymo Rovers toernooi, R.C.H. Mix voor families en vrienden, het Jeugdweekend en tal van kleinere activiteiten is de kalender goed gevuld. R.C.H. wil groot genoeg zijn om dit allemaal te blijven doen, maar niet zo groot dat de leden elkaar niet meer kennen.
+            <Label class="info" textWrap="true" >
+                <Label.formattedText>
+                <FormattedString>
+                    <FormattedString.spans>
+                    <Span text="De club koestert de locatie, het traditievolle shirt en iconen als Loek Biesbrouck, Johan Neeskens en Barry van Galen." />
+                    </FormattedString.spans>
+                </FormattedString>
+                </Label.formattedText>
+            </Label>
+            
+            <Label class="info-orange" textWrap="true" >
+                <Label.formattedText>
+                <FormattedString>
+                    <FormattedString.spans>
+                    <Span text="Voetballen bij R.C.H" fontAttributes="Bold" />
+                    </FormattedString.spans>
+                </FormattedString>
+                </Label.formattedText>
+            </Label>
+    
+            <Label class="info" textWrap="true" text="R.C.H. heeft een compleet aanbod. Een goede voetbalopleiding staat centraal." />
 
-Het was en is onze ambitie om met zoveel mogelijk eigen kweek in het eerste elftal te spelen op een zo hoog mogelijk niveau. Daar is de jeugdopleiding de basis van. De laatste jaren ontwikkelt vooral de jeugdafdeling zich zeer gunstig. Daarmee legt de club een fantastische basis voor de toekomst. Samen met een gemotiveerd trainerskorps wil de club weer omhoog.
-                  " />
-                </FormattedString.spans>
-              </FormattedString>
-            </Label.formattedText>
-          </Label>
-          
-        </StackLayout>
+            <Label class="info" textWrap="true" text="Met elftallen in elke leeftijdsklasse van mini’s tot senioren en veteranen, E-top, 7x7-, meiden-, zaal- en borrelvoetbal, het Thymo Rovers toernooi, R.C.H. Mix voor families en vrienden, het Jeugdweekend en tal van kleinere activiteiten is de kalender goed gevuld." />
+            
+            <Image src="~/images/over-rch-racertjes2015-2016.jpg" stretch="aspectFill"></Image>
+                          
+            <Label class="info" textWrap="true" text="R.C.H. wil groot genoeg zijn om dit allemaal te blijven doen, maar niet zo groot dat de leden elkaar niet meer kennen." />
+                <Label class="info" textWrap="true" text="Met elftallen in elke leeftijdsklasse van mini’s tot senioren en veteranen, E-top, 7x7-, meiden-, zaal- en borrelvoetbal, het Thymo Rovers toernooi, R.C.H. Mix voor families en vrienden, het Jeugdweekend en tal van kleinere activiteiten is de kalender goed gevuld." />
+                    
+            </StackLayout>
+        </ScrollView>
 
         <!-- Sponsors -->
         <StackLayout row="1" visibility="{{ selectedViewIndex === 4 ? 'visible' : 'collapsed'}}" class="content-offset">

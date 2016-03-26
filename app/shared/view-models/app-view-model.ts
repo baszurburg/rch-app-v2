@@ -8,6 +8,10 @@ import types = require("utils/types");
 
 var LOADING_ERROR = "Could not load sessions. Check your Internet connection and try again.";
 var everlive = require("../../everlive/everlive");
+var firebaseModel = require("./firebase-view-model");
+
+var firebase = firebaseModel.firebaseViewModel;
+
 interface ConferenceDay {
     date: Date;
     title: string;
@@ -53,6 +57,14 @@ var conferenceDays: Array<ConferenceDay> = [
     { title: "CONFERENCE DAY 1", date: new Date(2015, 5, 4) },
     { title: "CONFERENCE DAY 2", date: new Date(2015, 5, 5) }
 ];
+
+// ToDo: use filter for categories
+var newsCategories: Array<ConferenceDay> = [
+    { title: "Algemeen nieuws", date: new Date(2015, 5, 3) },
+    { title: "Jeugd nieuws", date: new Date(2015, 5, 4) },
+    { title: "Verslagen", date: new Date(2015, 5, 5) }
+];
+
 
 var sessions: Array<SessionModel> = new Array<SessionModel>();
 
@@ -252,6 +264,7 @@ loadFirstChunk();
 
 export class AppViewModel extends observable.Observable {
     private _selectedIndex;
+    private _selectedNewsIndex;
     private _search = "";
     private _sessions: Array<SessionModel>;
 
@@ -261,10 +274,12 @@ export class AppViewModel extends observable.Observable {
         super();
 
         this.selectedIndex = 0;
+        this.selectedNewsIndex = 0;
         this.selectedViewIndex = 1;
         this.set("actionBarTitle", "All sessions");
         this.set("isLoading", true);
         this.set("isSessionsPage", true);
+        this.set("isNewsPage", false);
     }
 
     get sessions(): Array<SessionModel> {
@@ -290,6 +305,11 @@ export class AppViewModel extends observable.Observable {
     get selectedIndex(): number {
         return this._selectedIndex;
     }
+    get selectedNewsIndex(): number {
+        return this._selectedNewsIndex;
+    }
+    
+    
     set selectedIndex(value: number) {
         if (this._selectedIndex !== value) {
             this._selectedIndex = value;
@@ -304,6 +324,22 @@ export class AppViewModel extends observable.Observable {
             }
         }
     }
+
+    set selectedNewsIndex(value: number) {
+        if (this._selectedIndex !== value) {
+            this._selectedIndex = value;
+            this.notify({ object: this, eventName: observable.Observable.propertyChangeEvent, propertyName: "selectedNewsIndex", value: value });
+
+            this.set("newsHeader", newsCategories[value].title);
+
+            if (this.search !== "") {
+                this.search = "";
+            } else {
+                this.filter();
+            }
+        }
+    }
+
 
     private filter() {
         this._sessions = sessions.filter(s=> {
@@ -331,6 +367,7 @@ export class AppViewModel extends observable.Observable {
         this.notify({ object: this, eventName: observable.Observable.propertyChangeEvent, propertyName: "selectedViewIndex", value: this.selectedViewIndex });
         this.set("actionBarTitle", titleText);
         this.set("isSessionsPage", this.selectedViewIndex < 2);
+        this.set("isNewsPage", this.selectedViewIndex === 10);
     }
 }
 
@@ -463,6 +500,7 @@ export class SessionModel extends observable.Observable implements Session {
         }
     }
 }
+
 
 export var appModel = new AppViewModel();
 
