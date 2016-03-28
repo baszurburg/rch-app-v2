@@ -13,8 +13,6 @@ import firebaseModel = require("../../shared/view-models/firebase-view-model");
 
 var fbase = firebaseModel.firebaseViewModel;
 
-
-
 export function pageLoaded(args: observable.EventData) {
     var page = <pages.Page>args.object;
 
@@ -101,18 +99,5 @@ export function goToUrl(args: gestures.GestureEventData) {
 
 // Firebase functions
 
-export function doInit() {
-    console.log('We do an init');
-    fbase.doInit();
-}
-
-export function doStoreCompaniesBySetValue() {
-    console.log("doStoreCompaniesBySetValue");
-    fbase.doStoreCompaniesBySetValue();
-}
-
-export function doQueryPosts() {
-    console.log("doQueryPosts");
-    fbase.doQueryPosts();
-}
-
+console.log('doing postInit');
+fbase.doPostInit();

@@ -14,6 +14,11 @@ interface ConferenceDay {
     title: string;
 }
 
+interface NewsCategory {
+    Id: string;
+    title: string;
+}
+
 export interface Speaker {
     //Id: string;
     name: string;
@@ -55,11 +60,10 @@ var conferenceDays: Array<ConferenceDay> = [
     { title: "CONFERENCE DAY 2", date: new Date(2015, 5, 5) }
 ];
 
-// ToDo: use filter for categories
-var newsCategories: Array<ConferenceDay> = [
-    { title: "Algemeen nieuws", date: new Date(2015, 5, 3) },
-    { title: "Jeugd nieuws", date: new Date(2015, 5, 4) },
-    { title: "Verslagen", date: new Date(2015, 5, 5) }
+var newsCategories: Array<NewsCategory> = [
+    { title: "Algemeen nieuws", Id: '56d61c723d4aaadc196caa4f' },
+    { title: "Jeugd nieuws", Id: '56d61c893d4aaadc196caa50' },
+    { title: "Verslagen", Id: '56d61c943d4aaadc196caa51' }
 ];
 
 
@@ -323,17 +327,17 @@ export class AppViewModel extends observable.Observable {
     }
 
     set selectedNewsIndex(value: number) {
-        if (this._selectedIndex !== value) {
-            this._selectedIndex = value;
+        if (this._selectedNewsIndex !== value) {
+            this._selectedNewsIndex = value;
             this.notify({ object: this, eventName: observable.Observable.propertyChangeEvent, propertyName: "selectedNewsIndex", value: value });
 
             this.set("newsHeader", newsCategories[value].title);
 
-            if (this.search !== "") {
-                this.search = "";
-            } else {
-                this.filter();
-            }
+            // if (this.search !== "") {
+            //     this.search = "";
+            // } else {
+            //     this.filter();
+            // }
         }
     }
 

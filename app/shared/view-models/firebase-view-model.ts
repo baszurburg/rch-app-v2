@@ -1,46 +1,129 @@
-var observable = require("data/observable");
-var dialogs = require("ui/dialogs");
+import observable = require("data/observable");
+import dialogs = require("ui/dialogs");
 import appModule = require("application");
-var firebase = require("nativescript-plugin-firebase");
+import firebase = require("nativescript-plugin-firebase");
 
 
 // MODELS
 
-export interface Speaker {
-    //Id: string;
-    name: string;
-    title: string;
-    company: string;
-    picture: string;
-    twitterName: string;
+interface Category {
+    _id: string;    
 }
 
-export interface RoomInfo {
-    roomId: string;
-    name: string;
+interface Image {
+    format: string;
+    height: number;
+    public_id: string;
+    resource_type: string;
+    secure_url: string;
+    siganture: string;
     url: string;
-    theme: string;
+    version: number;
+    width: number;
 }
 
-export interface Session {
-    Id: string;
-    title: string;
-    start: Date;
-    end: Date;
-    room: string;
-    roomInfo: RoomInfo;
-    speakers: Array<Speaker>;
-    description: string;
-    descriptionShort: string;
-    calendarEventId: string;
-    isBreak: boolean;
+export interface Content {
+    brief: string;
+    extended: string;
 }
 
+export interface Post {
+    _id: string;
+    categories: Array<Category>;
+    content: Content;
+    externalLink: string;
+    externalName: string;
+    image: Image;
+    locked: boolean;
+    name: string;
+    publishedDate: Date;
+    state: string;
+}
+
+var posts: Array<PostModel> = new Array<PostModel>();
+
+function pushPosts(postsFromFirebase: Array<Post>) {
+    console.log('postsFromFirebase.length: ' + postsFromFirebase.length);
+    for (var i = 0; i < postsFromFirebase.length; i++) {
+        var newPost = new PostModel(postsFromFirebase[i]);
+        posts.push(newPost);
+        console.log('posts.push')
+    }
+}
+
+function doQueryPosts () {
+    var path = "/posts";
+    var that = this;
+    var onValueEvent = function(result) {
+      // note that the query returns 1 match at a time,
+      // in the order specified in the query
+      //console.log("Query result: " + JSON.stringify(result));
+      if (result.error) {
+          dialogs.alert({
+            title: "Listener error",
+            message: result.error,
+            okButtonText: "Darn!!"
+          });
+      } else {
+
+        pushPosts(<Array<Post>> result.value);
+      
+        console.log("path: " + path);
+        console.log("type: " + result.type);
+        console.log("key: " + result.key);
+        //console.log("value: " + JSON.stringify(result.value));
+        
+      }
+    };
+    firebase.query(
+      onValueEvent,
+      path,
+      {
+        singleEvent: true,
+        orderBy: {
+          type: firebase.QueryOrderByType.KEY
+        }
+      }
+    ).then(
+      function () {
+        console.log("firebase.doQueryPosts done; added a listener");
+      },
+      function (errorMessage) {
+        dialogs.alert({
+          title: "Login error",
+          message: errorMessage,
+          okButtonText: "OK, pity!"
+        });
+      }
+    );
+  };
+
+// -----------------------------------------------------------
+//  FIREBASE MODEL
+// -----------------------------------------------------------
+
+export class FirebaseModel extends observable.Observable {
+    private _posts: Array<PostModel>;
+
+    constructor() {
+        super();
+        
+        this._posts = posts;
+        
+        this.notify({ object: this, eventName: observable.Observable.propertyChangeEvent, propertyName: "posts", value: this._posts });
+        
+        console.log('in constructor');
+        
+    }
+
+    get posts(): Array<PostModel> {
+        return this._posts;
+    }
 
 
 // INIT
 
-  FirebaseModel.prototype.doInit = function () {
+  public doInit = function () {
     firebase.init({
       url: 'https://intense-heat-7311.firebaseio.com/'
     }).then(
@@ -58,7 +141,7 @@ export interface Session {
 
 // LOGIN & USER AUTHENTICATION
 
-  FirebaseModel.prototype.doLoginAnonymously = function () {
+  public doLoginAnonymously = function () {
     firebase.login({
       type: firebase.LoginType.ANONYMOUS
     }).then(
@@ -79,7 +162,7 @@ export interface Session {
     );
   };
 
-  FirebaseModel.prototype.doCreateUser = function () {
+  public doCreateUser = function () {
     firebase.createUser({
       email: 'eddyverbruggen@gmail.com',
       password: 'firebase'
@@ -101,7 +184,7 @@ export interface Session {
     );
   };
 
-  FirebaseModel.prototype.doLoginByPassword = function () {
+  public doLoginByPassword = function () {
     firebase.login({
       // note that you need to enable email-password login in your firebase instance
       type: firebase.LoginType.PASSWORD,
@@ -126,7 +209,7 @@ export interface Session {
     );
   };
 
-  FirebaseModel.prototype.doLogout = function () {
+  public doLogout = function () {
     firebase.logout().then(
         function (result) {
           dialogs.alert({
@@ -147,7 +230,7 @@ export interface Session {
 
 // EVENT LISTENERS
 
-  FirebaseModel.prototype.doAddChildEventListenerForUsers = function () {
+  public doAddChildEventListenerForUsers = function () {
     var that = this;
     var onChildEvent = function(result) {
       that.set("path", '/users');
@@ -166,7 +249,7 @@ export interface Session {
     );
   };
 
-  FirebaseModel.prototype.doAddValueEventListenerForCompanies = function () {
+  public doAddValueEventListenerForCompanies = function () {
     var path = "/companies";
     var that = this;
     var onValueEvent = function(result) {
@@ -196,7 +279,7 @@ export interface Session {
 
 // DATBASE ACTIONS
 
-  FirebaseModel.prototype.doUserStoreByPush = function () {
+  public doUserStoreByPush = function () {
     firebase.push(
         '/users',
         {
@@ -219,7 +302,7 @@ export interface Session {
     );
   };
 
-  FirebaseModel.prototype.doStoreCompaniesBySetValue = function () {
+  public doStoreCompaniesBySetValue = function () {
     firebase.setValue(
         '/companies',
 
@@ -247,7 +330,7 @@ export interface Session {
     );
   };
 
-  FirebaseModel.prototype.doRemoveUsers = function () {
+  public doRemoveUsers = function () {
     firebase.remove("/users").then(
         function () {
           console.log("firebase.remove done");
@@ -258,7 +341,7 @@ export interface Session {
     );
   };
 
-  FirebaseModel.prototype.doRemoveCompanies = function () {
+  public doRemoveCompanies = function () {
     firebase.remove("/companies").then(
         function () {
           console.log("firebase.remove done");
@@ -269,7 +352,7 @@ export interface Session {
     );
   };
 
-  FirebaseModel.prototype.doQueryBulgarianCompanies = function () {
+  public doQueryBulgarianCompanies = function () {
     var path = "/companies";
     var that = this;
     var onValueEvent = function(result) {
@@ -324,7 +407,7 @@ export interface Session {
     );
   };
 
-  FirebaseModel.prototype.doQueryUsers = function () {
+  public doQueryUsers = function () {
     var path = "/users";
     var that = this;
     var onValueEvent = function(result) {
@@ -370,63 +453,102 @@ export interface Session {
 
   // FROM HERE ARE THE RCH FUNCTIONS
 
-  FirebaseModel.prototype.doQueryPosts = function () {
-    var path = "/posts";
-    var that = this;
-    var onValueEvent = function(result) {
-      // note that the query returns 1 match at a time,
-      // in the order specified in the query
-      //console.log("Query result: " + JSON.stringify(result));
-      if (result.error) {
-          dialogs.alert({
-            title: "Listener error",
-            message: result.error,
-            okButtonText: "Darn!!"
-          });
-      } else {
-        that.set("path", path);
-        that.set("type", result.type);
-        that.set("key", result.key);
-        that.set("value", JSON.stringify(result.value));
-        
-        //
-        
-        that.set("path", path);
-        that.set("type", result.type);
-        that.set("key", result.key);
-        that.set("value", JSON.stringify(result.value));
-        
-        console.log("path: " + path);
-        console.log("type: " + result.type);
-        console.log("key: " + result.key);
-        console.log("value: " + JSON.stringify(result.value));
-        
-      }
-    };
-    firebase.query(
-      onValueEvent,
-      path,
-      {
-        singleEvent: true,
-        orderBy: {
-          type: firebase.QueryOrderByType.KEY
+
+  public doPostInit = function () {
+    firebase.init({
+      url: 'https://intense-heat-7311.firebaseio.com/'
+    }).then(
+        function (result) {
+            console.log('in postInit');
+            doQueryPosts();
+        },
+        function (error) {
+          console.log("firebase.init error: " + error);
         }
-      }
-    ).then(
-      function () {
-        console.log("firebase.doQueryPosts done; added a listener");
-      },
-      function (errorMessage) {
-        dialogs.alert({
-          title: "Login error",
-          message: errorMessage,
-          okButtonText: "OK, pity!"
-        });
-      }
     );
   };
 
 
 
-export var FirebaseModel = FirebaseModel;
+}
+
+// -----------------------------------------------------------
+//  POST MODEL
+// -----------------------------------------------------------
+
+export class PostModel extends observable.Observable implements Post {
+    constructor(source?: Post) {
+        super();
+
+        if (source) {
+            this.__id = source._id;
+            this._categories = source.categories;
+            this._content = source.content;
+            this._externalLink = source.externalLink;
+            this._externalName = source.externalName;
+            this._image = source.image;
+            this._locked = source.locked;
+            this._name = source.name;
+            this._publishedDate = source.publishedDate;
+            this._state = source.state;
+        }
+    }
+
+    private fixDate(date: Date): Date {
+        return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
+    }
+
+    private __id: string;
+    private _categories: Array<Category>;
+    private _content: Content;
+    private _externalLink: string;
+    private _externalName: string;
+    private _image: Image;
+    private _locked: boolean;
+    private _name: string;
+    private _publishedDate: Date;
+    private _state: string;
+
+    get _id(): string {
+        return this.__id;
+    }
+    
+    get categories(): Array<Category> {
+        return this._categories;
+    }
+    
+    get content(): Content {
+        return this._content;
+    }
+
+    get externalLink(): string {
+        return this._externalLink;
+    }
+
+    get externalName(): string {
+        return this._externalName;
+    }
+
+    get image(): Image {
+        return this._image
+    }
+
+    get locked(): boolean {
+        return this._locked;
+    }
+
+    get name(): string {
+        return this._name;
+    }
+
+    get publishedDate(): Date {
+        return this._publishedDate;
+    }
+
+    get state(): string {
+        return this._state;
+    }
+
+}
+
 export var firebaseViewModel = new FirebaseModel();

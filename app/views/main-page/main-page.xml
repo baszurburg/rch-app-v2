@@ -80,6 +80,10 @@
             </Label.formattedText>
           </Label>
 
+                <Button  text="init firebase - do this first" tap="doInit" cssClass="button button-positive" />
+                <Button text="query" tap="doQueryPosts" />
+
+
         <!-- ToDo: Set up the page title for news here -->
             <Label class="page-title" horizontalAlignment="center" margin="15" visibility="{{ isNewsPage ? 'visible' : 'collapsed' }}">
             <Label.formattedText>
@@ -96,7 +100,7 @@
         <!-- ToDo: Clean up the session - clean! -->
         
         
-        <!-- Sessions Views -->
+        <!-- SESSIONS Views -->
         <GridLayout  rows="auto, *" row="1" visibility="{{ isSessionsPage ? 'visible' : 'collapsed' }}">
           <!-- Search -->
           <SearchBar text="{{ search }}" hint="Zoeken" class="search" textFieldBackgroundColor="white" id="search"/>
@@ -138,15 +142,13 @@
         </GridLayout>
 
 
-        <!-- News Views -->
+        <!-- NEWS Views -->
         <GridLayout  rows="auto, *" row="1" visibility="{{ isNewsPage ? 'visible' : 'collapsed' }}">
           <!-- Search -->
           <SearchBar text="{{ search }}" hint="Zoek nieuws" class="search" textFieldBackgroundColor="white" id="search"/>
 
-
-
           <!-- List -->
-          <ListView items="{{ sessions }}" row="1" separatorColor="#fac950" class="listView">
+          <ListView items="{{ posts }}" row="1" separatorColor="#fac950" class="listView">
             <ListView.itemTemplate>
               <GridLayout columns="auto, *" class="{{ isBreak ? 'break-row' : 'list-view-row' }}">
 
@@ -162,19 +164,15 @@
                     <Label.formattedText>
                       <FormattedString>
                         <FormattedString.spans>
-                          <Span text="{{ range }}" fontAttributes="Bold" />
+                          <Span text="{{ publishedDate }}" fontAttributes="Bold" />
                         </FormattedString.spans>
                       </FormattedString>
                     </Label.formattedText>
                   </Label>
 
-                  <Label text="{{ title }}" textWrap="true" class="info-bigger"/>
+                  <Label text="{{ name }}" textWrap="true" class="info-bigger"/>
 
-                  <Label visibility="{{ room ? 'visible' : 'collapsed' }}" text="{{ room }}" class="info-orange" />                 
-
-                <Button  text="init firebase - do this first" tap="doInit" cssClass="button button-positive" />
-                <Button text="store by setValue 2" tap="doStoreCompaniesBySetValue" cssClass="button button-company" />
-                <Button text="query" tap="doQueryPosts" />
+                  <Label visibility="{{ brief ? 'visible' : 'collapsed' }}" text="{{ brief }}" />                 
 
                 </StackLayout>
 
