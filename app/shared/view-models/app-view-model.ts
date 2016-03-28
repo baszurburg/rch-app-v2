@@ -8,9 +8,6 @@ import types = require("utils/types");
 
 var LOADING_ERROR = "Could not load sessions. Check your Internet connection and try again.";
 var everlive = require("../../everlive/everlive");
-var firebaseModel = require("./firebase-view-model");
-
-var firebase = firebaseModel.firebaseViewModel;
 
 interface ConferenceDay {
     date: Date;
@@ -369,6 +366,7 @@ export class AppViewModel extends observable.Observable {
         this.set("isSessionsPage", this.selectedViewIndex < 2);
         this.set("isNewsPage", this.selectedViewIndex === 10);
     }
+    
 }
 
 export class SessionModel extends observable.Observable implements Session {
