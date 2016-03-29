@@ -46,6 +46,19 @@ export function selectSession(args: listView.ItemEventData) {
     }
 }
 
+export function selectNews(args: listView.ItemEventData) {
+    var post = <appViewModel.PostModel>args.view.bindingContext;
+    var page = view.getAncestor(<view.View>args.object, "Page")
+    hideSearchKeyboard(page);
+
+
+    frame.topmost().navigate({
+        moduleName: "views/news-page/news-page",
+        context: post
+    });
+
+}
+
 export function selectView(args: observable.EventData) {
     var btn = <button.Button>args.object;
     var page = view.getAncestor(btn, "Page");
@@ -96,4 +109,4 @@ export function goToUrl(args: gestures.GestureEventData) {
         }
     }
 }
-fbase.doPostInit();
+// fbase.doPostInit();

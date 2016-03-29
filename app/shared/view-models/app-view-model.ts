@@ -1088,3 +1088,5 @@ export class PostModel extends observable.Observable implements Post {
 }
 
 export var firebaseViewModel = new FirebaseModel();
+
+firebaseViewModel.doPostInit();

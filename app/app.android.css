@@ -186,3 +186,14 @@ SegmentedBar {
 .listView{
   background-color: #ffffff;
 }
+
+.news-image {
+    height: 200;
+}
+
+.news-image-thumb {
+    horizontal-align: left;
+    width: 52;
+    height: 52;
+    margin: 0 12;
+}

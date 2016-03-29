@@ -140,18 +140,17 @@
 
         <!-- NEWS Views -->
         <GridLayout  rows="auto, *" row="1" visibility="{{ isNewsPage ? 'visible' : 'collapsed' }}">
-          <!-- Search -->
-          <SearchBar text="{{ search }}" hint="Zoek nieuws" class="search" textFieldBackgroundColor="white" id="search"/>
 
           <!-- List -->
-          <ListView items="{{ posts }}" row="1" separatorColor="#fac950" class="listView">
+          <ListView items="{{ posts }}" row="1" separatorColor="#fac950" class="listView" itemTap="selectNews">
             <ListView.itemTemplate>
-              <GridLayout columns="auto, *" class="{{ isBreak ? 'break-row' : 'list-view-row' }}">
+              <GridLayout columns="auto, *" class="list-view-row">
 
-                <GridLayout visibility="{{ isBreak ? 'collapsed' : 'visible' }}"
-                  class="favourite-wrap" tap="toggleFavorite" columns="auto" rows="auto">
-                  <Image stretch="none" class="icon-image"
-                    src="{{ favorite ? 'res://ic_add_to_fav_1' : 'res://ic_add_to_fav' }}" />
+
+                <!-- ToDo: get a smaller image (and somewhere cache the image.) -->
+                <GridLayout
+                  class="" columns="auto" rows="auto">
+                  <Image stretch="aspectFit" class="news-image-thumb" src="{{ image.secure_url }}" />
                 </GridLayout>
 
                 <StackLayout col="1">
