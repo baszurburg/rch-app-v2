@@ -80,10 +80,6 @@
             </Label.formattedText>
           </Label>
 
-                <Button  text="init firebase - do this first" tap="doInit" cssClass="button button-positive" />
-                <Button text="query" tap="doQueryPosts" />
-
-
         <!-- ToDo: Set up the page title for news here -->
             <Label class="page-title" horizontalAlignment="center" margin="15" visibility="{{ isNewsPage ? 'visible' : 'collapsed' }}">
             <Label.formattedText>
@@ -172,7 +168,7 @@
 
                   <Label text="{{ name }}" textWrap="true" class="info-bigger"/>
 
-                  <Label visibility="{{ brief ? 'visible' : 'collapsed' }}" text="{{ brief }}" />                 
+                  <Label visibility="{{ content.brief ? 'visible' : 'collapsed' }}" text="{{ content.brief }}" />                 
 
                 </StackLayout>
 
@@ -180,7 +176,7 @@
             </ListView.itemTemplate>
           </ListView>
 
-          <ActivityIndicator busy="{{ isLoading }}" row="1" horizontalAlignment="center" verticalAlignment="center" />
+          <ActivityIndicator busy="{{ isNewsLoading }}" row="1" horizontalAlignment="center" verticalAlignment="center" />
         </GridLayout>
 
 

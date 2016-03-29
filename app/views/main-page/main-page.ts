@@ -9,9 +9,9 @@ import platform = require("platform");
 import button = require("ui/button");
 import scrollView = require("ui/scroll-view");
 import appViewModel = require("../../shared/view-models/app-view-model");
-import firebaseModel = require("../../shared/view-models/firebase-view-model");
+//import firebaseModel = require("../../shared/view-models/firebase-view-model");
 
-var fbase = firebaseModel.firebaseViewModel;
+var fbase = appViewModel.firebaseViewModel;
 
 export function pageLoaded(args: observable.EventData) {
     var page = <pages.Page>args.object;
@@ -96,8 +96,4 @@ export function goToUrl(args: gestures.GestureEventData) {
         }
     }
 }
-
-// Firebase functions
-
-console.log('doing postInit');
 fbase.doPostInit();
