@@ -9,15 +9,15 @@
       <GridLayout rows="*, auto">
         <StackLayout style="background-color: #053140;">
           <Image src="res://logo" class="slide-out-img" stretch="none" />
-          <Button tap="selectView" tag="0" class="{{ selectedViewIndex === 0 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="My agenda" />
-          <Button tap="selectView" tag="1" class="{{ selectedViewIndex === 1 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="All sessions" />
+          <Button tap="selectView" tag="5" class="{{ selectedViewIndex === 0 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Home" />
           <Button tap="selectView" tag="10" class="{{ selectedViewIndex === 10 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Nieuws" />
-          <Button tap="selectView" tag="2" class="{{ selectedViewIndex === 2 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Workshop Hackaton" />
-          <Button tap="selectView" tag="3" class="{{ selectedViewIndex === 3 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Contact" />
+          <Button tap="selectView" tag="20" class="{{ selectedViewIndex === 20 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Workshop Hackaton" />
+          <Button tap="selectView" tag="30" class="{{ selectedViewIndex === 30 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Contact" />
           <Button tap="selectView" tag="55" class="{{ selectedViewIndex === 55 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="TESTING" />
           <Button tap="selectView" tag="60" class="{{ selectedViewIndex === 60 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Over R.C.H." />
-          <Button tap="selectView" tag="4" class="{{ selectedViewIndex === 4 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Sponsors" />
+          <Button tap="selectView" tag="90" class="{{ selectedViewIndex === 90 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Sponsors" />
         </StackLayout>
+        
         <StackLayout style="background-color: #053140;" row="1">
           <Label tap="goToUrl" tag="http://www.icws.nl" class="slide-out-btn-about">
             <Label.formattedText>
@@ -44,20 +44,37 @@
             <Label text="{{ actionBarTitle }}" class="action-bar-title" />
           </GridLayout>
 
+
+        <!-- Workshop View -->
+        <StackLayout row="1" visibility="{{ selectedViewIndex === 5 ? 'visible' : 'collapsed'}}" class="content-offset">
+          <Label class="info-page-header" textWrap="true" text="Thuis" />
+          <Label class="info-orange" textWrap="true" >
+            <Label.formattedText>
+              <FormattedString>
+                <FormattedString.spans>
+                  <Span text="Thuis bij R.C.H." fontAttributes="Bold" />
+                </FormattedString.spans>
+              </FormattedString>
+            </Label.formattedText>
+          </Label>
+
+          <Label class="info" textWrap="true" >
+            <Label.formattedText>
+              <FormattedString>
+                <FormattedString.spans>
+                  <Span text="Home page of R.C.H." />
+
+                </FormattedString.spans>
+              </FormattedString>
+            </Label.formattedText>
+          </Label>
+
+        </StackLayout>
+
+
+
 <!-- ToDo: can we wrap this in a container ? with a class darker and group per type -->
 
-          <!-- Tabs Session Day -->
-          <GridLayout class="darker" visibility="{{ isSessionsPage ? 'visible' : 'collapsed' }}">
-            <SegmentedBar selectedBackgroundColor="#fac950" selectedIndex="{{ selectedIndex }}">
-              <SegmentedBar.items>
-                <SegmentedBarItem title="MAY 3" />
-                <SegmentedBarItem title="MAY 4" />
-                <SegmentedBarItem title="MAY 5" />
-              </SegmentedBar.items>
-            </SegmentedBar>
-          </GridLayout>
-          
-          
           <!-- Tabs News Type -->
           <GridLayout class="darker" visibility="{{ isNewsPage ? 'visible' : 'collapsed' }}">
             <SegmentedBar selectedBackgroundColor="#fac950" selectedIndex="{{ selectedNewsIndex }}">
@@ -68,19 +85,7 @@
               </SegmentedBar.items>
             </SegmentedBar>
           </GridLayout>
-          
-          
-          <Label class="page-title" horizontalAlignment="center" margin="15" visibility="{{ isSessionsPage ? 'visible' : 'collapsed' }}">
-            <Label.formattedText>
-              <FormattedString>
-                <FormattedString.spans>
-                  <Span text="{{ dayHeader }}" fontAttributes="Bold" />
-                </FormattedString.spans>
-              </FormattedString>
-            </Label.formattedText>
-          </Label>
 
-        <!-- ToDo: Set up the page title for news here -->
             <Label class="page-title" horizontalAlignment="center" margin="15" visibility="{{ isNewsPage ? 'visible' : 'collapsed' }}">
             <Label.formattedText>
               <FormattedString>
@@ -93,51 +98,6 @@
           
         </StackLayout>
         
-        <!-- ToDo: Clean up the session - clean! -->
-        
-        
-        <!-- SESSIONS Views -->
-        <GridLayout  rows="auto, *" row="1" visibility="{{ isSessionsPage ? 'visible' : 'collapsed' }}">
-          <!-- Search -->
-          <SearchBar text="{{ search }}" hint="Zoeken" class="search" textFieldBackgroundColor="white" id="search"/>
-
-          <!-- List -->
-          <ListView items="{{ sessions }}" row="1" separatorColor="#fac950" itemTap="selectSession" class="listView">
-            <ListView.itemTemplate>
-              <GridLayout columns="auto, *" class="{{ isBreak ? 'break-row' : 'list-view-row' }}">
-
-                <GridLayout visibility="{{ isBreak ? 'collapsed' : 'visible' }}"
-                  class="favourite-wrap" tap="toggleFavorite" columns="auto" rows="auto">
-                  <Image stretch="none" class="icon-image"
-                    src="{{ favorite ? 'res://ic_add_to_fav_1' : 'res://ic_add_to_fav' }}" />
-                </GridLayout>
-
-                <StackLayout col="1">
-
-                  <Label class="info-orange">
-                    <Label.formattedText>
-                      <FormattedString>
-                        <FormattedString.spans>
-                          <Span text="{{ range }}" fontAttributes="Bold" />
-                        </FormattedString.spans>
-                      </FormattedString>
-                    </Label.formattedText>
-                  </Label>
-
-                  <Label text="{{ title }}" textWrap="true" class="info-bigger"/>
-
-                  <Label visibility="{{ room ? 'visible' : 'collapsed' }}" text="{{ room }}" class="info-orange" />
-
-                </StackLayout>
-
-              </GridLayout>
-            </ListView.itemTemplate>
-          </ListView>
-
-          <ActivityIndicator busy="{{ isLoading }}" row="1" horizontalAlignment="center" verticalAlignment="center" />
-        </GridLayout>
-
-
         <!-- NEWS Views -->
         <GridLayout  rows="auto, *" row="1" visibility="{{ isNewsPage ? 'visible' : 'collapsed' }}">
 
@@ -180,7 +140,7 @@
 
 
         <!-- Workshop View -->
-        <StackLayout row="1" visibility="{{ selectedViewIndex === 2 ? 'visible' : 'collapsed'}}" class="content-offset">
+        <StackLayout row="1" visibility="{{ selectedViewIndex === 20 ? 'visible' : 'collapsed'}}" class="content-offset">
           <Label class="info-page-header" textWrap="true" text="Come check out the TelerikNEXT Mobile Hackathon" />
           <Label class="info-orange" textWrap="true" >
             <Label.formattedText>
@@ -224,7 +184,7 @@ Space is limited, so be sure to pick up your entry pass by stopping by at the Re
         </StackLayout>
 
         <!-- Contact View -->
-        <StackLayout row="1" visibility="{{ selectedViewIndex === 3 ? 'visible' : 'collapsed'}}" class="content-offset">
+        <StackLayout row="1" visibility="{{ selectedViewIndex === 30 ? 'visible' : 'collapsed'}}" class="content-offset">
           <Label class="info-orange">
             <Label.formattedText>
               <FormattedString>
@@ -295,10 +255,10 @@ Space is limited, so be sure to pick up your entry pass by stopping by at the Re
             </Label.formattedText>
           </Label>
           <GridLayout columns="*,*,*,*" marginTop="12">
-            <Image src="res://facebook" stretch="none" col="0" tap="goToUrl" tag="https://www.facebook.com/Telerik"/>
-            <Image src="res://twitter" stretch="none" col="1" tap="goToUrl" tag="https://twitter.com/telerik"/>
-            <Image src="res://linkedin" stretch="none" col="2" tap="goToUrl" tag="https://www.linkedin.com/company/telerik"/>
-            <Image src="res://google" stretch="none" col="3" tap="goToUrl" tag="https://plus.google.com/+telerik/posts"/>
+            <Image src="res://facebook" stretch="none" col="0" tap="goToUrl" tag="https://www.facebook.com/RCHvoetbalclub/"/>
+            <Image src="res://twitter" stretch="none" col="1" tap="goToUrl" tag="https://twitter.com/rchvoetbal"/>
+            <Image src="res://linkedin" stretch="none" col="2" tap="goToUrl" tag="https://www.linkedin.com/groups/5087825"/>
+            <Image src="res://google" stretch="none" col="3" tap="goToUrl" tag="https://plus.google.com/"/>
           </GridLayout>
         </StackLayout>
 
@@ -359,7 +319,7 @@ Space is limited, so be sure to pick up your entry pass by stopping by at the Re
         </ScrollView>
 
         <!-- Sponsors -->
-        <StackLayout row="1" visibility="{{ selectedViewIndex === 4 ? 'visible' : 'collapsed'}}" class="content-offset">
+        <StackLayout row="1" visibility="{{ selectedViewIndex === 90 ? 'visible' : 'collapsed'}}" class="content-offset">
 
           <Image src="res://sponsor_american_eagle" stretch="none"/>
           <Label class="info" textWrap="true" text="Americaneagle.com" />

@@ -13,9 +13,7 @@ import appViewModel = require("../../shared/view-models/app-view-model");
 
 export function pageNavigatingTo(args: pages.NavigatedData) {
     var page = <pages.Page>args.object;
-
     page.bindingContext = page.navigationContext;
-
 }
 
 function disableScroll(listView: list.ListView) {

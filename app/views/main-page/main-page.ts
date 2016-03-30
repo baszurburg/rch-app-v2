@@ -9,7 +9,6 @@ import platform = require("platform");
 import button = require("ui/button");
 import scrollView = require("ui/scroll-view");
 import appViewModel = require("../../shared/view-models/app-view-model");
-//import firebaseModel = require("../../shared/view-models/firebase-view-model");
 
 var fbase = appViewModel.firebaseViewModel;
 
@@ -21,8 +20,6 @@ export function pageLoaded(args: observable.EventData) {
         frame.topmost().android.cachePagesOnNavigate = true;
     }
 
-    hideSearchKeyboard(page);
-
     var iosFrame = frame.topmost().ios;
     if (iosFrame) {
         // Fix status bar color and nav bar vidibility
@@ -33,24 +30,9 @@ export function pageLoaded(args: observable.EventData) {
     page.bindingContext = appViewModel.appModel;
 }
 
-export function selectSession(args: listView.ItemEventData) {
-    var session = <appViewModel.SessionModel>args.view.bindingContext;
-    var page = view.getAncestor(<view.View>args.object, "Page")
-    hideSearchKeyboard(page);
-
-    if (!session.isBreak) {
-        frame.topmost().navigate({
-            moduleName: "views/session-page/session-page",
-            context: session
-        });
-    }
-}
-
 export function selectNews(args: listView.ItemEventData) {
     var post = <appViewModel.PostModel>args.view.bindingContext;
     var page = view.getAncestor(<view.View>args.object, "Page")
-    hideSearchKeyboard(page);
-
 
     frame.topmost().navigate({
         moduleName: "views/news-page/news-page",
@@ -66,12 +48,6 @@ export function selectView(args: observable.EventData) {
     slideBar.closeDrawer();
 
     appViewModel.appModel.selectView(parseInt((<any>btn).tag), btn.text);
-    hideSearchKeyboard(page);
-}
-
-export function toggleFavorite(args: gestures.GestureEventData) {
-    var session = <appViewModel.SessionModel>args.view.bindingContext;
-    session.toggleFavorite();
 }
 
 export function showSlideout(args: gestures.GestureEventData) {
@@ -79,17 +55,6 @@ export function showSlideout(args: gestures.GestureEventData) {
     var page = view.getAncestor(args.view, "Page");
     var slideBar = <any>page.getViewById("SideDrawer");
     slideBar.showDrawer();
-    hideSearchKeyboard(page);
-}
-
-function hideSearchKeyboard(page: view.View) {
-    var searchBar = <search.SearchBar>page.getViewById("search");
-    if (searchBar.android) {
-        searchBar.android.clearFocus();
-    }
-    if (searchBar.ios) {
-        searchBar.ios.resignFirstResponder();
-    }
 }
 
 export function goToUrl(args: gestures.GestureEventData) {
@@ -109,4 +74,3 @@ export function goToUrl(args: gestures.GestureEventData) {
         }
     }
 }
-// fbase.doPostInit();
