@@ -52,7 +52,7 @@ export class AppViewModel extends observable.Observable {
 
             this.set("newsHeader", newsCategories[value].title);
 
-            console.log('selectedNewsIndex: ' + value);
+            // console.log('selectedNewsIndex: ' + value);
             if (typeof posts === 'object') {
                  this.filterNews();
             }
@@ -62,8 +62,8 @@ export class AppViewModel extends observable.Observable {
     }
 
     private filterNews() {
-        console.log('In filterNews');
-        console.log(typeof posts);
+        // console.log('In filterNews');
+        // console.log(typeof posts);
         this._posts = posts.filter(s=> {
             return s.categories[0] === newsCategories[this.selectedNewsIndex].Id;
         });
@@ -73,7 +73,7 @@ export class AppViewModel extends observable.Observable {
 
     public onNewsDataLoaded() {
         this.set("isNewsLoading", false);
-        console.log('Newsdata loaded');
+        // console.log('Newsdata loaded');
         this.filterNews();
     }
 
@@ -89,11 +89,11 @@ export class AppViewModel extends observable.Observable {
 export var appModel = new AppViewModel();
 
 function pushPosts(postsFromFirebase: Array<Post>) {
-    console.log('postsFromFirebase.length: ' + postsFromFirebase.length);
+    // console.log('postsFromFirebase.length: ' + postsFromFirebase.length);
     for (var i = 0; i < postsFromFirebase.length; i++) {
         var newPost = new PostModel(postsFromFirebase[i]);
         posts.push(newPost);
-        console.log('posts.push')
+        // console.log('posts.push')
     }
 }
 
@@ -128,7 +128,7 @@ function doQueryPosts () {
       }
     ).then(
       function () {
-        console.log("firebase.doQueryPosts done; added a listener");
+        // console.log("firebase.doQueryPosts done; added a listener");
       },
       function (errorMessage) {
         dialogs.alert({

@@ -188,7 +188,8 @@ SegmentedBar {
 }
 
 .news-image {
-    height: 200;
+    height: 150;
+        margin-bottom: 16;
 }
 
 .news-image-thumb {
@@ -196,4 +197,8 @@ SegmentedBar {
     width: 52;
     height: 52;
     margin: 0 12;
+}
+
+.news-textrow {
+    margin-bottom: 8;
 }

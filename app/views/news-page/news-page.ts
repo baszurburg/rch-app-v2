@@ -14,13 +14,16 @@ import appViewModel = require("../../shared/view-models/app-view-model");
 export function pageNavigatingTo(args: pages.NavigatedData) {
     var page = <pages.Page>args.object;
     page.bindingContext = page.navigationContext;
+
+    renderContentExtended(page);
+
 }
 
 function disableScroll(listView: list.ListView) {
     if (listView.android) {
         listView.android.setSelector(new android.graphics.drawable.ColorDrawable(0));
         listView.android.setOnTouchListener(new android.view.View.OnTouchListener({
-            onTouch: function (view: android.view.View, motionEvent: android.view.MotionEvent) {
+            onTouch: function(view: android.view.View, motionEvent: android.view.MotionEvent) {
                 return (motionEvent.getAction() === android.view.MotionEvent.ACTION_MOVE);
             }
         }));
@@ -78,4 +81,104 @@ export function backSwipe(args: gestures.SwipeGestureEventData) {
     if (args.direction === gestures.SwipeDirection.right) {
         frame.topmost().goBack();
     }
+}
+
+function renderContentExtended(page) {
+
+    page.bindingContext
+    var post = <appViewModel.PostModel>page.bindingContext;
+    var layout = page.getViewById("contentExtended");
+    var content = post.content.extended;
+
+    var simple = testSimple(content);
+
+    console.log('simple: ' + simple)
+
+    if (simple) {
+        simpleContent(layout, content)
+    } else {
+        complexContent(layout, content)
+    }
+
+}
+
+function complexContent(layout, content) {
+
+    console.log("complexContent");
+
+    for (var i = 0; i < content.length; i++) {
+
+        var contentItem = {};
+        contentItem = content[i];
+
+        for (var key in contentItem) {
+            if (contentItem.hasOwnProperty(key)) {
+
+                // If all keys are only text or break run simpleLabels
+                if (key.toString() === "text") {
+                    createSimpleLabel(contentItem, key, layout);
+                }
+
+            }
+        }
+    }
+
+}
+
+
+function simpleContent(layout, content) {
+
+    console.log("simpleContent");
+
+    for (var i = 0; i < content.length; i++) {
+
+        var contentItem = {};
+        contentItem = content[i];
+
+        for (var key in contentItem) {
+            if (contentItem.hasOwnProperty(key)) {
+
+                // If all keys are only text or break run simpleLabels
+                if (key.toString() === "text") {
+                    createSimpleLabel(contentItem, key, layout);
+                }
+
+            }
+        }
+    }
+
+}
+
+function createSimpleLabel(contentItem, key, layout) {
+    var label1 = new label.Label();
+    label1.textWrap = true;
+    label1.className = "news-textrow";
+
+    label1.text = contentItem[key].toString();
+
+    // connect to live view
+    layout.addChild(label1);
+}
+
+function testSimple(content) {
+    var simple = true;
+
+    for (var i = 0; i < content.length; i++) {
+        var contentItem = {};
+        contentItem = content[i];
+
+        for (var key in contentItem) {
+            if (contentItem.hasOwnProperty(key)) {
+                if (key.toString() !== "text" && key.toString() !== "break") {
+                    simple = false;
+                    break;
+                }
+            }
+        }
+        if (!simple) {
+            break;
+        }
+    }
+
+    return simple;
 }

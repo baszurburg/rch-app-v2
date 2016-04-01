@@ -4,11 +4,11 @@
 	"version": "1.0.0",
 	"nativescript": {
 		"id": "org.nativescript.TelerikNEXT",
-		"tns-ios": {
-			"version": "1.7.0"
-		},
 		"tns-android": {
 			"version": "1.7.1"
+		},
+		"tns-ios": {
+			"version": "1.7.0"
 		}
 	},
 	"dependencies": {

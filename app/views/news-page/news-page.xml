@@ -46,8 +46,8 @@
         <Image stretch="aspectFit" class="news-image" src="{{ image.secure_url }}" />
         
         <!-- Content -->
-        <Label class="description" textWrap="true" id="txtDescription" text="{{ content.extended }}" />
-
+        <StackLayout id="contentExtended"></StackLayout>
+        
         <!-- Line -->
         <StackLayout class="horizontal-line" margin="0 0 0 0"/>
 
