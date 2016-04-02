@@ -120,16 +120,26 @@ function renderContentExtended(page) {
  */
 function complexContent(layout, content) {
     var contentLength = content.length;
-    
+
     contentLength = 3;
-    
+
     console.log("complexContent");
 
     for (var i = 0; i < contentLength; i++) {
         var contentItem = {};
-        var labelFormatted = new label.Label;
-        var formattedString = new formattedStringModule.FormattedString;
-        var span = new spanModule.Span;
+        // var labels = <label.Label>{};
+        // var strings = <formattedStringModule.FormattedString>{};
+        // var spans = <spanModule.Span>{};
+        var labels = [];
+        var strings = [];
+        var spans = [];
+        var spansTable = [];
+        var labelIndex = 0,
+            //            stringIndex = 0,
+            spanIndex = 0;
+
+
+        // ToDo: better names for labels and strings (labelFormatted en formattedString) 
 
         contentItem = content[i];
 
@@ -139,47 +149,54 @@ function complexContent(layout, content) {
 
                 // Sometimes the first node is a text node, then also a break
                 if (i === 0 && (key.toString() !== "break")) {
-                    labelFormatted = createFormattedLabel();
-                    formattedString = new formattedStringModule.FormattedString();
+                    labels[labelIndex] = createFormattedLabel();
+                    strings[labelIndex] = new formattedStringModule.FormattedString();
                     console.log('create first item')
                 }
 
-                // Create a label
+                // BREAK
                 if (key.toString() === "break") {
                     // first write any existing label to the container
                     if (i > 0 && i < contentLength - 1) {
                         console.log('write label');
-                        labelFormatted.formattedText = formattedString;
-                        layout.addChild(labelFormatted);
+                        labels[labelIndex].formattedText = strings[labelIndex];
+                        layout.addChild(labels[labelIndex]);
+                        labelIndex += 1;
+                        spansTable = [];
                     }
-                    // Write the previous label to the container.
+                    // New Label
                     if (i < contentLength - 1) {
                         console.log('create new label');
-                        labelFormatted = createFormattedLabel();
-                        formattedString = new formattedStringModule.FormattedString();
+                        labels[labelIndex] = createFormattedLabel();
+                        strings[labelIndex] = new formattedStringModule.FormattedString();
                     }
                 } else if (key.toString() === "text") {
                     console.log('processing text: ' + contentItem[key].toString());
-                    span = new spanModule.Span();
-                    span.text = contentItem[key].toString();
-                    formattedString.spans.push(span);
+                    spans[spanIndex] = new spanModule.Span();
+                    spans[spanIndex].text = contentItem[key].toString();
+                    strings[labelIndex].spans.push(spans[spanIndex]);
+                    spanIndex += 1;
                 } else if (key.toString() === "strong" || key.toString() === "b") {
                     console.log('processing bold');
-                    span = new spanModule.Span();
-                    span.fontAttributes = 1;
-                    span.text = contentItem[key].toString();
-                    formattedString.spans.push(span);
-                    
-                    console.log('spans: ' + formattedString.spans + ' ' + formattedString.spans.length);
-                    console.log(span.text);
+                    spans[spanIndex] = new spanModule.Span();
+                    spans[spanIndex].fontAttributes = 1;
+                    spans[spanIndex].text = contentItem[key].toString();
+                    strings[labelIndex].spans.push(spans[spanIndex]);
+
+                    console.log('spans: ' + strings[labelIndex].spans + ' ' + strings[labelIndex].spans.length);
+                    console.log(spans[spanIndex].text);
+
+                    spanIndex += 1;
+
+
                 }
 
 
                 // Write the last label to the container.
                 if (i === (contentLength - 1)) {
                     console.log('write last item');
-                    labelFormatted.formattedText = formattedString;
-                    layout.addChild(labelFormatted);
+                    labels[labelIndex].formattedText = strings[labelIndex];
+                    layout.addChild(labels[labelIndex]);
                 }
 
 
