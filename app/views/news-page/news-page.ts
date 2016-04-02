@@ -9,6 +9,8 @@ import label = require("ui/label");
 import view = require("ui/core/view");
 import list = require("ui/list-view");
 import scrollView = require("ui/scroll-view");
+import formattedStringModule = require("text/formatted-string");
+import spanModule = require("text/span");
 import appViewModel = require("../../shared/view-models/app-view-model");
 
 export function pageNavigatingTo(args: pages.NavigatedData) {
@@ -83,6 +85,12 @@ export function backSwipe(args: gestures.SwipeGestureEventData) {
     }
 }
 
+
+/**
+ * Renders the extended new content
+ * 
+ * @param page (The page object)
+ */
 function renderContentExtended(page) {
 
     page.bindingContext
@@ -102,35 +110,108 @@ function renderContentExtended(page) {
 
 }
 
+/**
+ * COMPLEX CONTENT
+ * 
+ * Renders rich text (complex content)
+ * 
+ * @param layout (the container where the content will be placed in)
+ * @param content (The rich text formatted in json )
+ */
 function complexContent(layout, content) {
-
+    var contentLength = content.length;
+    
+    contentLength = 3;
+    
     console.log("complexContent");
 
-    for (var i = 0; i < content.length; i++) {
-
+    for (var i = 0; i < contentLength; i++) {
         var contentItem = {};
+        var labelFormatted = new label.Label;
+        var formattedString = new formattedStringModule.FormattedString;
+        var span = new spanModule.Span;
+
         contentItem = content[i];
 
         for (var key in contentItem) {
             if (contentItem.hasOwnProperty(key)) {
 
-                // If all keys are only text or break run simpleLabels
-                if (key.toString() === "text") {
-                    createSimpleLabel(contentItem, key, layout);
+
+                // Sometimes the first node is a text node, then also a break
+                if (i === 0 && (key.toString() !== "break")) {
+                    labelFormatted = createFormattedLabel();
+                    formattedString = new formattedStringModule.FormattedString();
+                    console.log('create first item')
                 }
+
+                // Create a label
+                if (key.toString() === "break") {
+                    // first write any existing label to the container
+                    if (i > 0 && i < contentLength - 1) {
+                        console.log('write label');
+                        labelFormatted.formattedText = formattedString;
+                        layout.addChild(labelFormatted);
+                    }
+                    // Write the previous label to the container.
+                    if (i < contentLength - 1) {
+                        console.log('create new label');
+                        labelFormatted = createFormattedLabel();
+                        formattedString = new formattedStringModule.FormattedString();
+                    }
+                } else if (key.toString() === "text") {
+                    console.log('processing text: ' + contentItem[key].toString());
+                    span = new spanModule.Span();
+                    span.text = contentItem[key].toString();
+                    formattedString.spans.push(span);
+                } else if (key.toString() === "strong" || key.toString() === "b") {
+                    console.log('processing bold');
+                    span = new spanModule.Span();
+                    span.fontAttributes = 1;
+                    span.text = contentItem[key].toString();
+                    formattedString.spans.push(span);
+                    
+                    console.log('spans: ' + formattedString.spans + ' ' + formattedString.spans.length);
+                    console.log(span.text);
+                }
+
+
+                // Write the last label to the container.
+                if (i === (contentLength - 1)) {
+                    console.log('write last item');
+                    labelFormatted.formattedText = formattedString;
+                    layout.addChild(labelFormatted);
+                }
+
 
             }
         }
     }
-
 }
 
 
-function simpleContent(layout, content) {
+function createFormattedLabel() {
+    var labelFormatted = new label.Label();
 
+    labelFormatted.textWrap = true;
+    labelFormatted.className = "news-textrow";
+
+    return labelFormatted;
+}
+
+
+/**
+ * SIMPLE CONTENT
+ * 
+ * When there are only texts and breaks
+ * 
+ * @param layout (the container where the content will be placed in)
+ * @param content (The rich text formatted in json )
+ */
+function simpleContent(layout, content) {
+    var contentLength = content.length;
     console.log("simpleContent");
 
-    for (var i = 0; i < content.length; i++) {
+    for (var i = 0; i < contentLength; i++) {
 
         var contentItem = {};
         contentItem = content[i];
@@ -138,7 +219,6 @@ function simpleContent(layout, content) {
         for (var key in contentItem) {
             if (contentItem.hasOwnProperty(key)) {
 
-                // If all keys are only text or break run simpleLabels
                 if (key.toString() === "text") {
                     createSimpleLabel(contentItem, key, layout);
                 }
