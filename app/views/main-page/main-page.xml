@@ -11,9 +11,8 @@
           <Image src="res://logo" class="slide-out-img" stretch="none" />
           <Button tap="selectView" tag="5" class="{{ selectedViewIndex === 0 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Home" />
           <Button tap="selectView" tag="10" class="{{ selectedViewIndex === 10 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Nieuws" />
-          <Button tap="selectView" tag="20" class="{{ selectedViewIndex === 20 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Workshop Hackaton" />
+          <Button tap="selectView" tag="20" class="{{ selectedViewIndex === 20 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Programma & uitslagen" />
           <Button tap="selectView" tag="30" class="{{ selectedViewIndex === 30 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Contact" />
-          <Button tap="selectView" tag="55" class="{{ selectedViewIndex === 55 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="TESTING" />
           <Button tap="selectView" tag="60" class="{{ selectedViewIndex === 60 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Over R.C.H." />
           <Button tap="selectView" tag="90" class="{{ selectedViewIndex === 90 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Sponsors" />
         </StackLayout>
@@ -106,14 +105,15 @@
             <ListView.itemTemplate>
               <GridLayout columns="auto, *" class="list-view-row">
 
-
                 <!-- ToDo: get a smaller image (and somewhere cache the image.) -->
                 <GridLayout
                   class="" columns="auto" rows="auto">
-                  <Image stretch="aspectFit" class="news-image-thumb" src="{{ image.secure_url }}" />
+                  <Image stretch="aspectFit" class="news-image-thumb" src="{{ image.imageThumb }}" />
                 </GridLayout>
 
                 <StackLayout col="1">
+
+                  <Label text="{{ name }}" textWrap="true" class="info-bigger"/>
 
                   <Label class="info-blue">
                     <Label.formattedText>
@@ -124,8 +124,6 @@
                       </FormattedString>
                     </Label.formattedText>
                   </Label>
-
-                  <Label text="{{ name }}" textWrap="true" class="info-bigger"/>
 
                   <Label visibility="{{ content.brief ? 'visible' : 'collapsed' }}" text="{{ content.brief }}" />                 
 
@@ -138,48 +136,35 @@
           <ActivityIndicator busy="{{ isNewsLoading }}" row="1" horizontalAlignment="center" verticalAlignment="center" />
         </GridLayout>
 
-
-        <!-- Workshop View -->
+        <!-- PROGRAMMA & UITSLAGEN View -->
         <StackLayout row="1" visibility="{{ selectedViewIndex === 20 ? 'visible' : 'collapsed'}}" class="content-offset">
-          <Label class="info-page-header" textWrap="true" text="Come check out the TelerikNEXT Mobile Hackathon" />
-          <Label class="info-orange" textWrap="true" >
+          <Label class="info-page-header" textWrap="true" text="Pragramma en uitslagen" />
+
+          <Label class="info" tap="showProgrammaTap" class="list-view-row" >
             <Label.formattedText>
               <FormattedString>
                 <FormattedString.spans>
-                  <Span text="Sunday, May 3rd from 6:30pm-10:30pm" fontAttributes="Bold" />
+                  <Span text="Programma" fontAttributes="Bold"/>
+                </FormattedString.spans>
+              </FormattedString>
+            </Label.formattedText>
+          </Label>
+         
+         <!-- Line -->
+         <StackLayout class="horizontal-line" margin="0 0 0 0"/>         
+         
+          <Label class="info" tap="showUitslagenTap" class="list-view-row" >
+            <Label.formattedText>
+              <FormattedString>
+                <FormattedString.spans>
+                  <Span text="Uitslagen" fontAttributes="Bold"/>
                 </FormattedString.spans>
               </FormattedString>
             </Label.formattedText>
           </Label>
 
-          <Label class="info" textWrap="true" >
-            <Label.formattedText>
-              <FormattedString>
-                <FormattedString.spans>
-                  <Span text="
-As always, we'll make it worth your while. You will:
-
-1) Build your first (or tenth) mobile app and have fun doing it
-
-2) Enjoy free food, drinks and software licenses, all while learning new skills
-
-3) Get prizes, with" />
-                  <Span text=" winners every 20 minutes" fontAttributes="Bold"/>
-                  <Span text="
-
-5) Ask questions and meet our hackathon expert engineers
-
-6) Get " />
-                  <Span text=" FREE code" fontAttributes="Bold"/>
-                  <Span text=" licenses for 6 months!" />
-                  <Span text="
-
-Space is limited, so be sure to pick up your entry pass by stopping by at the Registration desk on Sunday between the hours of 4:00 p.m. - 6:00 p.m."
-                        foregroundColor="#A17201" fontAttributes="Bold"/>
-                </FormattedString.spans>
-              </FormattedString>
-            </Label.formattedText>
-          </Label>
+        <!-- Line -->
+        <StackLayout class="horizontal-line" margin="0 0 0 0"/>
 
         </StackLayout>
 
@@ -260,16 +245,6 @@ Space is limited, so be sure to pick up your entry pass by stopping by at the Re
             <Image src="res://linkedin" stretch="none" col="2" tap="goToUrl" tag="https://www.linkedin.com/groups/5087825"/>
             <Image src="res://google" stretch="none" col="3" tap="goToUrl" tag="https://plus.google.com/"/>
           </GridLayout>
-        </StackLayout>
-
-        <!-- TESTING -->
-        <StackLayout row="1" visibility="{{ selectedViewIndex === 55 ? 'visible' : 'collapsed'}}" class="content-offset">
-
-          <Image src="res://sponsor_american_eagle" stretch="none"/>
-          <Label class="info" textWrap="true" text="TESTING" />
-          <Image src="res://sponsor_theportal_connector" stretch="none"/>
-          <Label class="info" textWrap="true" text="Testing2" />
-
         </StackLayout>
 
         <!-- Over R.C.H. -->

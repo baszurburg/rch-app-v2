@@ -51,8 +51,9 @@
         <!-- Line -->
         <StackLayout class="horizontal-line" margin="0 0 0 0"/>
 
-        <!-- Speakers -->
+        <!-- More news -->
         <Label text="Meer nieuws" class="section-header" />
+        <Label text="binnenkort..." class="info" />
 
         <!-- ToDo: Make here a list view met related posts -->
         

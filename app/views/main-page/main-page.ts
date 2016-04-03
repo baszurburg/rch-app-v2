@@ -74,3 +74,15 @@ export function goToUrl(args: gestures.GestureEventData) {
         }
     }
 }
+
+export function showProgrammaTap(args: gestures.GestureEventData) {
+    frame.topmost().navigate({
+        moduleName: "views/programma-page/programma-page"
+    });
+}
+
+export function showUitslagenTap(args: gestures.GestureEventData) {
+    frame.topmost().navigate({
+        moduleName: "views/uitslagen-page/uitslagen-page"
+    });
+}

@@ -120,7 +120,9 @@ function complexContent(layout, content) {
     var contentLength = content.length;
 
     var contentItem = {};
-    var labels = [],
+    var keyString = "",
+        prevKey = "",
+        labels = [],
         strings = [],
         spans = [],
         labelIndex = 0,
@@ -134,16 +136,17 @@ function complexContent(layout, content) {
 
         for (var key in contentItem) {
             if (contentItem.hasOwnProperty(key)) {
+                keyString = key.toString();
 
                 // CREATE LABEL
                 // Sometimes the first node is a text node, then also a break
-                if (i === 0 && (key.toString() !== "break")) {
+                if (i === 0 && (keyString !== "break")) {
                     labels[labelIndex] = createFormattedLabel();
                     strings[labelIndex] = new formattedStringModule.FormattedString();
                 }
 
                 // BREAK
-                if (key.toString() === "break") {
+                if (keyString === "break") {
                     // WRITE LABEL
                     if (i > 0 && i < contentLength - 1) {
                         labels[labelIndex].formattedText = strings[labelIndex];
@@ -155,30 +158,37 @@ function complexContent(layout, content) {
                         labels[labelIndex] = createFormattedLabel();
                         strings[labelIndex] = new formattedStringModule.FormattedString();
                     }
-                } else if (key.toString() === "text") {
+                } else if (keyString === "text") {
                     // TEXT
                     spans[spanIndex] = new spanModule.Span();
                     spans[spanIndex].text = contentItem[key].toString() + " ";
                     strings[labelIndex].spans.push(spans[spanIndex]);
                     spanIndex += 1;
-                } else if (key.toString() === "strong" || key.toString() === "b") {
+                } else if (keyString === "strong" || key.toString() === "b") {
                     // STRONG
                     spans[spanIndex] = new spanModule.Span();
                     spans[spanIndex].fontAttributes = 1;
                     spans[spanIndex].text = contentItem[key].toString() + " ";
                     strings[labelIndex].spans.push(spans[spanIndex]);
                     spanIndex += 1;
-                } else if (key.toString() === "a") {
+                } else if (keyString === "a") {
                     // LINK
                     linkArray = contentItem[key];
 
                     spans[spanIndex] = new spanModule.Span();
                     //spans[spanIndex].underline = 1;
-                    spans[spanIndex].text = linkArray[1]["text"].toString();
+                    if (prevKey = keyString) {
+                     spans[spanIndex].text = " " + linkArray[1]["text"].toString();                       
+                    } else {
+                     spans[spanIndex].text = linkArray[1]["text"].toString();                       
+                    }
+
                     strings[labelIndex].spans.push(spans[spanIndex]);
 
                     spanIndex += 1;
                 }
+
+                prevKey = keyString;
 
                 // WRITE LABEL
                 // Write the last label to the container.
