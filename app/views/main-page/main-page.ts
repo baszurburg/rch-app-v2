@@ -34,6 +34,8 @@ export function selectNews(args: listView.ItemEventData) {
     var post = <appViewModel.PostModel>args.view.bindingContext;
     var page = view.getAncestor(<view.View>args.object, "Page")
 
+console.log("select Nieuws");
+
     frame.topmost().navigate({
         moduleName: "views/news-page/news-page",
         context: post

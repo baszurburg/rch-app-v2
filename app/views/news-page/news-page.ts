@@ -17,6 +17,8 @@ export function pageNavigatingTo(args: pages.NavigatedData) {
     var page = <pages.Page>args.object;
     page.bindingContext = page.navigationContext;
 
+    console.log("start news-page");
+
     renderContentExtended(page);
 
 }
@@ -128,6 +130,8 @@ function complexContent(layout, content) {
         labelIndex = 0,
         spanIndex = 0,
         linkArray = [];
+
+console.log("complex content");
 
     for (var i = 0; i < contentLength; i++) {
 

@@ -41,12 +41,14 @@
 
     <!-- Content -->
     <ScrollView row="1" id="scroll">
-      <StackLayout class="content" >
+      <StackLayout class="content-container" >
         
         <Image stretch="aspectFit" class="news-image" src="{{ image.secure_url }}" />
         
         <!-- Content -->
         <StackLayout id="contentExtended"></StackLayout>
+        
+        <Button class="share-button" text="Deel dit artikel"/>
         
         <!-- Line -->
         <StackLayout class="horizontal-line" margin="0 0 0 0"/>

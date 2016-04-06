@@ -138,7 +138,7 @@
 
         <!-- PROGRAMMA & UITSLAGEN View -->
         <StackLayout row="1" visibility="{{ selectedViewIndex === 20 ? 'visible' : 'collapsed'}}" class="content-offset">
-          <Label class="info-page-header" textWrap="true" text="Pragramma en uitslagen" />
+          <Label class="info-page-header" textWrap="true" text="Programma en uitslagen" />
 
           <Label class="info" tap="showProgrammaTap" class="list-view-row" >
             <Label.formattedText>

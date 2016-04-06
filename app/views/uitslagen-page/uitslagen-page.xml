@@ -13,10 +13,12 @@
         <Label text="Programma" class="action-bar-title" />
       </GridLayout>
     </StackLayout>
-
+  
     <!-- Content -->
-    <GridLayout row="1" class="content">
-        <WebView src="http://wedstrijden.rch-voetbal.nl/rch-197/clubuitslagen.php" />
-    </GridLayout>
-  </GridLayout>
+    <ScrollView row="1" id="scroll">
+        <GridLayout class="content-container">
+            <WebView src="http://wedstrijden.rch-voetbal.nl/rch-197/clubuitslagen.php" />
+        </GridLayout>
+    </ScrollView>
+  
 </Page>

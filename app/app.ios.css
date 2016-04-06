@@ -187,6 +187,12 @@ SegmentedBar {
     background-color: #ffffff;
 }
 
+
+.content-container {
+    margin: 12 0;
+    padding: 0 12;
+}
+
 .news-image {
     height: 150;
     margin-bottom: 16;
@@ -194,11 +200,16 @@ SegmentedBar {
 
 .news-image-thumb {
     horizontal-align: left;
-    width: 52;
-    height: 52;
+    width: 100;
+    height: 60;
     margin: 0 12;
 }
 
 .news-textrow {
-    margin-bottom: 8;
+    margin-bottom: 12;
+}
+
+.share-button {
+    max-width: 300;
+    background-color: #eee;
 }

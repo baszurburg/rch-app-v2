@@ -57,13 +57,12 @@ export class AppViewModel extends observable.Observable {
                  this.filterNews();
             }
 
-
         }
     }
 
     private filterNews() {
-        // console.log('In filterNews');
-        // console.log(typeof posts);
+        console.log('In filterNews');
+        console.log(typeof posts);
         this._posts = posts.filter(s=> {
             return s.categories[0] === newsCategories[this.selectedNewsIndex].Id;
         });
@@ -73,7 +72,8 @@ export class AppViewModel extends observable.Observable {
 
     public onNewsDataLoaded() {
         this.set("isNewsLoading", false);
-        // console.log('Newsdata loaded');
+        console.log('Newsdata loaded');
+
         this.filterNews();
     }
 
@@ -93,7 +93,7 @@ function pushPosts(postsFromFirebase: Array<Post>) {
     for (var i = 0; i < postsFromFirebase.length; i++) {
         var newPost = new PostModel(postsFromFirebase[i]);
         posts.push(newPost);
-        // console.log('posts.push')
+        //console.log('posts.push')
     }
 }
 
@@ -113,6 +113,7 @@ function doQueryPosts () {
       } else {
 
         pushPosts(<Array<Post>> result.value);
+        
         appModel.onNewsDataLoaded();
         
       }
@@ -123,7 +124,8 @@ function doQueryPosts () {
       {
         singleEvent: true,
         orderBy: {
-          type: firebase.QueryOrderByType.KEY
+          type: firebase.QueryOrderByType.CHILD,
+          value: 'publishedDate'
         }
       }
     ).then(
