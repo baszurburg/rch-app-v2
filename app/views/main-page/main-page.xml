@@ -226,6 +226,7 @@
               <FormattedString>
                 <FormattedString.spans>
                   <Span text="Teams op de RCH site" fontAttributes="Bold" />
+
                 </FormattedString.spans>
               </FormattedString>
             </Label.formattedText>

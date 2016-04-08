@@ -34,8 +34,6 @@ export function selectNews(args: listView.ItemEventData) {
     var post = <appViewModel.PostModel>args.view.bindingContext;
     var page = view.getAncestor(<view.View>args.object, "Page")
 
-console.log("select Nieuws");
-
     frame.topmost().navigate({
         moduleName: "views/news-page/news-page",
         context: post
@@ -53,7 +51,6 @@ export function selectView(args: observable.EventData) {
 }
 
 export function showSlideout(args: gestures.GestureEventData) {
-    console.log("show slideout");
     var page = view.getAncestor(args.view, "Page");
     var slideBar = <any>page.getViewById("SideDrawer");
     slideBar.showDrawer();

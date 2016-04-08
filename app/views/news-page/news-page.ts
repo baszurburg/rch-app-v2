@@ -17,8 +17,6 @@ export function pageNavigatingTo(args: pages.NavigatedData) {
     var page = <pages.Page>args.object;
     page.bindingContext = page.navigationContext;
 
-    console.log("start news-page");
-
     renderContentExtended(page);
 
 }
@@ -178,7 +176,7 @@ function complexContent(layout, content) {
                     linkArray = contentItem[key];
 
                     spans[spanIndex] = new spanModule.Span();
-                    //spans[spanIndex].underline = 1;
+                    spans[spanIndex].underline = 1;
                     if (prevKey = keyString) {
                      spans[spanIndex].text = " " + linkArray[1]["text"].toString();                       
                     } else {
@@ -253,6 +251,7 @@ function createSimpleLabel(contentItem, key, layout) {
 
     // connect to live view
     layout.addChild(label1);
+
 }
 
 function testSimple(content) {

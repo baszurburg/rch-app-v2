@@ -61,8 +61,6 @@ export class AppViewModel extends observable.Observable {
     }
 
     private filterNews() {
-        console.log('In filterNews');
-        console.log(typeof posts);
         this._posts = posts.filter(s=> {
             if (typeof s.categories !== 'undefined') {
                 return s.categories[0] === newsCategories[this.selectedNewsIndex].Id;                
@@ -74,7 +72,6 @@ export class AppViewModel extends observable.Observable {
 
     public onNewsDataLoaded() {
         this.set("isNewsLoading", false);
-        console.log('Newsdata loaded');
 
         this.filterNews();
     }
