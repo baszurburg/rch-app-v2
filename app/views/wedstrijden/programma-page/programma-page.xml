@@ -16,7 +16,7 @@
 
     <!-- Content -->
     <ScrollView row="1" id="scroll">
-        <GridLayout class="content-container">
+        <GridLayout class="content-container-sm">
             <WebView id="programma-webview" src="http://wedstrijden.rch-voetbal.nl/rch-197/programma.php" />
         </GridLayout>
     </ScrollView>

@@ -64,7 +64,9 @@ export class AppViewModel extends observable.Observable {
         console.log('In filterNews');
         console.log(typeof posts);
         this._posts = posts.filter(s=> {
-            return s.categories[0] === newsCategories[this.selectedNewsIndex].Id;
+            if (typeof s.categories !== 'undefined') {
+                return s.categories[0] === newsCategories[this.selectedNewsIndex].Id;                
+            }
         });
 
         this.notify({ object: this, eventName: observable.Observable.propertyChangeEvent, propertyName: "posts", value: this._posts });

@@ -1,6 +1,7 @@
 <Page xmlns="http://schemas.nativescript.org/tns.xsd"
       xmlns:drawer="nativescript-telerik-ui/sidedrawer"
       loaded="pageLoaded" actionBarHidden="true">
+  
   <drawer:RadSideDrawer id="SideDrawer">  
       <drawer:RadSideDrawer.drawerTransition>
           <drawer:SlideInOnTopTransition/>
@@ -8,11 +9,12 @@
     <drawer:RadSideDrawer.drawerContent>
       <GridLayout rows="*, auto">
         <StackLayout style="background-color: #053140;">
-          <Image src="res://logo" class="slide-out-img" stretch="none" />
+          <Image src="~/images/logo-banner-site.png" class="slide-out-img" stretch="aspectFit" />
           <Button tap="selectView" tag="5" class="{{ selectedViewIndex === 0 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Home" />
           <Button tap="selectView" tag="10" class="{{ selectedViewIndex === 10 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Nieuws" />
-          <Button tap="selectView" tag="20" class="{{ selectedViewIndex === 20 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Programma & uitslagen" />
-          <Button tap="selectView" tag="30" class="{{ selectedViewIndex === 30 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Contact" />
+          <Button tap="selectView" tag="20" class="{{ selectedViewIndex === 20 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Wedstrijden" />
+          <Button tap="selectView" tag="30" class="{{ selectedViewIndex === 30 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Teams" />
+          <Button tap="selectView" tag="40" class="{{ selectedViewIndex === 30 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Agenda" />
           <Button tap="selectView" tag="60" class="{{ selectedViewIndex === 60 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Over R.C.H." />
           <Button tap="selectView" tag="90" class="{{ selectedViewIndex === 90 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Sponsors" />
         </StackLayout>
@@ -44,39 +46,65 @@
           </GridLayout>
 
 
-        <!-- Workshop View -->
-        <StackLayout row="1" visibility="{{ selectedViewIndex === 5 ? 'visible' : 'collapsed'}}" class="content-offset">
-          <Label class="info-page-header" textWrap="true" text="Thuis" />
-          <Label class="info-orange" textWrap="true" >
-            <Label.formattedText>
-              <FormattedString>
-                <FormattedString.spans>
-                  <Span text="Thuis bij R.C.H." fontAttributes="Bold" />
-                </FormattedString.spans>
-              </FormattedString>
-            </Label.formattedText>
-          </Label>
+        <!-- THUIS -->
+        <StackLayout row="1" class="bg-white" visibility="{{ selectedViewIndex === 5 ? 'visible' : 'collapsed'}}">
+        
+            <StackLayout class="content-container-xxs">
+                <Image src="~/images/rch-jeugd-facebook.jpg" />
+            </StackLayout>
+            
+            <StackLayout class="content-offset">
 
-          <Label class="info" textWrap="true" >
-            <Label.formattedText>
-              <FormattedString>
-                <FormattedString.spans>
-                  <Span text="Home page of R.C.H." />
-
-                </FormattedString.spans>
-              </FormattedString>
-            </Label.formattedText>
-          </Label>
+                <Label class="info-blue" textWrap="true" >
+                    <Label.formattedText>
+                    <FormattedString>
+                        <FormattedString.spans>
+                        <Span text="Thuis bij R.C.H." fontAttributes="Bold" />
+                        </FormattedString.spans>
+                    </FormattedString>
+                    </Label.formattedText>
+                </Label>
+ 
+ 
+                <StackLayout class="horizontal-line"/>
+                <Label class="info-blue">
+                    <Label.formattedText>
+                    <FormattedString>
+                        <FormattedString.spans>
+                        <Span text="Sociaal club" fontAttributes="Bold" />
+                        </FormattedString.spans>
+                    </FormattedString>
+                    </Label.formattedText>
+                </Label>
+                <GridLayout columns="*,*,*" marginTop="12">
+                    <Image src="res://facebook" stretch="none" col="0" tap="goToUrl" tag="https://www.facebook.com/RCHvoetbalclub/"/>
+                    <Image src="res://twitter" stretch="none" col="1" tap="goToUrl" tag="https://twitter.com/rchvoetbal"/>
+                    <Image src="res://linkedin" stretch="none" col="2" tap="goToUrl" tag="https://www.linkedin.com/groups/5087825"/>
+                </GridLayout>
+ 
+                 <StackLayout class="horizontal-line"/>
+                <Label class="info-blue">
+                    <Label.formattedText>
+                    <FormattedString>
+                        <FormattedString.spans>
+                        <Span text="Sociaal jeugd" fontAttributes="Bold" />
+                        </FormattedString.spans>
+                    </FormattedString>
+                    </Label.formattedText>
+                </Label>
+                <GridLayout columns="*,*,*" marginTop="12">
+                    <Image src="res://facebook" stretch="none" col="0" tap="goToUrl" tag="https://www.facebook.com/groups/racertjes.mini/"/>
+                    <Image src="res://twitter" stretch="none" col="1" tap="goToUrl" tag="https://twitter.com/rchjeugd"/>
+                    <Button col="2" text="Instagram" tap="goToUrl" tag="https://www.instagram.com/rch_voetbal/"/>
+                </GridLayout>
+            
+            </StackLayout>
 
         </StackLayout>
 
-
-
-<!-- ToDo: can we wrap this in a container ? with a class darker and group per type -->
-
           <!-- Tabs News Type -->
           <GridLayout class="darker" visibility="{{ isNewsPage ? 'visible' : 'collapsed' }}">
-            <SegmentedBar selectedBackgroundColor="#fac950" selectedIndex="{{ selectedNewsIndex }}">
+            <SegmentedBar selectedBackgroundColor="#00acf6" selectedIndex="{{ selectedNewsIndex }}">
               <SegmentedBar.items>
                 <SegmentedBarItem title="Algemeen" />
                 <SegmentedBarItem title="Jeugd" />
@@ -85,7 +113,7 @@
             </SegmentedBar>
           </GridLayout>
 
-            <Label class="page-title" horizontalAlignment="center" margin="15" visibility="{{ isNewsPage ? 'visible' : 'collapsed' }}">
+            <Label class="header-title" horizontalAlignment="center" margin="15" visibility="{{ isNewsPage ? 'visible' : 'collapsed' }}">
             <Label.formattedText>
               <FormattedString>
                 <FormattedString.spans>
@@ -101,150 +129,131 @@
         <GridLayout  rows="auto, *" row="1" visibility="{{ isNewsPage ? 'visible' : 'collapsed' }}">
 
           <!-- List -->
-          <ListView items="{{ posts }}" row="1" separatorColor="#fac950" class="listView" itemTap="selectNews">
+          <ListView items="{{ posts }}" row="1" separatorColor="#dddddd" class="listView" itemTap="selectNews">
             <ListView.itemTemplate>
-              <GridLayout columns="auto, *" class="list-view-row">
 
-                <!-- ToDo: get a smaller image (and somewhere cache the image.) -->
-                <GridLayout
-                  class="" columns="auto" rows="auto">
-                  <Image stretch="aspectFit" class="news-image-thumb" src="{{ image.imageThumb }}" />
+              <StackLayout class="list-view-row">
+
+                <GridLayout columns="auto, *" class="list-view-row-inner">
+
+                    <GridLayout class="" columns="auto" rows="auto">
+                        <Image stretch="aspectFit" class="news-image-thumb" src="{{ image.imageThumb }}" visibility="{{ image.imageThumb ? 'visible' : 'collapsed' }}" />
+                        <Image stretch="aspectFit" class="news-image-thumb" src="~/images/image-placeholder.png" visibility="{{ !image.imageThumb ? 'visible' : 'collapsed' }}" />
+                    </GridLayout>
+
+                    <StackLayout col="1">
+                    
+                    <Label text="{{ name }}" textWrap="true" class="info-bigger"/>
+
+                    </StackLayout>
+                                    
                 </GridLayout>
-
-                <StackLayout col="1">
-
-                  <Label text="{{ name }}" textWrap="true" class="info-bigger"/>
-
-                  <Label class="info-blue">
-                    <Label.formattedText>
-                      <FormattedString>
-                        <FormattedString.spans>
-                          <Span text="{{ publishedDate }}" fontAttributes="Bold" />
-                        </FormattedString.spans>
-                      </FormattedString>
-                    </Label.formattedText>
-                  </Label>
-
-                  <Label visibility="{{ content.brief ? 'visible' : 'collapsed' }}" text="{{ content.brief }}" />                 
-
-                </StackLayout>
-
-              </GridLayout>
+             
+              </StackLayout>
+              
             </ListView.itemTemplate>
           </ListView>
 
           <ActivityIndicator busy="{{ isNewsLoading }}" row="1" horizontalAlignment="center" verticalAlignment="center" />
         </GridLayout>
 
-        <!-- PROGRAMMA & UITSLAGEN View -->
-        <StackLayout row="1" visibility="{{ selectedViewIndex === 20 ? 'visible' : 'collapsed'}}" class="content-offset">
-          <Label class="info-page-header" textWrap="true" text="Programma en uitslagen" />
+        <!-- WEDSTRIJDEN View -->
+        <StackLayout row="1" visibility="{{ selectedViewIndex === 20 ? 'visible' : 'collapsed'}}">
+            
+            <StackLayout class="content-container-xxs">
+                <Image src="~/images/e2-20160123-3.jpg" />  
+            </StackLayout>
+            
+            <StackLayout class="content-offset">
 
-          <Label class="info" tap="showProgrammaTap" class="list-view-row" >
-            <Label.formattedText>
-              <FormattedString>
-                <FormattedString.spans>
-                  <Span text="Programma" fontAttributes="Bold"/>
-                </FormattedString.spans>
-              </FormattedString>
-            </Label.formattedText>
-          </Label>
-         
-         <!-- Line -->
-         <StackLayout class="horizontal-line" margin="0 0 0 0"/>         
-         
-          <Label class="info" tap="showUitslagenTap" class="list-view-row" >
-            <Label.formattedText>
-              <FormattedString>
-                <FormattedString.spans>
-                  <Span text="Uitslagen" fontAttributes="Bold"/>
-                </FormattedString.spans>
-              </FormattedString>
-            </Label.formattedText>
-          </Label>
+                <Label class="info l-pt-2 l-pb-2" tap="showProgrammaTap">
+                    <Label.formattedText>
+                    <FormattedString>
+                        <FormattedString.spans>
+                        <Span text="Programma" fontAttributes="Bold"/>
+                        </FormattedString.spans>
+                    </FormattedString>
+                    </Label.formattedText>
+                </Label>
+            
+                <!-- Line -->
+                <StackLayout class="horizontal-line" margin="0 0 0 0"/>         
+                
+                <Label class="info l-pt-2 l-pb-2" tap="showUitslagenTap">
+                    <Label.formattedText>
+                    <FormattedString>
+                        <FormattedString.spans>
+                        <Span text="Uitslagen" fontAttributes="Bold"/>
+                        </FormattedString.spans>
+                    </FormattedString>
+                    </Label.formattedText>
+                </Label>
 
-        <!-- Line -->
-        <StackLayout class="horizontal-line" margin="0 0 0 0"/>
+                <!-- Line -->
+                <StackLayout class="horizontal-line" margin="0 0 0 0"/>
+
+                <Label class="info l-pt-2 l-pb-2" tap="goToUrl" tag="http://www.rch-voetbal.nl/wedstrijden-programma-standen-uitslagen/afgelastingen">
+                    <Label.formattedText>
+                    <FormattedString>
+                        <FormattedString.spans>
+                        <Span text="Afgelastingen" fontAttributes="Bold" />
+                        <Span text=" (R.C.H. site)" fontSize="10" />
+                        </FormattedString.spans>
+                    </FormattedString>
+                    </Label.formattedText>
+                </Label>
+
+                <!-- Line -->
+                <StackLayout class="horizontal-line" margin="0 0 0 0"/>
+            
+            </StackLayout>
 
         </StackLayout>
 
-        <!-- Contact View -->
+        <!-- TEAMS -->
         <StackLayout row="1" visibility="{{ selectedViewIndex === 30 ? 'visible' : 'collapsed'}}" class="content-offset">
-          <Label class="info-orange">
+          <Label class="info-blue">
             <Label.formattedText>
               <FormattedString>
                 <FormattedString.spans>
-                  <Span text="Accommodatie" fontAttributes="Bold" />
+                  <Span text="Teams" fontAttributes="Bold" />
                 </FormattedString.spans>
               </FormattedString>
             </Label.formattedText>
           </Label>
-          <Label class="info" tap="goToUrl" tag="https://www.surveymonkey.com/s/5NNJRM5">
+          <Label class="info" tap="goToUrl" tag="http://www.rch-voetbal.nl/voetbal-elftallen-teams">
             <Label.formattedText>
               <FormattedString>
                 <FormattedString.spans>
-                  <Span text="TelerikNEXT EVENT SURVEY" fontAttributes="Bold" />
-                </FormattedString.spans>
-              </FormattedString>
-            </Label.formattedText>
-          </Label>
-
-          <StackLayout class="horizontal-line"/>
-          <Label class="info-orange">
-            <Label.formattedText>
-              <FormattedString>
-                <FormattedString.spans>
-                  <Span text="RAFFLE INFORMATION" fontAttributes="Bold" />
-                </FormattedString.spans>
-              </FormattedString>
-            </Label.formattedText>
-          </Label>
-          <Label class="info" textWrap="true" tap="goToUrl" tag="{{ info_raffle_url }}">
-            <Label.formattedText>
-              <FormattedString>
-                <FormattedString.spans>
-                  <Span text="{{ info_raffle }}" fontAttributes="Bold" />
+                  <Span text="Teams op de RCH site" fontAttributes="Bold" />
                 </FormattedString.spans>
               </FormattedString>
             </Label.formattedText>
           </Label>
 
-          <StackLayout class="horizontal-line"/>
-          <Label class="info-orange">
+        </StackLayout>
+
+        <!-- AGENDA View -->
+        <StackLayout row="1" visibility="{{ selectedViewIndex === 40 ? 'visible' : 'collapsed'}}" class="content-offset">
+          <Label class="info-blue">
             <Label.formattedText>
               <FormattedString>
                 <FormattedString.spans>
-                  <Span text="CERTIFICATION PROGRAM" fontAttributes="Bold" />
+                  <Span text="Agenda" fontAttributes="Bold" />
                 </FormattedString.spans>
               </FormattedString>
             </Label.formattedText>
           </Label>
-          <Label class="info" textWrap="true" tap="goToUrl" tag="{{ info_certification_url }}">
+          <Label class="info" tap="goToUrl" tag="http://www.rch-voetbal.nl/agenda">
             <Label.formattedText>
               <FormattedString>
                 <FormattedString.spans>
-                  <Span text="{{ info_certification }}" fontAttributes="Bold" />
+                  <Span text="Evenementen" fontAttributes="Bold" />
                 </FormattedString.spans>
               </FormattedString>
             </Label.formattedText>
           </Label>
 
-          <StackLayout class="horizontal-line"/>
-          <Label class="info-orange">
-            <Label.formattedText>
-              <FormattedString>
-                <FormattedString.spans>
-                  <Span text="FIND US HERE" fontAttributes="Bold" />
-                </FormattedString.spans>
-              </FormattedString>
-            </Label.formattedText>
-          </Label>
-          <GridLayout columns="*,*,*,*" marginTop="12">
-            <Image src="res://facebook" stretch="none" col="0" tap="goToUrl" tag="https://www.facebook.com/RCHvoetbalclub/"/>
-            <Image src="res://twitter" stretch="none" col="1" tap="goToUrl" tag="https://twitter.com/rchvoetbal"/>
-            <Image src="res://linkedin" stretch="none" col="2" tap="goToUrl" tag="https://www.linkedin.com/groups/5087825"/>
-            <Image src="res://google" stretch="none" col="3" tap="goToUrl" tag="https://plus.google.com/"/>
-          </GridLayout>
         </StackLayout>
 
         <!-- Over R.C.H. -->

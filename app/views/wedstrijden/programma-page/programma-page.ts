@@ -4,7 +4,7 @@ import utils = require("utils/utils");
 import frame = require("ui/frame");
 import observable = require("data/observable");
 import imageSource = require("image-source");
-import appViewModel = require("../../shared/view-models/app-view-model");
+import appViewModel = require("../../../shared/view-models/app-view-model");
 
 export function pageNavigatingTo(args: pages.NavigatedData) {
     var page = <pages.Page>args.object;

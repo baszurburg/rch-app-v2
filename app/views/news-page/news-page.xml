@@ -22,43 +22,43 @@
         </StackLayout>
       </GridLayout>
 
-      <StackLayout margin="16 16 16 16" row="1" col="1">
-        <Label text="{{ name }}" textWrap="true" class="session-page-title" />
-        <Label class="session-page-subtitle">
-          <Label.formattedText>
-            <FormattedString>
-              <FormattedString.spans>
-                <Span text="{{ publishedDate }}" fontAttributes="Bold" />
-              </FormattedString.spans>
-            </FormattedString>
-          </Label.formattedText>
-        </Label>
-      </StackLayout>
-
-
-
     </GridLayout>
 
     <!-- Content -->
     <ScrollView row="1" id="scroll">
-      <StackLayout class="content-container" >
-        
-        <Image stretch="aspectFit" class="news-image" src="{{ image.secure_url }}" />
-        
-        <!-- Content -->
-        <StackLayout id="contentExtended"></StackLayout>
-        
-        <Button class="share-button" text="Deel dit artikel"/>
-        
-        <!-- Line -->
-        <StackLayout class="horizontal-line" margin="0 0 0 0"/>
+    
+      <StackLayout>
+      
+        <StackLayout class="content-container-xxs" >
+            <Image id="news-image" src="{{ image.secure_url }}" />  
+        </StackLayout>
 
-        <!-- More news -->
-        <Label text="Meer nieuws" class="section-header" />
-        <Label text="binnenkort..." class="info" />
+        <StackLayout class="content-container" >
+            <Label text="{{ name }}" textWrap="true" class="page-title" />
+            <Label class="page-subtitle">
+            <Label.formattedText>
+                <FormattedString>
+                <FormattedString.spans>
+                    <Span text="{{ publishedDate }}" fontAttributes="Bold" />
+                </FormattedString.spans>
+                </FormattedString>
+            </Label.formattedText>
+            </Label>
+            
+            <!-- Content -->
+            <StackLayout id="contentExtended" class="content-body"></StackLayout>
+            
+            <Button class="share-button" text="Deel dit artikel"/>
+            
+            <!-- Line -->
+            <StackLayout class="horizontal-line" margin="0 0 0 0"/>
+
+            <!-- More news -->
+            <Label text="Meer nieuws" class="section-header" />
+            <Label text="binnenkort..." class="info" />
 
         <!-- ToDo: Make here a list view met related posts -->
-        
+        </StackLayout>
       </StackLayout>
     </ScrollView>
   </GridLayout>

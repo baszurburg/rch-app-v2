@@ -131,8 +131,6 @@ function complexContent(layout, content) {
         spanIndex = 0,
         linkArray = [];
 
-console.log("complex content");
-
     for (var i = 0; i < contentLength; i++) {
 
         // ToDo: better names for labels and strings (labelFormatted en formattedString) 
