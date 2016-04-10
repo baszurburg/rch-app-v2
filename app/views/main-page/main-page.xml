@@ -14,8 +14,9 @@
           <Button tap="selectView" tag="10" class="{{ selectedViewIndex === 10 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Nieuws" />
           <Button tap="selectView" tag="20" class="{{ selectedViewIndex === 20 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Wedstrijden" />
           <Button tap="selectView" tag="30" class="{{ selectedViewIndex === 30 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Teams" />
-          <Button tap="selectView" tag="40" class="{{ selectedViewIndex === 30 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Agenda" />
-          <Button tap="selectView" tag="60" class="{{ selectedViewIndex === 60 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Over R.C.H." />
+          <Button tap="selectView" tag="40" class="{{ selectedViewIndex === 40 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Agenda" />
+          <Button tap="selectView" tag="50" class="{{ selectedViewIndex === 50 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Club info" />
+          <Button tap="selectView" tag="60" class="{{ selectedViewIndex === 60 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Jeugd info" />
           <Button tap="selectView" tag="90" class="{{ selectedViewIndex === 90 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Sponsors" />
         </StackLayout>
         
@@ -67,6 +68,7 @@
  
  
                 <StackLayout class="horizontal-line"/>
+                
                 <Label class="info-blue">
                     <Label.formattedText>
                     <FormattedString>
@@ -82,7 +84,7 @@
                     <Image src="res://linkedin" stretch="none" col="2" tap="goToUrl" tag="https://www.linkedin.com/groups/5087825"/>
                 </GridLayout>
  
-                 <StackLayout class="horizontal-line"/>
+                <StackLayout class="horizontal-line"/>                
                 <Label class="info-blue">
                     <Label.formattedText>
                     <FormattedString>
@@ -95,7 +97,7 @@
                 <GridLayout columns="*,*,*" marginTop="12">
                     <Image src="res://facebook" stretch="none" col="0" tap="goToUrl" tag="https://www.facebook.com/groups/racertjes.mini/"/>
                     <Image src="res://twitter" stretch="none" col="1" tap="goToUrl" tag="https://twitter.com/rchjeugd"/>
-                    <Button col="2" text="Instagram" tap="goToUrl" tag="https://www.instagram.com/rch_voetbal/"/>
+                    <Button col="2" text="Instagram" tap="goToUrl" tag="https://www.instagram.com/rch_voetbal" visibility="collapsed"/>
                 </GridLayout>
             
             </StackLayout>
@@ -160,13 +162,13 @@
         <!-- WEDSTRIJDEN View -->
         <StackLayout row="1" visibility="{{ selectedViewIndex === 20 ? 'visible' : 'collapsed'}}">
             
-            <StackLayout class="content-container-xxs">
+            <StackLayout>
                 <Image src="~/images/e2-20160123-3.jpg" />  
             </StackLayout>
             
             <StackLayout class="content-offset">
 
-                <Label class="info l-pt-2 l-pb-2" tap="showProgrammaTap">
+                <Label class="info l-pt-2 l-pb-2" tap="goToView" tag="views/wedstrijden/programma-page/programma-page">
                     <Label.formattedText>
                     <FormattedString>
                         <FormattedString.spans>
@@ -179,7 +181,7 @@
                 <!-- Line -->
                 <StackLayout class="horizontal-line" margin="0 0 0 0"/>         
                 
-                <Label class="info l-pt-2 l-pb-2" tap="showUitslagenTap">
+                <Label class="info l-pt-2 l-pb-2" tap="goToView" tag="views/wedstrijden/uitslagen-page/uitslagen-page">
                     <Label.formattedText>
                     <FormattedString>
                         <FormattedString.spans>
@@ -212,21 +214,12 @@
 
         <!-- TEAMS -->
         <StackLayout row="1" visibility="{{ selectedViewIndex === 30 ? 'visible' : 'collapsed'}}" class="content-offset">
-          <Label class="info-blue">
-            <Label.formattedText>
-              <FormattedString>
-                <FormattedString.spans>
-                  <Span text="Teams" fontAttributes="Bold" />
-                </FormattedString.spans>
-              </FormattedString>
-            </Label.formattedText>
-          </Label>
           <Label class="info" tap="goToUrl" tag="http://www.rch-voetbal.nl/voetbal-elftallen-teams">
             <Label.formattedText>
               <FormattedString>
                 <FormattedString.spans>
-                  <Span text="Teams op de RCH site" fontAttributes="Bold" />
-
+                  <Span text="Teams" fontAttributes="Bold" />
+                  <Span text=" (R.C.H. site)" fontSize="10" />
                 </FormattedString.spans>
               </FormattedString>
             </Label.formattedText>
@@ -235,73 +228,93 @@
         </StackLayout>
 
         <!-- AGENDA View -->
-        <StackLayout row="1" visibility="{{ selectedViewIndex === 40 ? 'visible' : 'collapsed'}}" class="content-offset">
-          <Label class="info-blue">
-            <Label.formattedText>
-              <FormattedString>
-                <FormattedString.spans>
-                  <Span text="Agenda" fontAttributes="Bold" />
-                </FormattedString.spans>
-              </FormattedString>
-            </Label.formattedText>
-          </Label>
-          <Label class="info" tap="goToUrl" tag="http://www.rch-voetbal.nl/agenda">
-            <Label.formattedText>
-              <FormattedString>
-                <FormattedString.spans>
-                  <Span text="Evenementen" fontAttributes="Bold" />
-                </FormattedString.spans>
-              </FormattedString>
-            </Label.formattedText>
-          </Label>
+        <StackLayout row="1" visibility="{{ selectedViewIndex === 40 ? 'visible' : 'collapsed'}}">
+          
+            <StackLayout>
+                <Image src="~/images/rch-evenement.jpg" />  
+            </StackLayout>
+            
+            <StackLayout class="content-offset">
+          
+                <Label class="info-blue">
+                    <Label.formattedText>
+                    <FormattedString>
+                        <FormattedString.spans>
+                        <Span text="Agenda" fontAttributes="Bold" />
+                        </FormattedString.spans>
+                    </FormattedString>
+                    </Label.formattedText>
+                </Label>
+                <Label class="info" tap="goToUrl" tag="http://www.rch-voetbal.nl/agenda">
+                    <Label.formattedText>
+                    <FormattedString>
+                        <FormattedString.spans>
+                        <Span text="Evenementen" fontAttributes="Bold" />
+                        <Span text=" (R.C.H. site)" fontSize="10" />
+                        </FormattedString.spans>
+                    </FormattedString>
+                    </Label.formattedText>
+                </Label>
+          
+          </StackLayout>
 
         </StackLayout>
 
-        <!-- Over R.C.H. -->
-        <ScrollView row="1" id="scroll2" visibility="{{ selectedViewIndex === 60 ? 'visible' : 'collapsed'}}">
-            <StackLayout row="1" class="content-offset">
-            <Label class="info-page-header" textWrap="true" text="Over R.C.H." />
-            <Label class="info-orange" textWrap="true" >
-                <Label.formattedText>
-                <FormattedString>
-                    <FormattedString.spans>
-                    <Span text="R.C.H. is opgericht in 1911 en is nog een echte sfeervolle voetbalclub waar jong en oud al meer dan honderd jaar sporten, spelen en samenkomen." fontAttributes="Bold" />
-                    </FormattedString.spans>
-                </FormattedString>
-                </Label.formattedText>
-            </Label>
 
-            <Label class="info" textWrap="true" >
-                <Label.formattedText>
-                <FormattedString>
-                    <FormattedString.spans>
-                    <Span text="De club koestert de locatie, het traditievolle shirt en iconen als Loek Biesbrouck, Johan Neeskens en Barry van Galen." />
-                    </FormattedString.spans>
-                </FormattedString>
-                </Label.formattedText>
-            </Label>
+        <!-- CLUB Info View -->
+        <StackLayout row="1" visibility="{{ selectedViewIndex === 50 ? 'visible' : 'collapsed'}}">
             
-            <Label class="info-orange" textWrap="true" >
-                <Label.formattedText>
-                <FormattedString>
-                    <FormattedString.spans>
-                    <Span text="Voetballen bij R.C.H" fontAttributes="Bold" />
-                    </FormattedString.spans>
-                </FormattedString>
-                </Label.formattedText>
-            </Label>
-    
-            <Label class="info" textWrap="true" text="R.C.H. heeft een compleet aanbod. Een goede voetbalopleiding staat centraal." />
-
-            <Label class="info" textWrap="true" text="Met elftallen in elke leeftijdsklasse van mini’s tot senioren en veteranen, E-top, 7x7-, meiden-, zaal- en borrelvoetbal, het Thymo Rovers toernooi, R.C.H. Mix voor families en vrienden, het Jeugdweekend en tal van kleinere activiteiten is de kalender goed gevuld." />
-            
-            <Image src="~/images/over-rch-racertjes2015-2016.jpg" stretch="aspectFill"></Image>
-                          
-            <Label class="info" textWrap="true" text="R.C.H. wil groot genoeg zijn om dit allemaal te blijven doen, maar niet zo groot dat de leden elkaar niet meer kennen." />
-                <Label class="info" textWrap="true" text="Met elftallen in elke leeftijdsklasse van mini’s tot senioren en veteranen, E-top, 7x7-, meiden-, zaal- en borrelvoetbal, het Thymo Rovers toernooi, R.C.H. Mix voor families en vrienden, het Jeugdweekend en tal van kleinere activiteiten is de kalender goed gevuld." />
-                    
+            <StackLayout>
+                <Image src="~/images/kantine-rch.jpg" />  
             </StackLayout>
-        </ScrollView>
+            
+            <StackLayout class="content-offset">
+
+                <Label class="info l-pt-2 l-pb-2" tap="goToView" tag="views/club/over-rch-page/over-rch-page">
+                    <Label.formattedText>
+                    <FormattedString>
+                        <FormattedString.spans>
+                        <Span text="Over R.C.H." fontAttributes="Bold"/>
+                        </FormattedString.spans>
+                    </FormattedString>
+                    </Label.formattedText>
+                </Label>
+            
+                <!-- Line -->
+                <StackLayout class="horizontal-line" margin="0 0 0 0"/>         
+
+            
+            </StackLayout>
+
+        </StackLayout>
+
+        <!-- Jeugd Info View -->
+        <StackLayout row="1" visibility="{{ selectedViewIndex === 60 ? 'visible' : 'collapsed'}}">
+            
+            <StackLayout>
+                <Image src="~/images/e2-20160123-3.jpg" />  
+            </StackLayout>
+            
+            <StackLayout class="content-offset">
+
+                <Label class="info l-pt-2 l-pb-2">
+                    <Label.formattedText>
+                    <FormattedString>
+                        <FormattedString.spans>
+                        <Span text="Jeugd pagina" fontAttributes="Bold"/>
+                        </FormattedString.spans>
+                    </FormattedString>
+                    </Label.formattedText>
+                </Label>
+            
+                <!-- Line -->
+                <StackLayout class="horizontal-line" margin="0 0 0 0"/>         
+
+            
+            </StackLayout>
+
+        </StackLayout>
+
 
         <!-- Sponsors -->
         <StackLayout row="1" visibility="{{ selectedViewIndex === 90 ? 'visible' : 'collapsed'}}" class="content-offset">

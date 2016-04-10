@@ -89,6 +89,12 @@ export var appModel = new AppViewModel();
 
 function pushPosts(postsFromFirebase: Array<Post>) {
     // console.log('postsFromFirebase.length: ' + postsFromFirebase.length);
+    
+    // Sort the posts by date descending
+    postsFromFirebase.sort(function(a, b) {
+        return (Date.parse(b.publishedDate.toString().substr(0,10))) - (Date.parse(a.publishedDate.toString().substr(0,10)));
+    });
+        
     for (var i = 0; i < postsFromFirebase.length; i++) {
         var newPost = new PostModel(postsFromFirebase[i]);
         posts.push(newPost);
@@ -205,8 +211,6 @@ export class FirebaseModel {
         }
     );
   };
-
-
 
 }
 
@@ -326,6 +330,35 @@ export class PostModel extends observable.Observable implements Post {
     get state(): string {
         return this._state;
     }
+
+    get dateFormatted(): string {
+        var dateZ = new Date(this._publishedDate.toString().substr(0,10));
+        var day = dateZ.getDate();
+        var month = dateZ.getMonth() + 1;
+        var year = dateZ.getFullYear();
+
+        return day + '-' + month + '-' + year;
+        
+    }
+
+    // ToDo: fille in the days and month
+    get dateFormattedFull(): string {
+        var dateZ = new Date(this._publishedDate.toString().substr(0,10));
+        var day = dateZ.getDay();
+        var month = dateZ.getMonth() + 1;
+        var year = dateZ.getFullYear();
+
+        // Doe vandaag, gisteren
+        // daarna dag, datum (met maand uitgeschreven)
+        // na een week alleen de datum met maand uitgeschreven
+        
+
+   
+
+        return day + '-' + month + '-' + year;
+          
+    }
+
 
 }
 

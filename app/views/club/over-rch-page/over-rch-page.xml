@@ -1,0 +1,65 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd"
+  navigatingTo="pageNavigatingTo" actionBarHidden="true">
+
+  <GridLayout rows="auto, *">
+    <!-- HEADER -->
+    <StackLayout class="page-header">
+      <GridLayout class="action-bar">
+        <StackLayout tap="backTap" orientation="horizontal" class="action-wrap" horizontalAlignment="left">
+          <Image stretch="none" class="icon-image" src="res://ic_arrow_back"/>
+          <Label text="Back" class="back-text" />
+        </StackLayout>
+        
+        <Label text="Over R.C.H." class="action-bar-title" />
+      </GridLayout>
+    </StackLayout>
+
+    <!-- Content -->
+        <!-- Over R.C.H. -->
+        <ScrollView row="1" id="scroll">
+            <StackLayout row="1" class="content-offset">
+            <Label class="info-page-header" textWrap="true" text="Over R.C.H." />
+            <Label class="info-blue" textWrap="true" >
+                <Label.formattedText>
+                <FormattedString>
+                    <FormattedString.spans>
+                    <Span text="R.C.H. is opgericht in 1911 en is nog een echte sfeervolle voetbalclub waar jong en oud al meer dan honderd jaar sporten, spelen en samenkomen." fontAttributes="Bold" />
+                    </FormattedString.spans>
+                </FormattedString>
+                </Label.formattedText>
+            </Label>
+
+            <Label class="info" textWrap="true" >
+                <Label.formattedText>
+                <FormattedString>
+                    <FormattedString.spans>
+                    <Span text="De club koestert de locatie, het traditievolle shirt en iconen als Loek Biesbrouck, Johan Neeskens en Barry van Galen." />
+                    </FormattedString.spans>
+                </FormattedString>
+                </Label.formattedText>
+            </Label>
+            
+            <Label class="info-blue" textWrap="true" >
+                <Label.formattedText>
+                <FormattedString>
+                    <FormattedString.spans>
+                    <Span text="Voetballen bij R.C.H" fontAttributes="Bold" />
+                    </FormattedString.spans>
+                </FormattedString>
+                </Label.formattedText>
+            </Label>
+    
+            <Label class="info" textWrap="true" text="R.C.H. heeft een compleet aanbod. Een goede voetbalopleiding staat centraal." />
+
+            <Label class="info" textWrap="true" text="Met elftallen in elke leeftijdsklasse van mini’s tot senioren en veteranen, E-top, 7x7-, meiden-, zaal- en borrelvoetbal, het Thymo Rovers toernooi, R.C.H. Mix voor families en vrienden, het Jeugdweekend en tal van kleinere activiteiten is de kalender goed gevuld." />
+            
+            <Image src="~/images/over-rch-racertjes2015-2016.jpg"></Image>
+                          
+            <Label class="info" textWrap="true" text="R.C.H. wil groot genoeg zijn om dit allemaal te blijven doen, maar niet zo groot dat de leden elkaar niet meer kennen." />
+                <Label class="info" textWrap="true" text="Met elftallen in elke leeftijdsklasse van mini’s tot senioren en veteranen, E-top, 7x7-, meiden-, zaal- en borrelvoetbal, het Thymo Rovers toernooi, R.C.H. Mix voor families en vrienden, het Jeugdweekend en tal van kleinere activiteiten is de kalender goed gevuld." />
+                    
+            </StackLayout>
+        </ScrollView>
+
+  </GridLayout>
+</Page>

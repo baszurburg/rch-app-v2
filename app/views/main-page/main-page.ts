@@ -1,6 +1,7 @@
 ﻿import observable = require("data/observable");
 import pages = require("ui/page");
 import gestures = require("ui/gestures");
+import label = require("ui/label");
 import listView = require("ui/list-view");
 import frame = require("ui/frame");
 import view = require("ui/core/view");
@@ -74,14 +75,12 @@ export function goToUrl(args: gestures.GestureEventData) {
     }
 }
 
-export function showProgrammaTap(args: gestures.GestureEventData) {
-    frame.topmost().navigate({
-        moduleName: "views/wedstrijden/programma-page/programma-page"
-    });
+export function goToView(args: gestures.GestureEventData) {
+    var view = (<any>args.view).tag;
+    if (view) {
+        frame.topmost().navigate({
+            moduleName: view
+        });
+    }
 }
 
-export function showUitslagenTap(args: gestures.GestureEventData) {
-    frame.topmost().navigate({
-        moduleName: "views/wedstrijden/uitslagen-page/uitslagen-page"
-    });
-}

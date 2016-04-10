@@ -9,6 +9,7 @@
           <Image stretch="none" class="icon-image" src="res://ic_arrow_back"/>
           <Label text="Back" class="back-text" />
         </StackLayout>
+       <Label text="Nieuws" class="action-bar-title" />
 
         <StackLayout orientation="horizontal" horizontalAlignment="right">
           <!-- ToDo: Make here a llink to the team page when it is a verslag -->
@@ -29,7 +30,7 @@
     
       <StackLayout>
       
-        <StackLayout class="content-container-xxs" >
+        <StackLayout>
             <Image id="news-image" src="{{ image.secure_url }}" />  
         </StackLayout>
 
@@ -39,7 +40,7 @@
             <Label.formattedText>
                 <FormattedString>
                 <FormattedString.spans>
-                    <Span text="{{ publishedDate }}" fontAttributes="Bold" />
+                    <Span text="{{ dateFormatted }}" fontAttributes="Bold" />
                 </FormattedString.spans>
                 </FormattedString>
             </Label.formattedText>
