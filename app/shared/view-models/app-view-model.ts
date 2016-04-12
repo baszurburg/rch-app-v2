@@ -34,7 +34,7 @@ export class AppViewModel extends observable.Observable {
         this.set("actionBarTitle", "Thuis");
         this.set("isNewsLoading", true);
         this.set("isNewsPage", false);
-        
+
     }
 
     get posts(): Array<PostModel> {
@@ -44,7 +44,7 @@ export class AppViewModel extends observable.Observable {
     get selectedNewsIndex(): number {
         return this._selectedNewsIndex;
     }
-    
+
     set selectedNewsIndex(value: number) {
         if (this._selectedNewsIndex !== value) {
             this._selectedNewsIndex = value;
@@ -54,16 +54,16 @@ export class AppViewModel extends observable.Observable {
 
             // console.log('selectedNewsIndex: ' + value);
             if (typeof posts === 'object') {
-                 this.filterNews();
+                this.filterNews();
             }
 
         }
     }
 
     private filterNews() {
-        this._posts = posts.filter(s=> {
+        this._posts = posts.filter(s => {
             if (typeof s.categories !== 'undefined') {
-                return s.categories[0] === newsCategories[this.selectedNewsIndex].Id;                
+                return s.categories[0] === newsCategories[this.selectedNewsIndex].Id;
             }
         });
 
@@ -82,19 +82,19 @@ export class AppViewModel extends observable.Observable {
         this.set("actionBarTitle", titleText);
         this.set("isNewsPage", this.selectedViewIndex === 10);
     }
-    
+
 }
 
 export var appModel = new AppViewModel();
 
 function pushPosts(postsFromFirebase: Array<Post>) {
     // console.log('postsFromFirebase.length: ' + postsFromFirebase.length);
-    
+
     // Sort the posts by date descending
     postsFromFirebase.sort(function(a, b) {
-        return (Date.parse(b.publishedDate.toString().substr(0,10))) - (Date.parse(a.publishedDate.toString().substr(0,10)));
+        return (Date.parse(b.publishedDate.toString().substr(0, 10))) - (Date.parse(a.publishedDate.toString().substr(0, 10)));
     });
-        
+
     for (var i = 0; i < postsFromFirebase.length; i++) {
         var newPost = new PostModel(postsFromFirebase[i]);
         posts.push(newPost);
@@ -102,50 +102,6 @@ function pushPosts(postsFromFirebase: Array<Post>) {
     }
 }
 
-function doQueryPosts () {
-    var path = "/posts";
-    var that = this;
-    var onValueEvent = function(result) {
-      // note that the query returns 1 match at a time,
-      // in the order specified in the query
-      //console.log("Query result: " + JSON.stringify(result));
-      if (result.error) {
-          dialogs.alert({
-            title: "Listener error",
-            message: result.error,
-            okButtonText: "Darn!!"
-          });
-      } else {
-
-        pushPosts(<Array<Post>> result.value);
-        
-        appModel.onNewsDataLoaded();
-        
-      }
-    };
-    firebase.query(
-      onValueEvent,
-      path,
-      {
-        singleEvent: true,
-        orderBy: {
-          type: firebase.QueryOrderByType.CHILD,
-          value: 'publishedDate'
-        }
-      }
-    ).then(
-      function () {
-        // console.log("firebase.doQueryPosts done; added a listener");
-      },
-      function (errorMessage) {
-        dialogs.alert({
-          title: "Fout lezen gegevens",
-          message: errorMessage,
-          okButtonText: "OK"
-        });
-      }
-    );
-  };
 
 // -----------------------------------------------------------
 //  FIREBASE MODEL
@@ -153,64 +109,78 @@ function doQueryPosts () {
 
 export class FirebaseModel {
 
+    // LOGIN & USER AUTHENTICATION
 
-// INIT
+    public doLoginAnonymously = function() {
+        firebase.login({
+            type: firebase.LoginType.ANONYMOUS
+        }).then(
+            function(result) {
+                dialogs.alert({
+                    title: "Login OK",
+                    message: JSON.stringify(result),
+                    okButtonText: "Nice!"
+                });
+            },
+            function(errorMessage) {
+                dialogs.alert({
+                    title: "Login error",
+                    message: errorMessage,
+                    okButtonText: "OK, pity"
+                });
+            }
+            );
+    };
 
-  public doInit = function () {
-    firebase.init({
-      url: 'https://intense-heat-7311.firebaseio.com/'
-    }).then(
-        function (result) {
-          dialogs.alert({
-            title: "Firebase is ready",
-            okButtonText: "Merci!"
-          });
-        },
-        function (error) {
-          console.log("firebase.init error: " + error);
+    // FROM HERE ARE THE RCH FUNCTIONS
+
+
+public doQueryPosts() {
+    var path = "/posts";
+    var onValueEvent = function(result) {
+        // note that the query returns 1 match at a time,
+        // in the order specified in the query
+        //console.log("Query result: " + JSON.stringify(result));
+        if (result.error) {
+            dialogs.alert({
+                title: "Listener error",
+                message: result.error,
+                okButtonText: "Darn!!"
+            });
+        } else {
+
+        // ToDo work here with a promise       
+            pushPosts(<Array<Post>>result.value);
+
+            appModel.onNewsDataLoaded();
+
         }
-    );
-  };
-
-// LOGIN & USER AUTHENTICATION
-
-  public doLoginAnonymously = function () {
-    firebase.login({
-      type: firebase.LoginType.ANONYMOUS
-    }).then(
-        function (result) {
-          dialogs.alert({
-            title: "Login OK",
-            message: JSON.stringify(result),
-            okButtonText: "Nice!"
-          });
-        },
-        function (errorMessage) {
-          dialogs.alert({
-            title: "Login error",
-            message: errorMessage,
-            okButtonText: "OK, pity"
-          });
+    };
+    firebase.query(
+        onValueEvent,
+        path,
+        {
+            singleEvent: true,
+            orderBy: {
+                type: firebase.QueryOrderByType.CHILD,
+                value: 'publishedDate'
+            }
         }
-    );
-  };
-
-  // FROM HERE ARE THE RCH FUNCTIONS
-
-
-  public doPostInit = function () {
-    firebase.init({
-      url: 'https://intense-heat-7311.firebaseio.com/'
-    }).then(
-        function (result) {
-            console.log('in postInit');
-            doQueryPosts();
+    ).then(
+        function() {
+            // console.log("firebase.doQueryPosts done; added a listener");
         },
-        function (error) {
-          console.log("firebase.init error: " + error);
+        function(errorMessage) {
+            dialogs.alert({
+                title: "Fout lezen gegevens",
+                message: errorMessage,
+                okButtonText: "OK"
+            });
         }
-    );
-  };
+        );
+};
+
+
 
 }
 
@@ -294,11 +264,11 @@ export class PostModel extends observable.Observable implements Post {
     get _id(): string {
         return this.__id;
     }
-    
+
     get categories(): Array<string> {
         return this._categories;
     }
-    
+
     get content(): Content {
         return this._content;
     }
@@ -332,31 +302,31 @@ export class PostModel extends observable.Observable implements Post {
     }
 
     get dateFormatted(): string {
-        var dateZ = new Date(this._publishedDate.toString().substr(0,10));
+        var dateZ = new Date(this._publishedDate.toString().substr(0, 10));
         var day = dateZ.getDate();
         var month = dateZ.getMonth() + 1;
         var year = dateZ.getFullYear();
 
         return day + '-' + month + '-' + year;
-        
+
     }
 
     // ToDo: fille in the days and month
     get dateFormattedFull(): string {
-        var dateZ = new Date(this._publishedDate.toString().substr(0,10));
-        var day = dateZ.getDay();
+        var dateZ = new Date(this._publishedDate.toString().substr(0, 10));
+        var dayNumber = dateZ.getDay();
+        var day = dateZ.getDate();
         var month = dateZ.getMonth() + 1;
         var year = dateZ.getFullYear();
+
+        var days = ['maandag','dinsdag','woensdag','donderdag','vrijdag','zaterdag','zondag', ]
 
         // Doe vandaag, gisteren
         // daarna dag, datum (met maand uitgeschreven)
         // na een week alleen de datum met maand uitgeschreven
-        
 
-   
+        return days[dayNumber] + ', ' + day + '-' + month + '-' + year;
 
-        return day + '-' + month + '-' + year;
-          
     }
 
 
@@ -364,4 +334,4 @@ export class PostModel extends observable.Observable implements Post {
 
 export var firebaseViewModel = new FirebaseModel();
 
-firebaseViewModel.doPostInit();
+firebaseViewModel.doQueryPosts();
