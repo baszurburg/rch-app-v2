@@ -23,6 +23,7 @@ var newsCategories: Array<NewsCategory> = [
 export class AppViewModel extends observable.Observable {
     private _selectedNewsIndex;
     private _posts: Array<PostModel>;
+    private _agendaItems: Array<AgendaModel>;
 
     public selectedViewIndex: number;
 
@@ -33,12 +34,16 @@ export class AppViewModel extends observable.Observable {
         this.selectedViewIndex = 5;
         this.set("actionBarTitle", "Thuis");
         this.set("isNewsLoading", true);
+        this.set("isAgendaLoading", true);
         this.set("isNewsPage", false);
 
     }
 
     get posts(): Array<PostModel> {
         return this._posts;
+    }
+    get agendaItems(): Array<AgendaModel> {
+        return this._agendaItems;
     }
 
     get selectedNewsIndex(): number {
@@ -72,8 +77,15 @@ export class AppViewModel extends observable.Observable {
 
     public onNewsDataLoaded() {
         this.set("isNewsLoading", false);
-
         this.filterNews();
+    }
+
+    public onAgendaDataLoaded() {
+        this.set("isAgendaLoading", false);
+        console.log("onAgendaDataLoaded");
+        this._agendaItems = agendaItems;
+        
+        this.notify({ object: this, eventName: observable.Observable.propertyChangeEvent, propertyName: "agendaItems", value: this._agendaItems });
     }
 
     public selectView(index: number, titleText: string) {
@@ -98,8 +110,26 @@ function pushPosts(postsFromFirebase: Array<Post>) {
     for (var i = 0; i < postsFromFirebase.length; i++) {
         var newPost = new PostModel(postsFromFirebase[i]);
         posts.push(newPost);
-        //console.log('posts.push')
+        
     }
+}
+
+function pushAgendaItems(itemsFromFirebase: Array<Agenda>) {
+    // console.log('postsFromFirebase.length: ' + postsFromFirebase.length);
+
+    // ToDo: fix sorting the calendar
+
+    // Sort the posts by date descending
+    itemsFromFirebase.sort(function(a, b) {
+        return (Date.parse(b.start.toString().substr(0, 10))) - (Date.parse(a.start.toString().substr(0, 10)));
+    });
+
+    for (var i = 0; i < itemsFromFirebase.length; i++) {
+        var newAgendaItem = new AgendaModel(itemsFromFirebase[i]);
+        agendaItems.push(newAgendaItem);
+
+    }
+    appModel.onAgendaDataLoaded();
 }
 
 
@@ -135,52 +165,89 @@ export class FirebaseModel {
     // FROM HERE ARE THE RCH FUNCTIONS
 
 
-public doQueryPosts() {
-    var path = "/posts";
-    var onValueEvent = function(result) {
-        // note that the query returns 1 match at a time,
-        // in the order specified in the query
-        //console.log("Query result: " + JSON.stringify(result));
-        if (result.error) {
-            dialogs.alert({
-                title: "Listener error",
-                message: result.error,
-                okButtonText: "Darn!!"
-            });
-        } else {
+    public doQueryPosts(callback) {
+        var path = "/posts";
+        var onValueEvent = function(result) {
+            // note that the query returns 1 match at a time,
+            // in the order specified in the query
+            //console.log("Query result: " + JSON.stringify(result));
 
-        // ToDo work here with a promise       
-            pushPosts(<Array<Post>>result.value);
-
-            appModel.onNewsDataLoaded();
-
-        }
-    };
-    firebase.query(
-        onValueEvent,
-        path,
-        {
-            singleEvent: true,
-            orderBy: {
-                type: firebase.QueryOrderByType.CHILD,
-                value: 'publishedDate'
+            if (result.error) {
+                dialogs.alert({
+                    title: "Listener error",
+                    message: result.error,
+                    okButtonText: "Darn!!"
+                });
+            } else {
+                pushPosts(<Array<Post>>result.value);
+                callback();
             }
-        }
-    ).then(
-        function() {
-            // console.log("firebase.doQueryPosts done; added a listener");
-        },
-        function(errorMessage) {
-            dialogs.alert({
-                title: "Fout lezen gegevens",
-                message: errorMessage,
-                okButtonText: "OK"
+        };
+
+        firebase.query(
+            onValueEvent,
+            path,
+            {
+                singleEvent: true,
+                orderBy: {
+                    type: firebase.QueryOrderByType.CHILD,
+                    value: 'publishedDate'
+                }
+            }
+        ).then(
+            function() {
+                // console.log("firebase.doQueryPosts done; added a listener");
+            },
+            function(errorMessage) {
+                dialogs.alert({
+                    title: "Fout lezen gegevens",
+                    message: errorMessage,
+                    okButtonText: "OK"
+                });
             });
-        }
-        );
-};
+    };
 
+    public doQueryAgenda(callback) {
+        var path = "/agenda";
+        var onValueEvent = function(result) {
+            // note that the query returns 1 match at a time,
+            // in the order specified in the query
+            //console.log("Query result: " + JSON.stringify(result));
 
+            if (result.error) {
+                dialogs.alert({
+                    title: "Listener error",
+                    message: result.error,
+                    okButtonText: "Darn!!"
+                });
+            } else {
+                pushAgendaItems(<Array<Agenda>>result.value);
+                callback();
+            }
+        };
+
+        firebase.query(
+            onValueEvent,
+            path,
+            {
+                singleEvent: true,
+                orderBy: {
+                    type: firebase.QueryOrderByType.CHILD,
+                    value: 'publishedDate'
+                }
+            }
+        ).then(
+            function() {
+                // console.log("firebase.doQueryPosts done; added a listener");
+            },
+            function(errorMessage) {
+                dialogs.alert({
+                    title: "Fout lezen gegevens",
+                    message: errorMessage,
+                    okButtonText: "OK"
+                });
+            });
+    };
 
 }
 
@@ -192,8 +259,6 @@ public doQueryPosts() {
 // -----------------------------------------------------------
 //  POST MODEL
 // -----------------------------------------------------------
-
-
 
 interface Image {
     format: string;
@@ -246,6 +311,7 @@ export class PostModel extends observable.Observable implements Post {
         }
     }
 
+    // ToDo: remove this one
     private fixDate(date: Date): Date {
         return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
     }
@@ -282,7 +348,7 @@ export class PostModel extends observable.Observable implements Post {
     }
 
     get image(): Image {
-        return this._image
+        return this._image;
     }
 
     get locked(): boolean {
@@ -316,22 +382,159 @@ export class PostModel extends observable.Observable implements Post {
         var dateZ = new Date(this._publishedDate.toString().substr(0, 10));
         var dayNumber = dateZ.getDay();
         var day = dateZ.getDate();
-        var month = dateZ.getMonth() + 1;
+        var month = dateZ.getMonth();
         var year = dateZ.getFullYear();
 
-        var days = ['maandag','dinsdag','woensdag','donderdag','vrijdag','zaterdag','zondag', ]
+        var days = ['Zondag', 'Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag'];
+        var months = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
 
         // Doe vandaag, gisteren
-        // daarna dag, datum (met maand uitgeschreven)
-        // na een week alleen de datum met maand uitgeschreven
+        // na een week alleen de datum met maand uitgeschreven (geen dag meer)
 
-        return days[dayNumber] + ', ' + day + '-' + month + '-' + year;
+        return days[dayNumber] + ', ' + day + ' ' + months[month] + ' ' + year;
 
     }
 
+}
+
+// -----------------------------------------------------------
+//  AGENDA MODEL
+// -----------------------------------------------------------
+
+interface Location {
+    latitude: string;
+    location: string;
+    longitude: string;
+}
+
+export interface Agenda {
+    id: string;
+    allDay: boolean;
+    color: string;
+    description: string;
+    editable: boolean;
+    end: Date;
+    location: Location;
+    start: Date;
+    title: string;
+    url: string;
+}
+
+var agendaItems: Array<AgendaModel> = new Array<AgendaModel>();
+
+export class AgendaModel extends observable.Observable implements Agenda {
+    constructor(source?: Agenda) {
+        super();
+
+        if (source) {
+            this._id = source.id;
+            this._allDay = source.allDay;
+            this._color = source.color;
+            this._description = source.description;
+            this._editable = source.editable;
+            this._end = source.end;
+            this._location = source.location;
+            this._start = source.start;
+            this._title = source.title;
+            this._url = source.url;
+        }
+    }
+
+    private _id: string;
+    private _allDay: boolean;
+    private _color: string;
+    private _description: string;
+    private _editable: boolean;
+    private _end: Date;
+    private _location: Location;
+    private _start: Date;
+    private _title: string;
+    private _url: string;
+
+    get id(): string {
+        return this._id;
+    }
+
+    get allDay(): boolean {
+        return this._allDay;
+    }
+
+    get color(): string {
+        return this._color;
+    }
+
+    get description(): string {
+        return this._description;
+    }
+
+    get editable(): boolean {
+        return this._editable;
+    }
+
+    get end(): Date {
+        return this._end;
+    }
+
+    get location(): Location {
+        return this._location;
+    }
+
+    get start(): Date {
+        return this._start;
+    }
+
+    get title(): string {
+        return this._title;
+    }
+
+    get url(): string {
+        return this._url;
+    }
+
+
+    // ToDo: we need two dates and times as well (but not when allDay, etc: some logic to add.):
+    get dateFormatted1(): string {
+        var dateZ = new Date(this._start.toString().substr(0, 10));
+        var day1 = dateZ.getDate();
+        var month1 = dateZ.getMonth() + 1;
+        var year1 = dateZ.getFullYear();
+
+        return day1 + '-' + month1 + '-' + year1;
+
+    }
+
+    // ToDo: fille in the days and month
+    get dateFormattedFull1(): string {
+        var dateZ = new Date(this._start.toString().substr(0, 10));
+        var dayNumber = dateZ.getDay();
+        var day = dateZ.getDate();
+        var month = dateZ.getMonth();
+        var year = dateZ.getFullYear();
+
+        var days = ['Zondag', 'Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag'];
+        var months = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
+
+        // Doe vandaag, gisteren
+        // na een week alleen de datum met maand uitgeschreven (geen dag meer)
+
+        return days[dayNumber] + ', ' + day + ' ' + months[month] + ' ' + year;
+
+    }
 
 }
 
+
+
+////////////////////////////////////////////////
+// END MODELS
+////////////////////////////////////////////////
+
+
 export var firebaseViewModel = new FirebaseModel();
 
-firebaseViewModel.doQueryPosts();
+firebaseViewModel.doQueryPosts(function() {
+    appModel.onNewsDataLoaded();
+});
+firebaseViewModel.doQueryAgenda(function() {
+    null;
+});

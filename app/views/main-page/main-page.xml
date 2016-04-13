@@ -1,5 +1,6 @@
 <Page xmlns="http://schemas.nativescript.org/tns.xsd"
       xmlns:drawer="nativescript-telerik-ui/sidedrawer"
+      xmlns:PullRefresh="nativescript-pulltorefresh"
       loaded="pageLoaded" actionBarHidden="true">
   
   <drawer:RadSideDrawer id="SideDrawer">  
@@ -65,41 +66,7 @@
                     </FormattedString>
                     </Label.formattedText>
                 </Label>
- 
- 
-                <StackLayout class="horizontal-line"/>
-                
-                <Label class="info-blue">
-                    <Label.formattedText>
-                    <FormattedString>
-                        <FormattedString.spans>
-                        <Span text="Sociaal club" fontAttributes="Bold" />
-                        </FormattedString.spans>
-                    </FormattedString>
-                    </Label.formattedText>
-                </Label>
-                <GridLayout columns="*,*,*" marginTop="12">
-                    <Image src="res://facebook" stretch="none" col="0" tap="goToUrl" tag="https://www.facebook.com/RCHvoetbalclub/"/>
-                    <Image src="res://twitter" stretch="none" col="1" tap="goToUrl" tag="https://twitter.com/rchvoetbal"/>
-                    <Image src="res://linkedin" stretch="none" col="2" tap="goToUrl" tag="https://www.linkedin.com/groups/5087825"/>
-                </GridLayout>
- 
-                <StackLayout class="horizontal-line"/>                
-                <Label class="info-blue">
-                    <Label.formattedText>
-                    <FormattedString>
-                        <FormattedString.spans>
-                        <Span text="Sociaal jeugd" fontAttributes="Bold" />
-                        </FormattedString.spans>
-                    </FormattedString>
-                    </Label.formattedText>
-                </Label>
-                <GridLayout columns="*,*,*" marginTop="12">
-                    <Image src="res://facebook" stretch="none" col="0" tap="goToUrl" tag="https://www.facebook.com/groups/racertjes.mini/"/>
-                    <Image src="res://twitter" stretch="none" col="1" tap="goToUrl" tag="https://twitter.com/rchjeugd"/>
-                    <Button col="2" text="Instagram" tap="goToUrl" tag="https://www.instagram.com/rch_voetbal" visibility="collapsed"/>
-                </GridLayout>
-            
+             
             </StackLayout>
 
         </StackLayout>
@@ -128,37 +95,40 @@
         </StackLayout>
         
         <!-- NEWS Views -->
-        <GridLayout  rows="auto, *" row="1" visibility="{{ isNewsPage ? 'visible' : 'collapsed' }}">
 
-          <!-- List -->
-          <ListView items="{{ posts }}" row="1" separatorColor="#dddddd" class="listView" itemTap="selectNews">
-            <ListView.itemTemplate>
 
-              <StackLayout class="list-view-row">
+        <StackLayout row="1" visibility="{{ isNewsPage ? 'visible' : 'collapsed' }}">
 
-                <GridLayout columns="auto, *" class="list-view-row-inner">
+            <!-- List -->
+            <ListView items="{{ posts }}" row="1" separatorColor="#dddddd" class="listView" itemTap="selectNews">
+                <ListView.itemTemplate>
 
-                    <GridLayout class="" columns="auto" rows="auto">
-                        <Image stretch="aspectFit" class="news-image-thumb" src="{{ image.imageThumb }}" visibility="{{ image.imageThumb ? 'visible' : 'collapsed' }}" />
-                        <Image stretch="aspectFit" class="news-image-thumb" src="~/images/image-placeholder.png" visibility="{{ !image.imageThumb ? 'visible' : 'collapsed' }}" />
+                <StackLayout class="list-view-row">
+
+                    <GridLayout columns="auto, *" class="list-view-row-inner">
+
+                        <GridLayout class="" columns="auto" rows="auto">
+                            <Image stretch="aspectFit" class="news-image-thumb" src="{{ image.imageThumb }}" visibility="{{ image.imageThumb ? 'visible' : 'collapsed' }}" />
+                            <Image stretch="aspectFit" class="news-image-thumb" src="~/images/image-placeholder.png" visibility="{{ !image.imageThumb ? 'visible' : 'collapsed' }}" />
+                        </GridLayout>
+
+                        <StackLayout col="1">
+                        
+                            <Label text="{{ name }}" textWrap="true" class="info-bigger"/>
+                            <Label text="{{ dateFormattedFull }}" class="info-smaller" />
+
+                        </StackLayout>
+                                        
                     </GridLayout>
+                
+                </StackLayout>
+                
+                </ListView.itemTemplate>
+            </ListView>
 
-                    <StackLayout col="1">
-                    
-                    <Label text="{{ name }}" textWrap="true" class="info-bigger"/>
-                    <Label text="{{ dateFormattedFull }}" class="info-smaller" />
+            <ActivityIndicator busy="{{ isNewsLoading }}" row="1" horizontalAlignment="center" verticalAlignment="center" />
 
-                    </StackLayout>
-                                    
-                </GridLayout>
-             
-              </StackLayout>
-              
-            </ListView.itemTemplate>
-          </ListView>
-
-          <ActivityIndicator busy="{{ isNewsLoading }}" row="1" horizontalAlignment="center" verticalAlignment="center" />
-        </GridLayout>
+        </StackLayout>
 
         <!-- WEDSTRIJDEN View -->
         <StackLayout row="1" visibility="{{ selectedViewIndex === 20 ? 'visible' : 'collapsed'}}">
@@ -168,7 +138,7 @@
             </StackLayout>
             
             <StackLayout class="content-offset">
-
+      
                 <Label class="info l-pt-2 l-pb-2" tap="goToView" tag="views/wedstrijden/programma-page/programma-page">
                     <Label.formattedText>
                     <FormattedString>
@@ -230,34 +200,37 @@
 
         <!-- AGENDA View -->
         <StackLayout row="1" visibility="{{ selectedViewIndex === 40 ? 'visible' : 'collapsed'}}">
-          
+   
             <StackLayout>
                 <Image src="~/images/rch-evenement.jpg" />  
             </StackLayout>
             
-            <StackLayout class="content-offset">
+            <PullRefresh:PullToRefresh refresh="refreshNewsList">
+            
+                <StackLayout class="content-offset">
+        
+                    <Label class="info-blue">
+                        <Label.formattedText>
+                        <FormattedString>
+                            <FormattedString.spans>
+                            <Span text="R.C.H. Evenementen" fontAttributes="Bold" />
+                            </FormattedString.spans>
+                        </FormattedString>
+                        </Label.formattedText>
+                    </Label>
+
+                    <ListView items="{{ agendaItems }}" separatorColor="#dddddd">
+                        <ListView.itemTemplate>
+                            <StackLayout>
+                                <Label text="{{ title }}" textWrap="true" class="info-bigger"/>
+                                <Label text="{{ start }}" textWrap="true" class="info-smaller" />
+                            </StackLayout>
+                        </ListView.itemTemplate>
+                    </ListView>
+                    
+                </StackLayout>
           
-                <Label class="info-blue">
-                    <Label.formattedText>
-                    <FormattedString>
-                        <FormattedString.spans>
-                        <Span text="Agenda" fontAttributes="Bold" />
-                        </FormattedString.spans>
-                    </FormattedString>
-                    </Label.formattedText>
-                </Label>
-                <Label class="info" tap="goToUrl" tag="http://www.rch-voetbal.nl/agenda">
-                    <Label.formattedText>
-                    <FormattedString>
-                        <FormattedString.spans>
-                        <Span text="Evenementen" fontAttributes="Bold" />
-                        <Span text=" (R.C.H. site)" fontSize="10" />
-                        </FormattedString.spans>
-                    </FormattedString>
-                    </Label.formattedText>
-                </Label>
-          
-          </StackLayout>
+            </PullRefresh:PullToRefresh>
 
         </StackLayout>
 
@@ -268,25 +241,44 @@
             <StackLayout>
                 <Image src="~/images/kantine-rch.jpg" />  
             </StackLayout>
-            
-            <StackLayout class="content-offset">
+  
+                  // ToDo: move the plugin all up - check the version of the plugin....
+            <PullRefresh:PullToRefresh refresh="refreshNewsList">
+                
+                          
+                <StackLayout class="content-offset">
 
-                <Label class="info l-pt-2 l-pb-2" tap="goToView" tag="views/club/over-rch-page/over-rch-page">
-                    <Label.formattedText>
-                    <FormattedString>
-                        <FormattedString.spans>
-                        <Span text="Over R.C.H." fontAttributes="Bold"/>
-                        </FormattedString.spans>
-                    </FormattedString>
-                    </Label.formattedText>
-                </Label>
+                    <Label class="info l-pt-2 l-pb-2" tap="goToView" tag="views/club/over-rch-page/over-rch-page">
+                        <Label.formattedText>
+                        <FormattedString>
+                            <FormattedString.spans>
+                            <Span text="Over R.C.H." fontAttributes="Bold"/>
+                            </FormattedString.spans>
+                        </FormattedString>
+                        </Label.formattedText>
+                    </Label>
+                
+                    <!-- Line -->
+                    <StackLayout class="horizontal-line"/>
+                    
+                    <Label class="info-blue">
+                        <Label.formattedText>
+                        <FormattedString>
+                            <FormattedString.spans>
+                            <Span text="Sociaal club" fontAttributes="Bold" />
+                            </FormattedString.spans>
+                        </FormattedString>
+                        </Label.formattedText>
+                    </Label>
+                    <GridLayout columns="*,*,*" marginTop="12">
+                        <Image src="res://facebook" stretch="none" col="0" tap="goToUrl" tag="https://www.facebook.com/RCHvoetbalclub/"/>
+                        <Image src="res://twitter" stretch="none" col="1" tap="goToUrl" tag="https://twitter.com/rchvoetbal"/>
+                        <Image src="res://linkedin" stretch="none" col="2" tap="goToUrl" tag="https://www.linkedin.com/groups/5087825"/>
+                    </GridLayout>
             
-                <!-- Line -->
-                <StackLayout class="horizontal-line" margin="0 0 0 0"/>         
-
+                </StackLayout>
             
-            </StackLayout>
-
+            </PullRefresh:PullToRefresh>
         </StackLayout>
 
         <!-- Jeugd Info View -->
@@ -309,7 +301,21 @@
                 </Label>
             
                 <!-- Line -->
-                <StackLayout class="horizontal-line" margin="0 0 0 0"/>         
+                <StackLayout class="horizontal-line"/>                
+                <Label class="info-blue">
+                    <Label.formattedText>
+                    <FormattedString>
+                        <FormattedString.spans>
+                        <Span text="Sociaal jeugd" fontAttributes="Bold" />
+                        </FormattedString.spans>
+                    </FormattedString>
+                    </Label.formattedText>
+                </Label>
+                <GridLayout columns="*,*,*" marginTop="12">
+                    <Image src="res://facebook" stretch="none" col="0" tap="goToUrl" tag="https://www.facebook.com/groups/racertjes.mini/"/>
+                    <Image src="res://twitter" stretch="none" col="1" tap="goToUrl" tag="https://twitter.com/rchjeugd"/>
+                    <Button col="2" text="Instagram" tap="goToUrl" tag="https://www.instagram.com/rch_voetbal" visibility="collapsed"/>
+                </GridLayout>     
 
             
             </StackLayout>

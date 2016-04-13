@@ -57,6 +57,31 @@ export function showSlideout(args: gestures.GestureEventData) {
     slideBar.showDrawer();
 }
 
+export function refreshNewsList(args) {
+
+    // Get reference to the PullToRefresh;
+    var pullRefresh = args.object;
+
+    console.log("refreshNewsList");
+
+    // Do work here... and when done call set refreshing property to false to stop the refreshing
+    // loadItems().then(function (resp) {
+    //     // ONLY USING A TIMEOUT TO SIMULATE/SHOW OFF THE REFRESHING
+    //     setTimeout(function () {
+    //         pullRefresh.refreshing = false;
+    //     }, 1000);
+    // }, function (err) {
+    //     pullRefresh.refreshing = false;
+    // });
+    
+    setTimeout(function () {
+        pullRefresh.refreshing = false;
+    }, 5000);
+    
+    
+}
+
+
 export function goToUrl(args: gestures.GestureEventData) {
     var url = (<any>args.view).tag;
     if (url) {
