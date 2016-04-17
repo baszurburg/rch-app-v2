@@ -20,6 +20,10 @@ var newsCategories: Array<NewsCategory> = [
     { title: "Verslagen", Id: '56d61c943d4aaadc196caa51' }
 ];
 
+//////////////////////////////////////////////////////
+//  APP VIEWMODEL
+//////////////////////////////////////////////////////
+
 export class AppViewModel extends observable.Observable {
     private _selectedNewsIndex;
     private _posts: Array<PostModel>;
@@ -39,6 +43,14 @@ export class AppViewModel extends observable.Observable {
 
     }
 
+    // SELECT VIEW IN SIDEDRAWER
+    public selectView(index: number, titleText: string) {
+        this.selectedViewIndex = index;
+        this.notify({ object: this, eventName: observable.Observable.propertyChangeEvent, propertyName: "selectedViewIndex", value: this.selectedViewIndex });
+        this.set("actionBarTitle", titleText);
+        this.set("isNewsPage", this.selectedViewIndex === 10);
+    }
+
     get posts(): Array<PostModel> {
         return this._posts;
     }
@@ -46,6 +58,7 @@ export class AppViewModel extends observable.Observable {
         return this._agendaItems;
     }
 
+    // NEWS CATEGORY
     get selectedNewsIndex(): number {
         return this._selectedNewsIndex;
     }
@@ -57,7 +70,6 @@ export class AppViewModel extends observable.Observable {
 
             this.set("newsHeader", newsCategories[value].title);
 
-            // console.log('selectedNewsIndex: ' + value);
             if (typeof posts === 'object') {
                 this.filterNews();
             }
@@ -75,6 +87,7 @@ export class AppViewModel extends observable.Observable {
         this.notify({ object: this, eventName: observable.Observable.propertyChangeEvent, propertyName: "posts", value: this._posts });
     }
 
+    //  ON DATA LOADED
     public onNewsDataLoaded() {
         this.set("isNewsLoading", false);
         this.filterNews();
@@ -86,13 +99,6 @@ export class AppViewModel extends observable.Observable {
         this._agendaItems = agendaItems;
         
         this.notify({ object: this, eventName: observable.Observable.propertyChangeEvent, propertyName: "agendaItems", value: this._agendaItems });
-    }
-
-    public selectView(index: number, titleText: string) {
-        this.selectedViewIndex = index;
-        this.notify({ object: this, eventName: observable.Observable.propertyChangeEvent, propertyName: "selectedViewIndex", value: this.selectedViewIndex });
-        this.set("actionBarTitle", titleText);
-        this.set("isNewsPage", this.selectedViewIndex === 10);
     }
 
 }
@@ -117,18 +123,13 @@ function pushPosts(postsFromFirebase: Array<Post>) {
 function pushAgendaItems(itemsFromFirebase: Array<Agenda>) {
     // console.log('postsFromFirebase.length: ' + postsFromFirebase.length);
 
-    // ToDo: fix sorting the calendar
-
-    // Sort the posts by date descending
-    itemsFromFirebase.sort(function(a, b) {
-        return (Date.parse(b.start.toString().substr(0, 10))) - (Date.parse(a.start.toString().substr(0, 10)));
-    });
+    // No need to sort the items
 
     for (var i = 0; i < itemsFromFirebase.length; i++) {
         var newAgendaItem = new AgendaModel(itemsFromFirebase[i]);
         agendaItems.push(newAgendaItem);
-
     }
+
     appModel.onAgendaDataLoaded();
 }
 
@@ -163,8 +164,6 @@ export class FirebaseModel {
     };
 
     // FROM HERE ARE THE RCH FUNCTIONS
-
-
     public doQueryPosts(callback) {
         var path = "/posts";
         var onValueEvent = function(result) {
@@ -209,6 +208,7 @@ export class FirebaseModel {
 
     public doQueryAgenda(callback) {
         var path = "/agenda";
+        
         var onValueEvent = function(result) {
             // note that the query returns 1 match at a time,
             // in the order specified in the query
@@ -369,11 +369,15 @@ export class PostModel extends observable.Observable implements Post {
 
     get dateFormatted(): string {
         var dateZ = new Date(this._publishedDate.toString().substr(0, 10));
+        var dayNumber = dateZ.getDay();
         var day = dateZ.getDate();
-        var month = dateZ.getMonth() + 1;
+        var month = dateZ.getMonth();
         var year = dateZ.getFullYear();
 
-        return day + '-' + month + '-' + year;
+        var days = ['Zondag', 'Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag'];
+        var months = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
+
+        return days[dayNumber] + ', ' + day + ' ' + months[month] + ' ' + year; 
 
     }
 
@@ -388,10 +392,45 @@ export class PostModel extends observable.Observable implements Post {
         var days = ['Zondag', 'Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag'];
         var months = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
 
+        var today = new Date();
+         
+        var date1 = new Date(this._publishedDate.toString());
+        //var date2 = new Date(today);
+        var timeDiff = Math.abs(dateZ.getTime() - today.getTime());
+        var diffDays = Math.floor(timeDiff / (1000 * 3600 * 24)); 
+        
+        if (diffDays === 0) {
+            return "Vandaag";
+        } else if (diffDays === 1) {
+            return "Gisteren";
+        }  else if (diffDays === 2) {
+            return "Eergisteren";
+        } else if (diffDays === 2) {
+            return "Eergisteren";
+        } else if (diffDays === 3) {
+            return "Drie dagen geleden";
+        } else if (diffDays === 4) {
+            return "Vier dagen geleden";
+        } else if (diffDays === 5) {
+            return "Vijf dagen geleden";
+        } else if (diffDays === 6) {
+            return "Zes dagen geleden";
+        } else if (diffDays > 6 && diffDays < 14) {
+            return "Vorige week";
+        } else if (diffDays > 13 && diffDays < 21) {
+            return "2 weken geleden";
+        } else if (diffDays > 20 && diffDays < 28) {
+            return "3 weken geleden";
+        } else if (diffDays > 27 && diffDays < 59) {
+            return "Vorige maand";
+        } else if (diffDays > 58 && diffDays < 90) {
+            return "2 maanden geleden";
+        } else {
+            return day + ' ' + months[month] + ' ' + year; 
+        }
+
         // Doe vandaag, gisteren
         // na een week alleen de datum met maand uitgeschreven (geen dag meer)
-
-        return days[dayNumber] + ', ' + day + ' ' + months[month] + ' ' + year;
 
     }
 
@@ -492,37 +531,49 @@ export class AgendaModel extends observable.Observable implements Agenda {
     }
 
 
-    // ToDo: we need two dates and times as well (but not when allDay, etc: some logic to add.):
-    get dateFormatted1(): string {
-        var dateZ = new Date(this._start.toString().substr(0, 10));
-        var day1 = dateZ.getDate();
-        var month1 = dateZ.getMonth() + 1;
-        var year1 = dateZ.getFullYear();
-
-        return day1 + '-' + month1 + '-' + year1;
-
-    }
 
     // ToDo: fille in the days and month
-    get dateFormattedFull1(): string {
-        var dateZ = new Date(this._start.toString().substr(0, 10));
-        var dayNumber = dateZ.getDay();
-        var day = dateZ.getDate();
-        var month = dateZ.getMonth();
-        var year = dateZ.getFullYear();
+    get eventDateTime(): string {
 
         var days = ['Zondag', 'Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag'];
         var months = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
 
-        // Doe vandaag, gisteren
-        // na een week alleen de datum met maand uitgeschreven (geen dag meer)
+        var startDate = new Date(this._start.toString().substr(0, 16)),
+            startDateDayTemp = startDate.toString().substr(0,10),
+            startDayNumber = startDate.getDay(),
+            startDay = startDate.getDate(),
+            startMonth = startDate.getMonth(),
+            startYear = startDate.getFullYear(),
+            startHours = startDate.getHours(),
+            startMinutes = startDate.getMinutes().toString();
 
-        return days[dayNumber] + ', ' + day + ' ' + months[month] + ' ' + year;
+        var endDate = new Date(this._end.toString().substr(0, 16)),
+            endDateDayTemp = endDate.toString().substr(0,10),
+            endDayNumber = endDate.getDay(),
+            endDay = endDate.getDate(),
+            endMonth = endDate.getMonth(),
+            endYear = endDate.getFullYear(),
+            endHours = endDate.getHours(),
+            endMinutes = endDate.getMinutes().toString();
+
+        if (!startHours && !endHours) {
+            if (startDateDayTemp === endDateDayTemp) {
+                return days[startDayNumber] + ', ' + startDay + ' ' + months[startMonth] + ' ' + startYear;
+            } else {
+                return days[startDayNumber] + ', ' + startDay + ' ' + months[startMonth] + ' ' + startYear + ' - ' +
+                        days[endDayNumber] + ', ' + endDay + ' ' + months[endMonth] + ' ' + endYear;
+            }
+        } else {
+            if (startDateDayTemp === endDateDayTemp) {
+                return days[startDayNumber] + ', ' + startDay + ' ' + months[startMonth] + ' ' + startYear + ' ' + startHours + ':' + startMinutes + ' - ' + endHours + ':' + endMinutes;
+            } else {
+                return days[startDayNumber] + ', ' + startDay + ' ' + months[startMonth] + ' ' + startYear + startHours + ':' + startMinutes + ' - ' + 
+                days[endDayNumber] + ', ' + endDay + ' ' + months[endMonth] + ' ' + endYear + ' ' + endHours + ':' + endMinutes;   
+            }
+        }
 
     }
-
 }
-
 
 
 ////////////////////////////////////////////////

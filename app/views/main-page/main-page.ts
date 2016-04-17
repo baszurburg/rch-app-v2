@@ -61,25 +61,23 @@ export function refreshNewsList(args) {
 
     // Get reference to the PullToRefresh;
     var pullRefresh = args.object;
-
-    console.log("refreshNewsList");
-
-    // Do work here... and when done call set refreshing property to false to stop the refreshing
-    // loadItems().then(function (resp) {
-    //     // ONLY USING A TIMEOUT TO SIMULATE/SHOW OFF THE REFRESHING
-    //     setTimeout(function () {
-    //         pullRefresh.refreshing = false;
-    //     }, 1000);
-    // }, function (err) {
-    //     pullRefresh.refreshing = false;
-    // });
-    
-    setTimeout(function () {
+    appViewModel.firebaseViewModel.doQueryPosts(function() {
+        appViewModel.appModel.onNewsDataLoaded();
         pullRefresh.refreshing = false;
-    }, 5000);
-    
+    });
     
 }
+
+export function refreshAgendaList(args) {
+
+    // Get reference to the PullToRefresh;
+    var pullRefresh = args.object;
+    appViewModel.firebaseViewModel.doQueryAgenda(function() {
+        pullRefresh.refreshing = false;
+    });
+        
+}
+
 
 
 export function goToUrl(args: gestures.GestureEventData) {

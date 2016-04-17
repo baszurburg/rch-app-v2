@@ -99,6 +99,8 @@
 
         <StackLayout row="1" visibility="{{ isNewsPage ? 'visible' : 'collapsed' }}">
 
+            <PullRefresh:PullToRefresh refresh="refreshNewsList">
+
             <!-- List -->
             <ListView items="{{ posts }}" row="1" separatorColor="#dddddd" class="listView" itemTap="selectNews">
                 <ListView.itemTemplate>
@@ -125,6 +127,8 @@
                 
                 </ListView.itemTemplate>
             </ListView>
+
+            </PullRefresh:PullToRefresh>
 
             <ActivityIndicator busy="{{ isNewsLoading }}" row="1" horizontalAlignment="center" verticalAlignment="center" />
 
@@ -205,7 +209,7 @@
                 <Image src="~/images/rch-evenement.jpg" />  
             </StackLayout>
             
-            <PullRefresh:PullToRefresh refresh="refreshNewsList">
+            <PullRefresh:PullToRefresh refresh="refreshAgendaList">
             
                 <StackLayout class="content-offset">
         
@@ -223,7 +227,7 @@
                         <ListView.itemTemplate>
                             <StackLayout>
                                 <Label text="{{ title }}" textWrap="true" class="info-bigger"/>
-                                <Label text="{{ start }}" textWrap="true" class="info-smaller" />
+                                <Label text="{{ eventDateTime }}" textWrap="true" class="info-smaller" />
                             </StackLayout>
                         </ListView.itemTemplate>
                     </ListView>

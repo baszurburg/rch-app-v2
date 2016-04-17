@@ -36,15 +36,7 @@
 
         <StackLayout class="content-container" >
             <Label text="{{ name }}" textWrap="true" class="page-title" />
-            <Label class="page-subtitle">
-            <Label.formattedText>
-                <FormattedString>
-                <FormattedString.spans>
-                    <Span text="{{ dateFormatted }}" fontAttributes="Bold" />
-                </FormattedString.spans>
-                </FormattedString>
-            </Label.formattedText>
-            </Label>
+            <Label text="{{ dateFormatted }}" class="info-smaller" />
             
             <!-- Content -->
             <StackLayout id="contentExtended" class="content-body"></StackLayout>
