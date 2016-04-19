@@ -11,6 +11,7 @@ import list = require("ui/list-view");
 import scrollView = require("ui/scroll-view");
 import formattedStringModule = require("text/formatted-string");
 import spanModule = require("text/span");
+import postModel = require("../../shared/models/posts/posts");
 import appViewModel = require("../../shared/view-models/app-view-model");
 
 export function pageNavigatingTo(args: pages.NavigatedData) {
@@ -18,7 +19,6 @@ export function pageNavigatingTo(args: pages.NavigatedData) {
     page.bindingContext = page.navigationContext;
 
     renderContentExtended(page);
-
 }
 
 function disableScroll(listView: list.ListView) {
@@ -36,13 +36,8 @@ function disableScroll(listView: list.ListView) {
     }
 }
 
-// export function toggleFavorite(args: gestures.GestureEventData) {
-//     var item = <appViewModel.SessionModel>args.view.bindingContext;
-//     item.toggleFavorite();
-// }
-
 export function shareTap(args: gestures.GestureEventData) {
-    var item = <appViewModel.PostModel>args.view.bindingContext;
+    var item = <postModel.PostModel>args.view.bindingContext;
 
     var shareText = item.name + " ";
     shareText += item.content.brief + " ";
@@ -94,7 +89,7 @@ export function backSwipe(args: gestures.SwipeGestureEventData) {
 function renderContentExtended(page) {
 
     page.bindingContext
-    var post = <appViewModel.PostModel>page.bindingContext;
+    var post = <postModel.PostModel>page.bindingContext;
     var layout = page.getViewById("contentExtended");
     var content = post.content.extended;
 
