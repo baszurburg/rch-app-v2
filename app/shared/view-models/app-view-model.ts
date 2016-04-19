@@ -6,10 +6,15 @@ import platform = require("platform");
 import appModule = require("application");
 import types = require("utils/types");
 import postModel = require("../models/posts/posts");
+import agendaModel = require("../models/agenda/agenda");
 import firebase = require("nativescript-plugin-firebase");
 
 var LOADING_ERROR = "Could not load latest news. Check your Internet connection and try again.";
 
+
+////////////////////////////
+// MODELS
+////////////////////////////
 interface NewsCategory {
     Id: string;
     title: string;
@@ -21,6 +26,9 @@ var newsCategories: Array<NewsCategory> = [
     { title: "Verslagen", Id: '56d61c943d4aaadc196caa51' }
 ];
 
+var posts: Array<postModel.PostModel> = new Array<postModel.PostModel>();
+var agendaItems: Array<agendaModel.AgendaModel> = new Array<agendaModel.AgendaModel>();
+
 //////////////////////////////////////////////////////
 //  APP VIEWMODEL
 //////////////////////////////////////////////////////
@@ -28,7 +36,7 @@ var newsCategories: Array<NewsCategory> = [
 export class AppViewModel extends observable.Observable {
     private _selectedNewsIndex;
     private _posts: Array<postModel.PostModel>;
-    private _agendaItems: Array<AgendaModel>;
+    private _agendaItems: Array<agendaModel.AgendaModel>;
 
     public selectedViewIndex: number;
 
@@ -41,7 +49,17 @@ export class AppViewModel extends observable.Observable {
         this.set("isNewsLoading", true);
         this.set("isAgendaLoading", true);
         this.set("isNewsPage", false);
+    }
 
+    get posts(): Array<postModel.PostModel> {
+        return this._posts;
+    }
+    get agendaItems(): Array<agendaModel.AgendaModel> {
+        return this._agendaItems;
+    }
+
+    get selectedNewsIndex(): number {
+        return this._selectedNewsIndex;
     }
 
     // SELECT VIEW IN SIDEDRAWER
@@ -52,18 +70,7 @@ export class AppViewModel extends observable.Observable {
         this.set("isNewsPage", this.selectedViewIndex === 10);
     }
 
-    get posts(): Array<PostModel> {
-        return this._posts;
-    }
-    get agendaItems(): Array<AgendaModel> {
-        return this._agendaItems;
-    }
-
-    // NEWS CATEGORY
-    get selectedNewsIndex(): number {
-        return this._selectedNewsIndex;
-    }
-
+    // SELECT NEWS CATEGORY
     set selectedNewsIndex(value: number) {
         if (this._selectedNewsIndex !== value) {
             this._selectedNewsIndex = value;
@@ -105,7 +112,7 @@ export class AppViewModel extends observable.Observable {
 
 export var appModel = new AppViewModel();
 
-function pushPosts(postsFromFirebase: Array<Post>) {
+function pushPosts(postsFromFirebase: Array<postModel.Post>) {
     // console.log('postsFromFirebase.length: ' + postsFromFirebase.length);
 
     // Sort the posts by date descending
@@ -120,13 +127,13 @@ function pushPosts(postsFromFirebase: Array<Post>) {
     }
 }
 
-function pushAgendaItems(itemsFromFirebase: Array<Agenda>) {
+function pushAgendaItems(itemsFromFirebase: Array<agendaModel.Agenda>) {
     // console.log('postsFromFirebase.length: ' + postsFromFirebase.length);
 
     // No need to sort the items
 
     for (var i = 0; i < itemsFromFirebase.length; i++) {
-        var newAgendaItem = new AgendaModel(itemsFromFirebase[i]);
+        var newAgendaItem = new agendaModel.AgendaModel(itemsFromFirebase[i]);
         agendaItems.push(newAgendaItem);
     }
 
@@ -163,90 +170,6 @@ export class FirebaseModel {
             );
     };
 
-    // FROM HERE ARE THE RCH FUNCTIONS
-    // public doQueryPosts(callback) {
-    //     var path = "/posts";
-    //     var onValueEvent = function(result) {
-    //         // note that the query returns 1 match at a time,
-    //         // in the order specified in the query
-    //         //console.log("Query result: " + JSON.stringify(result));
-
-    //         if (result.error) {
-    //             dialogs.alert({
-    //                 title: "Listener error",
-    //                 message: result.error,
-    //                 okButtonText: "Darn!!"
-    //             });
-    //         } else {
-    //             pushPosts(<Array<Post>>result.value);
-    //             callback();
-    //         }
-    //     };
-
-    //     firebase.query(
-    //         onValueEvent,
-    //         path,
-    //         {
-    //             singleEvent: true,
-    //             orderBy: {
-    //                 type: firebase.QueryOrderByType.CHILD,
-    //                 value: 'publishedDate'
-    //             }
-    //         }
-    //     ).then(
-    //         function() {
-    //             // console.log("firebase.doQueryPosts done; added a listener");
-    //         },
-    //         function(errorMessage) {
-    //             dialogs.alert({
-    //                 title: "Fout lezen gegevens",
-    //                 message: errorMessage,
-    //                 okButtonText: "OK"
-    //             });
-    //         });
-    // };
-
-    // public doQueryAgenda(callback) {
-    //     var path = "/agenda";
-        
-    //     var onValueEvent = function(result) {
-    //         // note that the query returns 1 match at a time,
-    //         // in the order specified in the query
-    //         //console.log("Query result: " + JSON.stringify(result));
-
-    //         if (result.error) {
-    //             dialogs.alert({
-    //                 title: "Listener error",
-    //                 message: result.error,
-    //                 okButtonText: "Darn!!"
-    //             });
-    //         } else {
-    //             pushAgendaItems(<Array<Agenda>>result.value);
-    //             callback();
-    //         }
-    //     };
-
-    //     firebase.query(
-    //         onValueEvent,
-    //         path,
-    //         {
-    //             singleEvent: true,
-    //             orderBy: {
-    //                 type: firebase.QueryOrderByType.KEY
-    //             }
-    //         }
-    //     ).then(
-    //         function() {
-    //             // console.log("firebase.doQueryPosts done; added a listener");
-    //         },
-    //         function(errorMessage) {
-    //             dialogs.alert({
-    //                 title: "Fout lezen gegevens",
-    //                 message: errorMessage,
-    //                 okButtonText: "OK"
-    //             });
-    //         });
-    // };
 
 //
 
@@ -261,28 +184,28 @@ export class FirebaseModel {
             
         switch (typeQuery) {
             case "posts":
-            path = "/posts";
-            orderByRule.type = firebase.QueryOrderByType.CHILD;
-            orderByRule.value = 'publishedDate';
+                path = "/posts";
+                orderByRule.type = firebase.QueryOrderByType.CHILD;
+                orderByRule.value = 'publishedDate';
                 
             break;
             case "agenda":
-            path = "/agenda";
+                path = "/agenda";
             break;
             case "programma-thuis":
-            path = "/programmaT";
+                path = "/programmaT";
             break;
             case "programma-uit":
-            path = "/programmaU";
+                path = "/programmaU";
             break;
             case "uitslagen-thuis":
-            path = "/uitslagenT";
+                path = "/uitslagenT";
             break;
             case "uitslagen-uit":
-            path = "/uitslagenU";
+                path = "/uitslagenU";
             break;
             default:
-            path = "/posts";
+                path = "/posts";
         }
         
         var onValueEvent = function(result) {
@@ -300,10 +223,10 @@ export class FirebaseModel {
                 
                 switch (typeQuery) {
                     case "posts":
-                    pushPosts(<Array<Post>>result.value);
+                    pushPosts(<Array<postModel.Post>>result.value);
                     break;
                     case "agenda":
-                    pushAgendaItems(<Array<Agenda>>result.value);
+                    pushAgendaItems(<Array<agendaModel.Agenda>>result.value);
                     break;
                     case "programma-thuis":
                     //path = "/programmaT";
@@ -347,156 +270,6 @@ export class FirebaseModel {
 
 
 }
-
-
-////////////////////////////
-// MODELS
-////////////////////////////
-
-
-var posts: Array<postModel.PostModel> = new Array<postModel.PostModel>();
-
-// -----------------------------------------------------------
-//  AGENDA MODEL
-// -----------------------------------------------------------
-
-interface Location {
-    latitude: string;
-    location: string;
-    longitude: string;
-}
-
-export interface Agenda {
-    id: string;
-    allDay: boolean;
-    color: string;
-    description: string;
-    editable: boolean;
-    end: Date;
-    location: Location;
-    start: Date;
-    title: string;
-    url: string;
-}
-
-var agendaItems: Array<AgendaModel> = new Array<AgendaModel>();
-
-export class AgendaModel extends observable.Observable implements Agenda {
-    constructor(source?: Agenda) {
-        super();
-
-        if (source) {
-            this._id = source.id;
-            this._allDay = source.allDay;
-            this._color = source.color;
-            this._description = source.description;
-            this._editable = source.editable;
-            this._end = source.end;
-            this._location = source.location;
-            this._start = source.start;
-            this._title = source.title;
-            this._url = source.url;
-        }
-    }
-
-    private _id: string;
-    private _allDay: boolean;
-    private _color: string;
-    private _description: string;
-    private _editable: boolean;
-    private _end: Date;
-    private _location: Location;
-    private _start: Date;
-    private _title: string;
-    private _url: string;
-
-    get id(): string {
-        return this._id;
-    }
-
-    get allDay(): boolean {
-        return this._allDay;
-    }
-
-    get color(): string {
-        return this._color;
-    }
-
-    get description(): string {
-        return this._description;
-    }
-
-    get editable(): boolean {
-        return this._editable;
-    }
-
-    get end(): Date {
-        return this._end;
-    }
-
-    get location(): Location {
-        return this._location;
-    }
-
-    get start(): Date {
-        return this._start;
-    }
-
-    get title(): string {
-        return this._title;
-    }
-
-    get url(): string {
-        return this._url;
-    }
-
-    get eventDateTime(): string {
-
-        var days = ['Zondag', 'Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag'];
-        var months = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
-
-        var startDate = new Date(this._start.toString().substr(0, 16)),
-            startDateDayTemp = startDate.toString().substr(0,10),
-            startDayNumber = startDate.getDay(),
-            startDay = startDate.getDate(),
-            startMonth = startDate.getMonth(),
-            startYear = startDate.getFullYear(),
-            startHours = startDate.getHours(),
-            startMinutes = startDate.getMinutes().toString();
-
-        var endDate = new Date(this._end.toString().substr(0, 16)),
-            endDateDayTemp = endDate.toString().substr(0,10),
-            endDayNumber = endDate.getDay(),
-            endDay = endDate.getDate(),
-            endMonth = endDate.getMonth(),
-            endYear = endDate.getFullYear(),
-            endHours = endDate.getHours(),
-            endMinutes = endDate.getMinutes().toString();
-
-        if (!startHours && !endHours) {
-            if (startDateDayTemp === endDateDayTemp) {
-                return days[startDayNumber] + ', ' + startDay + ' ' + months[startMonth] + ' ' + startYear;
-            } else {
-                return days[startDayNumber] + ', ' + startDay + ' ' + months[startMonth] + ' ' + startYear + ' - ' +
-                        days[endDayNumber] + ', ' + endDay + ' ' + months[endMonth] + ' ' + endYear;
-            }
-        } else {
-            if (startDateDayTemp === endDateDayTemp) {
-                return days[startDayNumber] + ', ' + startDay + ' ' + months[startMonth] + ' ' + startYear + ' ' + startHours + ':' + startMinutes + ' - ' + endHours + ':' + endMinutes;
-            } else {
-                return days[startDayNumber] + ', ' + startDay + ' ' + months[startMonth] + ' ' + startYear + startHours + ':' + startMinutes + ' - ' + 
-                days[endDayNumber] + ', ' + endDay + ' ' + months[endMonth] + ' ' + endYear + ' ' + endHours + ':' + endMinutes;   
-            }
-        }
-
-    }
-}
-
-
-////////////////////////////////////////////////
-// END MODELS
-////////////////////////////////////////////////
-
 
 export var firebaseViewModel = new FirebaseModel();
 
