@@ -120,6 +120,8 @@ function pushPosts(postsFromFirebase: Array<postModel.Post>) {
         return (Date.parse(b.publishedDate.toString().substr(0, 10))) - (Date.parse(a.publishedDate.toString().substr(0, 10)));
     });
 
+    posts = [];
+
     for (var i = 0; i < postsFromFirebase.length; i++) {
         var newPost = new postModel.PostModel(postsFromFirebase[i]);
         posts.push(newPost);
@@ -131,6 +133,8 @@ function pushAgendaItems(itemsFromFirebase: Array<agendaModel.Agenda>) {
     // console.log('postsFromFirebase.length: ' + postsFromFirebase.length);
 
     // No need to sort the items
+
+    agendaItems = [];
 
     for (var i = 0; i < itemsFromFirebase.length; i++) {
         var newAgendaItem = new agendaModel.AgendaModel(itemsFromFirebase[i]);

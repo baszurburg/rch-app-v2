@@ -9,28 +9,143 @@
 @rch-blue: #007CB1;
 @blue-darker: #001D6C;
 @blue-lighter: #00acf6;
-@blue-lightest: #00d2f6;
+@blue-lightest: #eeeeff;
+
+@slide-out-bg: #053140;
+
+@heading-color: #fac950;
 
 
+@gray: #ccc;
+@gray-lighter: #ddd;
+@gray-lightest: #eee;
+
+// LAYOUT
+//---------------------------------
+
+@spacer: 6;
+
+// FONTS
+//---------------------------------
 
 
+// HELPER CLASSES
+//---------------------------------
 
-/* Page */
+// Padding
+.l-p-1 {padding: @spacer; }
+.l-p-2 {padding: @spacer * 2;}
+.l-p-3 {padding: @spacer * 3;}
+.l-p-4 {padding: @spacer * 4;}
+
+.l-pt-1 {padding-top: @spacer; }
+.l-pt-2 {padding-top: @spacer * 2;}
+.l-pt-3 {padding-top: @spacer * 3;}
+.l-pt-4 {padding-top: @spacer * 4;}
+
+.l-pr-1 {padding-right: @spacer; }
+.l-pr-2 {padding-right: @spacer * 2;}
+.l-pr-3 {padding-right: @spacer * 3;}
+.l-pr-4 {padding-right: @spacer * 4;}
+
+.l-pb-1 {padding-bottom: @spacer; }
+.l-pb-2 {padding-bottom: @spacer * 2;}
+.l-pb-3 {padding-bottom: @spacer * 3;}
+.l-pb-4 {padding-bottom: @spacer * 4;}
+
+.l-pl-1 {padding-left: @spacer; }
+.l-pl-2 {padding-left: @spacer * 2;}
+.l-pl-3 {padding-left: @spacer * 3;}
+.l-pl-4 {padding-left: @spacer * 4;}
+
+// Margin
+.l-m-1 {margin: @spacer; }
+.l-m-2 {margin: @spacer * 2;}
+.l-m-3 {margin: @spacer * 3;}
+.l-m-4 {margin: @spacer * 4;}
+
+.l-mt-1 {margin-top: @spacer; }
+.l-mt-2 {margin-top: @spacer * 2;}
+.l-mt-3 {margin-top: @spacer * 3;}
+.l-mt-4 {margin-top: @spacer * 4;}
+
+.l-mr-1 {margin-right: @spacer; }
+.l-mr-2 {margin-right: @spacer * 2;}
+.l-mr-3 {margin-right: @spacer * 3;}
+.l-mr-4 {margin-right: @spacer * 4;}
+
+.l-mb-1 {margin-bottom: @spacer; }
+.l-mb-2 {margin-bottom: @spacer * 2;}
+.l-mb-3 {margin-bottom: @spacer * 3;}
+.l-mb-4 {margin-bottom: @spacer * 4;}
+
+.l-ml-1 {margin-left: @spacer; }
+.l-ml-2 {margin-left: @spacer * 2;}
+.l-ml-3 {margin-left: @spacer * 3;}
+.l-ml-4 {margin-left: @spacer * 4;}
+
+
+// SCAFFOLDING
+//---------------------------------
+
+.bg-white {
+    background-color: #ffffff;    
+}
+
+.content {
+    margin: 12;
+}
+
+.content-offset {
+    padding: 12;
+    background-color: #ffffff;
+}
+
+.content-container {
+    margin: 12 0;
+    padding: 0 12;
+}
+
+.content-container-sm {
+    margin: 6 0;
+    padding: 0 6;
+}
+
+.content-container-xxs {
+    margin: 4 0;
+    padding: 0 4;
+}
+
+.content-body {
+    margin-top: 12;
+    
+}
+
+// --------------------------------
+// COMPONENTS
+//--------------------------------- 
+
+
+// SEGMENTED BAR
+//---------------------------------
+
 
 SegmentedBar {
     background-color: transparent;
-    color: #fac950;
+    color: white;
     margin: 12 12;
 }
 
-/* Slide-out */
+// SLIDE OUT
+//---------------------------------
+
 .slide-out-img {
-    margin: 20 0 30 12;
+    margin: 12 6 6 6;
 }
 
 .slide-out-btn-about {
-    color: #576a72;
-    background-color: #053140;
+    color: @rch-blue;
+    background-color: @slide-out-bg;
     font-size: 12;
     text-align: left;
     margin: 12;
@@ -39,8 +154,8 @@ SegmentedBar {
 }
 
 .slide-out-btn {
-    color: #e4ba4e;
-    background-color: #053140;
+    color: @blue-lightest;
+    background-color: @slide-out-bg;
     font-size: 19;
     height: 44;
     text-align: left;
@@ -50,13 +165,16 @@ SegmentedBar {
 
 .slide-out-btn-selected {
     color: white;
-    background-color: #053140;
+    background-color: @slide-out-bg;
     font-size: 19;
     height: 44;
     text-align: left;
     horizontal-align: stretch;
     margin: 0 12;
 }
+
+// ACTION BAR
+//---------------------------------
 
 .action-bar {
     height: 44;
@@ -73,19 +191,22 @@ SegmentedBar {
     background-color: #55000000;
 }
 
+// HEADER
+//---------------------------------
+
 .page-header {
     background-image: url('res://background');
     background-size: cover;
 }
 
-// .page-title {
-//     font-size: 14;
-//     color: #fac950;
-// }
+.header-title {
+    font-size: 17;
+    color: @blue-lighter;
+}
 
 .page-title {
     font-size: 17;
-    color: #fac950;
+    color: @blue-darker;
     background-color:"ff0000";
 
 }
@@ -96,7 +217,7 @@ SegmentedBar {
 
 .page-subtitle {
     font-size: 12;
-    color: #A17201;
+    color: @rch-blue;
 }
 
 .icon-image {
@@ -122,15 +243,17 @@ SegmentedBar {
     margin-left: 2;
 }
 
-.search {
-    font-size: 14;
-    background-color: #fac950;
-    color: #fac950;
-}
+// TEXT
+//---------------------------------
 
 .info {
     font-size: 14;
     color: #555555;
+}
+
+.info-smaller {
+    font-size: 12;
+    color: #999999;
 }
 
 .info-bigger {
@@ -170,45 +293,44 @@ SegmentedBar {
 
 .horizontal-line {
     height: 1;
-    background-color: #FAC950;
+    background-color: @rch-blue;
     vertical-align:center;
     margin: 12 0 8 0;
 }
 
-/* List rows */
+// LIST VIEW
+//---------------------------------
+
+.listView{
+  background-color: @gray-lighter;
+  padding: 2;
+}
+
 .break-row {
     padding: 12;
     background-color: #FFFBF0;
 }
 
 .list-view-row {
-    padding: 12 12 12 0;
+    padding-top: 1;
+    background-color: #f9f9f9;
+    
+    border-color: @gray-lighter;
+    border-width: 3;
 }
 
-.speakers-row {
-    padding-top: 12;
+.list-view-row-inner {
+    padding: 8 16 8 0;
+    background-color: @gray-lightest;
+    border-radius: 3;
 }
 
-.speaker-image {
-    horizontal-align: left;
-    vertical-align: top;
-    margin-right: 12;
-}
+// --------------------------------
+// PAGES
+//--------------------------------- 
 
-.content {
-    margin: 12;
-}
-
-.content-offset {
-    padding: 12;
-    background-color: #ffffff;
-}
-
-
-.content-container {
-    margin: 12 0;
-    padding: 0 12;
-}
+// NEWS
+//--------------------------------- 
 
 .news-image {
     height: 150;
@@ -219,12 +341,15 @@ SegmentedBar {
     horizontal-align: left;
     width: 100;
     height: 60;
-    margin: 0 12;
+    margin: 0 8;
 }
 
 .news-textrow {
     margin-bottom: 12;
 }
+
+// BUTTONS
+//---------------------------------
 
 .share-button {
     max-width: 300;
