@@ -67,6 +67,10 @@
                     </Label.formattedText>
                 </Label>
              
+                <Label text="Belangrijke mededelingen" /> 
+                <Label text="Inloggen" />
+                <Label text="Gekoppeld nieuws" />
+             
             </StackLayout>
 
         </StackLayout>
@@ -142,6 +146,19 @@
             </StackLayout>
             
             <StackLayout class="content-offset">
+
+                <Label class="info l-pt-2 l-pb-2" tap="goToView" tag="views/wedstrijden/programma-page-t/programma-page-t">
+                    <Label.formattedText>
+                    <FormattedString>
+                        <FormattedString.spans>
+                        <Span text="Programma Thuis" fontAttributes="Bold"/>
+                        </FormattedString.spans>
+                    </FormattedString>
+                    </Label.formattedText>
+                </Label>
+            
+                <!-- Line -->
+                <StackLayout class="horizontal-line" margin="0 0 0 0"/>  
       
                 <Label class="info l-pt-2 l-pb-2" tap="goToView" tag="views/wedstrijden/programma-page/programma-page">
                     <Label.formattedText>

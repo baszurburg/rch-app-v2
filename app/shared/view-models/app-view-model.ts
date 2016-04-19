@@ -164,50 +164,126 @@ export class FirebaseModel {
     };
 
     // FROM HERE ARE THE RCH FUNCTIONS
-    public doQueryPosts(callback) {
-        var path = "/posts";
-        var onValueEvent = function(result) {
-            // note that the query returns 1 match at a time,
-            // in the order specified in the query
-            //console.log("Query result: " + JSON.stringify(result));
+    // public doQueryPosts(callback) {
+    //     var path = "/posts";
+    //     var onValueEvent = function(result) {
+    //         // note that the query returns 1 match at a time,
+    //         // in the order specified in the query
+    //         //console.log("Query result: " + JSON.stringify(result));
 
-            if (result.error) {
-                dialogs.alert({
-                    title: "Listener error",
-                    message: result.error,
-                    okButtonText: "Darn!!"
-                });
-            } else {
-                pushPosts(<Array<Post>>result.value);
-                callback();
-            }
-        };
+    //         if (result.error) {
+    //             dialogs.alert({
+    //                 title: "Listener error",
+    //                 message: result.error,
+    //                 okButtonText: "Darn!!"
+    //             });
+    //         } else {
+    //             pushPosts(<Array<Post>>result.value);
+    //             callback();
+    //         }
+    //     };
 
-        firebase.query(
-            onValueEvent,
-            path,
-            {
-                singleEvent: true,
-                orderBy: {
-                    type: firebase.QueryOrderByType.CHILD,
-                    value: 'publishedDate'
-                }
-            }
-        ).then(
-            function() {
-                // console.log("firebase.doQueryPosts done; added a listener");
-            },
-            function(errorMessage) {
-                dialogs.alert({
-                    title: "Fout lezen gegevens",
-                    message: errorMessage,
-                    okButtonText: "OK"
-                });
-            });
-    };
+    //     firebase.query(
+    //         onValueEvent,
+    //         path,
+    //         {
+    //             singleEvent: true,
+    //             orderBy: {
+    //                 type: firebase.QueryOrderByType.CHILD,
+    //                 value: 'publishedDate'
+    //             }
+    //         }
+    //     ).then(
+    //         function() {
+    //             // console.log("firebase.doQueryPosts done; added a listener");
+    //         },
+    //         function(errorMessage) {
+    //             dialogs.alert({
+    //                 title: "Fout lezen gegevens",
+    //                 message: errorMessage,
+    //                 okButtonText: "OK"
+    //             });
+    //         });
+    // };
 
-    public doQueryAgenda(callback) {
-        var path = "/agenda";
+    // public doQueryAgenda(callback) {
+    //     var path = "/agenda";
+        
+    //     var onValueEvent = function(result) {
+    //         // note that the query returns 1 match at a time,
+    //         // in the order specified in the query
+    //         //console.log("Query result: " + JSON.stringify(result));
+
+    //         if (result.error) {
+    //             dialogs.alert({
+    //                 title: "Listener error",
+    //                 message: result.error,
+    //                 okButtonText: "Darn!!"
+    //             });
+    //         } else {
+    //             pushAgendaItems(<Array<Agenda>>result.value);
+    //             callback();
+    //         }
+    //     };
+
+    //     firebase.query(
+    //         onValueEvent,
+    //         path,
+    //         {
+    //             singleEvent: true,
+    //             orderBy: {
+    //                 type: firebase.QueryOrderByType.KEY
+    //             }
+    //         }
+    //     ).then(
+    //         function() {
+    //             // console.log("firebase.doQueryPosts done; added a listener");
+    //         },
+    //         function(errorMessage) {
+    //             dialogs.alert({
+    //                 title: "Fout lezen gegevens",
+    //                 message: errorMessage,
+    //                 okButtonText: "OK"
+    //             });
+    //         });
+    // };
+
+//
+
+    public doQuery(typeQuery, callback) {
+    
+        var path = "posts",
+            orderByRule = {
+                    type: firebase.QueryOrderByType.KEY,
+                    value: null
+                };
+        
+            
+        switch (typeQuery) {
+            case "posts":
+            path = "/posts";
+            orderByRule.type = firebase.QueryOrderByType.CHILD;
+            orderByRule.value = 'publishedDate';
+                
+            break;
+            case "agenda":
+            path = "/agenda";
+            break;
+            case "programma-thuis":
+            path = "/programmaT";
+            break;
+            case "programma-uit":
+            path = "/programmaU";
+            break;
+            case "uitslagen-thuis":
+            path = "/uitslagenT";
+            break;
+            case "uitslagen-uit":
+            path = "/uitslagenU";
+            break;
+            default:
+            path = "/posts";
+        }
         
         var onValueEvent = function(result) {
             // note that the query returns 1 match at a time,
@@ -216,12 +292,35 @@ export class FirebaseModel {
 
             if (result.error) {
                 dialogs.alert({
-                    title: "Listener error",
+                    title: "Fout downloaden gegevens " + typeQuery,
                     message: result.error,
-                    okButtonText: "Darn!!"
+                    okButtonText: "OK"
                 });
             } else {
-                pushAgendaItems(<Array<Agenda>>result.value);
+                
+                switch (typeQuery) {
+                    case "posts":
+                    pushPosts(<Array<Post>>result.value);
+                    break;
+                    case "agenda":
+                    pushAgendaItems(<Array<Agenda>>result.value);
+                    break;
+                    case "programma-thuis":
+                    //path = "/programmaT";
+                    break;
+                    case "programma-uit":
+                    //path = "/programmaU";
+                    break;
+                    case "uitslagen-thuis":
+                    //path = "/uitslagenT";
+                    break;
+                    case "uitslagen-uit":
+                    //path = "/uitslagenU";
+                    break;
+                    default:
+                    null;
+                }
+                
                 callback();
             }
         };
@@ -231,10 +330,7 @@ export class FirebaseModel {
             path,
             {
                 singleEvent: true,
-                orderBy: {
-                    type: firebase.QueryOrderByType.CHILD,
-                    value: 'publishedDate'
-                }
+                orderBy: orderByRule
             }
         ).then(
             function() {
@@ -242,12 +338,13 @@ export class FirebaseModel {
             },
             function(errorMessage) {
                 dialogs.alert({
-                    title: "Fout lezen gegevens",
+                    title: "Fout lezen gegevens " + typeQuery,
                     message: errorMessage,
                     okButtonText: "OK"
                 });
             });
     };
+
 
 }
 
@@ -289,6 +386,7 @@ export interface Post {
     name: string;
     publishedDate: Date;
     state: string;
+    tag: string;
 }
 
 var posts: Array<PostModel> = new Array<PostModel>();
@@ -308,6 +406,7 @@ export class PostModel extends observable.Observable implements Post {
             this._name = source.name;
             this._publishedDate = source.publishedDate;
             this._state = source.state;
+            this._tag = source.tag;
         }
     }
 
@@ -326,6 +425,7 @@ export class PostModel extends observable.Observable implements Post {
     private _name: string;
     private _publishedDate: Date;
     private _state: string;
+    private _tag: string;
 
     get _id(): string {
         return this.__id;
@@ -365,6 +465,10 @@ export class PostModel extends observable.Observable implements Post {
 
     get state(): string {
         return this._state;
+    }
+
+    get tag(): string {
+        return this._tag;
     }
 
     get dateFormatted(): string {
@@ -428,9 +532,6 @@ export class PostModel extends observable.Observable implements Post {
         } else {
             return day + ' ' + months[month] + ' ' + year; 
         }
-
-        // Doe vandaag, gisteren
-        // na een week alleen de datum met maand uitgeschreven (geen dag meer)
 
     }
 
@@ -530,9 +631,6 @@ export class AgendaModel extends observable.Observable implements Agenda {
         return this._url;
     }
 
-
-
-    // ToDo: fille in the days and month
     get eventDateTime(): string {
 
         var days = ['Zondag', 'Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag'];
@@ -583,9 +681,9 @@ export class AgendaModel extends observable.Observable implements Agenda {
 
 export var firebaseViewModel = new FirebaseModel();
 
-firebaseViewModel.doQueryPosts(function() {
+firebaseViewModel.doQuery('posts', function() {
     appModel.onNewsDataLoaded();
 });
-firebaseViewModel.doQueryAgenda(function() {
+firebaseViewModel.doQuery('agenda', function() {
     null;
 });

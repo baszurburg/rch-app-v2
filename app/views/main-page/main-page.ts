@@ -61,7 +61,8 @@ export function refreshNewsList(args) {
 
     // Get reference to the PullToRefresh;
     var pullRefresh = args.object;
-    appViewModel.firebaseViewModel.doQueryPosts(function() {
+    
+    appViewModel.firebaseViewModel.doQuery('posts', function() {
         appViewModel.appModel.onNewsDataLoaded();
         pullRefresh.refreshing = false;
     });
@@ -72,7 +73,8 @@ export function refreshAgendaList(args) {
 
     // Get reference to the PullToRefresh;
     var pullRefresh = args.object;
-    appViewModel.firebaseViewModel.doQueryAgenda(function() {
+    
+    appViewModel.firebaseViewModel.doQuery('agenda', function() {
         pullRefresh.refreshing = false;
     });
         
