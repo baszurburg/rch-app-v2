@@ -19,6 +19,7 @@
           <Button tap="selectView" tag="50" class="{{ selectedViewIndex === 50 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Club info" />
           <Button tap="selectView" tag="60" class="{{ selectedViewIndex === 60 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Jeugd info" />
           <Button tap="selectView" tag="90" class="{{ selectedViewIndex === 90 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Sponsors" />
+          <Button tap="selectView" tag="100" class="{{ selectedViewIndex === 100 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Settings" />
         </StackLayout>
         
         <StackLayout style="background-color: #053140;" row="1">
@@ -99,7 +100,6 @@
         </StackLayout>
         
         <!-- NEWS Views -->
-
 
         <StackLayout row="1" visibility="{{ isNewsPage ? 'visible' : 'collapsed' }}">
 
@@ -226,19 +226,19 @@
                 <Image src="~/images/rch-evenement.jpg" />  
             </StackLayout>
             
-            <PullRefresh:PullToRefresh refresh="refreshAgendaList">
-            
-                <StackLayout class="content-offset">
-        
-                    <Label class="info-blue">
-                        <Label.formattedText>
-                        <FormattedString>
-                            <FormattedString.spans>
-                            <Span text="R.C.H. Evenementen" fontAttributes="Bold" />
-                            </FormattedString.spans>
-                        </FormattedString>
-                        </Label.formattedText>
-                    </Label>
+            <StackLayout class="content-offset">
+
+                <Label class="info-blue">
+                    <Label.formattedText>
+                    <FormattedString>
+                        <FormattedString.spans>
+                        <Span text="R.C.H. Evenementen" fontAttributes="Bold" />
+                        </FormattedString.spans>
+                    </FormattedString>
+                    </Label.formattedText>
+                </Label>
+
+                <PullRefresh:PullToRefresh refresh="refreshAgendaList">
 
                     <ListView items="{{ agendaItems }}" separatorColor="#dddddd">
                         <ListView.itemTemplate>
@@ -248,10 +248,12 @@
                             </StackLayout>
                         </ListView.itemTemplate>
                     </ListView>
-                    
-                </StackLayout>
+
+                </PullRefresh:PullToRefresh>
+                
+            </StackLayout>
           
-            </PullRefresh:PullToRefresh>
+
 
         </StackLayout>
 
@@ -264,9 +266,7 @@
             </StackLayout>
   
                   // ToDo: move the plugin all up - check the version of the plugin....
-            <PullRefresh:PullToRefresh refresh="refreshNewsList">
-                
-                          
+         
                 <StackLayout class="content-offset">
 
                     <Label class="info l-pt-2 l-pb-2" tap="goToView" tag="views/club/over-rch-page/over-rch-page">
@@ -299,7 +299,6 @@
             
                 </StackLayout>
             
-            </PullRefresh:PullToRefresh>
         </StackLayout>
 
         <!-- Jeugd Info View -->
@@ -337,23 +336,30 @@
                     <Image src="res://twitter" stretch="none" col="1" tap="goToUrl" tag="https://twitter.com/rchjeugd"/>
                     <Button col="2" text="Instagram" tap="goToUrl" tag="https://www.instagram.com/rch_voetbal" visibility="collapsed"/>
                 </GridLayout>     
-
             
             </StackLayout>
 
         </StackLayout>
 
-
         <!-- Sponsors -->
-        <StackLayout row="1" visibility="{{ selectedViewIndex === 90 ? 'visible' : 'collapsed'}}" class="content-offset">
+        <StackLayout row="1" visibility="{{ selectedViewIndex === 90 ? 'visible' : 'collapsed'}}" class="content-container-sm">
 
-          <Image src="res://sponsor_american_eagle" stretch="none"/>
-          <Label class="info" textWrap="true" text="Americaneagle.com" />
-          <Image src="res://sponsor_theportal_connector" stretch="none"/>
-          <Label class="info" textWrap="true" text="The Portal Connector
-            for Dynamics CRM" />
+            <GridLayout rows="*,*,*" columns="*,*">
+                <Image src="~/images/sponsors/hbr.jpg" row="0" col="0" tap="goToUrl" tag="http://www.hbr.nl"/> 
+                <Image src="~/images/sponsors/ajewe.jpg" row="0" col="1" tap="goToUrl" tag="http://www.ajewesport.nl/" /> 
+                <Image src="~/images/sponsors/asc.jpg" row="1" col="0" tap="goToUrl" tag="http://www.allroundsportcare.nl/" /> 
+                <Image src="~/images/sponsors/sponsor_worden.jpg" row="1" col="1" tap="goToUrl" tag="http://www.rch-voetbal.nl/sponsoring/hoe-sponsor-worden"/> 
+                <Image src="~/images/sponsors/icws.jpg" row="2" col="0" tap="goToUrl" tag="http://www.icws.nl/ "/> 
+                <Image src="~/images/sponsors/datasign.jpg" row="2" col="1" tap="goToUrl" tag="http://www.datasign.nl/"/> 
+            </GridLayout>
 
         </StackLayout>
+
+        <!-- SETTINGS -->
+        <StackLayout row="1" visibility="{{ selectedViewIndex === 100 ? 'visible' : 'collapsed'}}" class="content-offset">
+          <Label text="settings" />
+        </StackLayout>
+
       </GridLayout>
     </drawer:RadSideDrawer.mainContent>
   </drawer:RadSideDrawer>

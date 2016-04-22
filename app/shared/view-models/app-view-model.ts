@@ -9,7 +9,7 @@ import postModel = require("../models/posts/posts");
 import agendaModel = require("../models/agenda/agenda");
 import firebase = require("nativescript-plugin-firebase");
 
-var LOADING_ERROR = "Could not load latest news. Check your Internet connection and try again.";
+//var LOADING_ERROR = "Could not load latest news. Check your Internet connection and try again.";
 
 
 ////////////////////////////
@@ -62,14 +62,6 @@ export class AppViewModel extends observable.Observable {
         return this._selectedNewsIndex;
     }
 
-    // SELECT VIEW IN SIDEDRAWER
-    public selectView(index: number, titleText: string) {
-        this.selectedViewIndex = index;
-        this.notify({ object: this, eventName: observable.Observable.propertyChangeEvent, propertyName: "selectedViewIndex", value: this.selectedViewIndex });
-        this.set("actionBarTitle", titleText);
-        this.set("isNewsPage", this.selectedViewIndex === 10);
-    }
-
     // SELECT NEWS CATEGORY
     set selectedNewsIndex(value: number) {
         if (this._selectedNewsIndex !== value) {
@@ -84,6 +76,14 @@ export class AppViewModel extends observable.Observable {
         }
     }
 
+    // SELECT VIEW IN SIDEDRAWER
+    public selectView(index: number, titleText: string) {
+        this.selectedViewIndex = index;
+        this.notify({ object: this, eventName: observable.Observable.propertyChangeEvent, propertyName: "selectedViewIndex", value: this.selectedViewIndex });
+        this.set("actionBarTitle", titleText);
+        this.set("isNewsPage", this.selectedViewIndex === 10);
+    }
+    
     private filterNews() {
         this._posts = posts.filter(s => {
             if (typeof s.categories !== 'undefined') {
@@ -102,7 +102,6 @@ export class AppViewModel extends observable.Observable {
 
     public onAgendaDataLoaded() {
         this.set("isAgendaLoading", false);
-        console.log("onAgendaDataLoaded");
         this._agendaItems = agendaItems;
         
         this.notify({ object: this, eventName: observable.Observable.propertyChangeEvent, propertyName: "agendaItems", value: this._agendaItems });
@@ -130,10 +129,8 @@ function pushPosts(postsFromFirebase: Array<postModel.Post>) {
 }
 
 function pushAgendaItems(itemsFromFirebase: Array<agendaModel.Agenda>) {
-    // console.log('postsFromFirebase.length: ' + postsFromFirebase.length);
 
     // No need to sort the items
-
     agendaItems = [];
 
     for (var i = 0; i < itemsFromFirebase.length; i++) {
@@ -174,8 +171,6 @@ export class FirebaseModel {
             );
     };
 
-
-//
 
     public doQuery(typeQuery, callback) {
     
@@ -232,12 +227,6 @@ export class FirebaseModel {
                     case "agenda":
                     pushAgendaItems(<Array<agendaModel.Agenda>>result.value);
                     break;
-                    case "programma-thuis":
-                    //path = "/programmaT";
-                    break;
-                    case "programma-uit":
-                    //path = "/programmaU";
-                    break;
                     case "uitslagen-thuis":
                     //path = "/uitslagenT";
                     break;
@@ -271,7 +260,6 @@ export class FirebaseModel {
                 });
             });
     };
-
 
 }
 

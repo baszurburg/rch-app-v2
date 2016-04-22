@@ -1,25 +1,72 @@
 <Page xmlns="http://schemas.nativescript.org/tns.xsd"
-  navigatingTo="pageNavigatingTo" actionBarHidden="true">
+   xmlns:PullRefresh="nativescript-pulltorefresh"
+  loaded="pageLoaded" actionBarHidden="true">
 
-  <GridLayout rows="auto, *">
+  <GridLayout rows="auto, *" swipe="backSwipe">
     <!-- HEADER -->
     <StackLayout class="page-header">
-      <GridLayout class="action-bar">
+      <GridLayout class="action-bar" colSpan="2">
         <StackLayout tap="backTap" orientation="horizontal" class="action-wrap" horizontalAlignment="left">
           <Image stretch="none" class="icon-image" src="res://ic_arrow_back"/>
           <Label text="Back" class="back-text" />
         </StackLayout>
-        
         <Label text="Programma" class="action-bar-title" />
       </GridLayout>
+      
+      <!-- Tabs News Type -->
+      <GridLayout class="darker">
+        <SegmentedBar selectedBackgroundColor="#00acf6" selectedIndex="{{ selectedProgrammaIndex }}">
+          <SegmentedBar.items>
+            <SegmentedBarItem title="Thuis" />
+            <SegmentedBarItem title="Uit" />
+            <SegmentedBarItem title="Toernooi" />
+          </SegmentedBar.items>
+        </SegmentedBar>
+      </GridLayout>
+
+        <Label class="header-title" horizontalAlignment="center" margin="15">
+        <Label.formattedText>
+          <FormattedString>
+            <FormattedString.spans>
+              <Span text="{{ programmaHeader }}" fontAttributes="Bold" />
+            </FormattedString.spans>
+          </FormattedString>
+        </Label.formattedText>
+      </Label>
+           
     </StackLayout>
 
     <!-- Content -->
-    <ScrollView row="1" id="scroll">
-        <GridLayout class="content-container-sm">
-            <WebView id="programma-webview" src="http://wedstrijden.rch-voetbal.nl/rch-197/programma.php" />
-        </GridLayout>
-    </ScrollView>
+    <StackLayout row="1" class="content-container-sm">
+
+      <Label text="programma content" />
+  
+       <PullRefresh:PullToRefresh refresh="refreshProgrammaList">
+
+            <!-- List -->
+            <ListView items="{{ programmaThuisItems }}" row="1" separatorColor="#dddddd" class="listView">
+                <ListView.itemTemplate>
+
+                <StackLayout class="list-view-row">
+
+                    <GridLayout columns="auto, *, *, *" class="list-view-row-inner">
+                        <Label col="0" text="{{ Datum }}" class="info"/>
+                        <Label col="1" text="{{ Tijd }}" class="info"/>
+                        <Label col="2" text="{{ Thuis }}" class="info" />
+                        <Label col="3" text="{{ Uit }}" class="info" />
+                    </GridLayout>
+                
+                </StackLayout>
+                
+                </ListView.itemTemplate>
+            </ListView>
+
+       </PullRefresh:PullToRefresh>
+       
+       <ActivityIndicator busy="{{ isProgrammaLoading }}" row="1" horizontalAlignment="center" verticalAlignment="center" />
+        
+        
+    </StackLayout>
 
   </GridLayout>
 </Page>

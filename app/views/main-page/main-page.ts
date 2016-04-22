@@ -9,6 +9,7 @@ import search = require("ui/search-bar");
 import platform = require("platform");
 import button = require("ui/button");
 import scrollView = require("ui/scroll-view");
+import postModel = require("../../shared/models/posts/posts");
 import appViewModel = require("../../shared/view-models/app-view-model");
 
 var fbase = appViewModel.firebaseViewModel;
@@ -23,7 +24,7 @@ export function pageLoaded(args: observable.EventData) {
 
     var iosFrame = frame.topmost().ios;
     if (iosFrame) {
-        // Fix status bar color and nav bar vidibility
+        // Fix status bar color and nav bar visibility
         iosFrame.controller.view.window.backgroundColor = UIColor.blackColor();
         iosFrame.navBarVisibility = "never";
     }
@@ -32,7 +33,7 @@ export function pageLoaded(args: observable.EventData) {
 }
 
 export function selectNews(args: listView.ItemEventData) {
-    var post = <appViewModel.PostModel>args.view.bindingContext;
+    var post = <postModel.PostModel>args.view.bindingContext;
     var page = view.getAncestor(<view.View>args.object, "Page")
 
     frame.topmost().navigate({
@@ -79,8 +80,6 @@ export function refreshAgendaList(args) {
     });
         
 }
-
-
 
 export function goToUrl(args: gestures.GestureEventData) {
     var url = (<any>args.view).tag;
