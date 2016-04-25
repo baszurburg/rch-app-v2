@@ -26,7 +26,9 @@
 
 // FONTS
 //---------------------------------
-
+.material-icon {
+   font-family: 'Material-Design-Iconic-Font';
+}
 
 // HELPER CLASSES
 //---------------------------------
@@ -303,9 +305,14 @@ SegmentedBar {
 // LIST VIEW
 //---------------------------------
 
-.listView{
+.listView {
   background-color: @gray-lighter;
   padding: 2;
+}
+
+.break-row {
+    padding: 12;
+    background-color: #FFFBF0;
 }
 
 .list-view-row {
@@ -329,7 +336,6 @@ SegmentedBar {
 // NEWS
 //--------------------------------- 
 
-
 .news-image-thumb {
     horizontal-align: left;
     width: 100;
@@ -341,10 +347,28 @@ SegmentedBar {
     margin-bottom: 12;
 }
 
+// PROGRAMMA
+//--------------------------------- 
+
+
+.programma-list-view-row {
+    padding: 6 6 6 10; 
+}
+
+.programma-datum {
+    background-color: @gray-lighter;
+    padding: 4 4 4 12; 
+}
+
+.programma-tijd {
+    color: @rch-blue;
+}
+
+
 // BUTTONS
 //---------------------------------
 
 .share-button {
     max-width: 300;
-    background-color: #eee;
+    background-color: @gray-lightest;
 }

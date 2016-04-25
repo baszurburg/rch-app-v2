@@ -1,39 +1,33 @@
 import observable = require("data/observable");
 
 // -----------------------------------------------------------
-//  PROGRAMMA MODEL
+//  UITSLAGEN MODEL
 // -----------------------------------------------------------
 
-export interface Programma {
+export interface Uitslag {
     Datum: string;
     Thuis: string;
-    Tijd: string;
-    Type: string;
     Uit: string;
-    WedNr: string;
+    Uitslag: string;
     newDate: boolean;
 }
 
-export class ProgrammaModel extends observable.Observable implements Programma {
-    constructor(source?: Programma) {
+export class UitslagModel extends observable.Observable implements Uitslag {
+    constructor(source?: Uitslag) {
         super();
         if (source) {
             this._datum = source.Datum;
             this._thuis = source.Thuis;
-            this._tijd = source.Tijd;
-            this._type = source.Type;
             this._uit = source.Uit;
-            this._wedNr = source.WedNr;
+            this._uitslag = source.Uitslag;
             this._newDate = source.newDate;
         }
     }
     
     private _datum: string;
     private _thuis: string;
-    private _tijd: string;
-    private _type: string;
     private _uit: string;
-    private _wedNr: string;
+    private _uitslag: string;
     private _newDate: boolean;
 
     get Datum(): string {
@@ -42,17 +36,11 @@ export class ProgrammaModel extends observable.Observable implements Programma {
     get Thuis(): string {
         return this._thuis;
     }
-    get Tijd(): string {
-        return this._tijd;
-    }
-    get Type(): string {
-        return this._type;
-    }
     get Uit(): string {
         return this._uit;
     }
-    get WedNr(): string {
-        return this._wedNr;
+    get Uitslag(): string {
+        return this._uitslag;
     }
     get newDate(): boolean {
         return this._newDate;
