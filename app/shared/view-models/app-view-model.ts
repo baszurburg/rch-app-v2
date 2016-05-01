@@ -1,15 +1,21 @@
 ﻿import observable = require("data/observable");
-import dialogs = require("ui/dialogs");
+import dialogModel = require("ui/dialogs");
 import view = require("ui/core/view");
 import localSettings = require("application-settings");
 import platform = require("platform");
 import appModule = require("application");
 import types = require("utils/types");
+import settingsModel = require("../services/settings/settings");
+import userModel = require("../models/users/user");
 import postModel = require("../models/posts/posts");
 import agendaModel = require("../models/agenda/agenda");
 import firebase = require("nativescript-plugin-firebase");
 
 //var LOADING_ERROR = "Could not load latest news. Check your Internet connection and try again.";
+
+var posts: Array<postModel.PostModel> = new Array<postModel.PostModel>();
+var agendaItems: Array<agendaModel.AgendaModel> = new Array<agendaModel.AgendaModel>();
+var settings = new settingsModel.SettingsModel();
 
 
 ////////////////////////////
@@ -20,14 +26,22 @@ interface NewsCategory {
     title: string;
 }
 
+interface InfoCategory {
+    Id: string;
+    title: string;
+}
+
 var newsCategories: Array<NewsCategory> = [
     { title: "Algemeen nieuws", Id: '56d61c723d4aaadc196caa4f' },
     { title: "Jeugd nieuws", Id: '56d61c893d4aaadc196caa50' },
     { title: "Verslagen", Id: '56d61c943d4aaadc196caa51' }
 ];
 
-var posts: Array<postModel.PostModel> = new Array<postModel.PostModel>();
-var agendaItems: Array<agendaModel.AgendaModel> = new Array<agendaModel.AgendaModel>();
+var infoCategories: Array<NewsCategory> = [
+    { title: "Algemene informatie", Id: '0' },
+    { title: "Jeugd informatie", Id: '1' },
+];
+
 
 //////////////////////////////////////////////////////
 //  APP VIEWMODEL
@@ -35,8 +49,10 @@ var agendaItems: Array<agendaModel.AgendaModel> = new Array<agendaModel.AgendaMo
 
 export class AppViewModel extends observable.Observable {
     private _selectedNewsIndex;
+    private _selectedInfoIndex;
     private _posts: Array<postModel.PostModel>;
     private _agendaItems: Array<agendaModel.AgendaModel>;
+    private _user: userModel.UserModel;
 
     public selectedViewIndex: number;
 
@@ -44,11 +60,16 @@ export class AppViewModel extends observable.Observable {
         super();
 
         this.selectedNewsIndex = 0;
+        this.selectedInfoIndex = 0;
         this.selectedViewIndex = 5;
         this.set("actionBarTitle", "Thuis");
         this.set("isNewsLoading", true);
         this.set("isAgendaLoading", true);
         this.set("isNewsPage", false);
+        this.set("isInfosPage", false);
+
+        this.user = settings.user;
+
     }
 
     get posts(): Array<postModel.PostModel> {
@@ -57,9 +78,23 @@ export class AppViewModel extends observable.Observable {
     get agendaItems(): Array<agendaModel.AgendaModel> {
         return this._agendaItems;
     }
+    get user(): userModel.UserModel {
+        this.user = settings.user;
+        return this._user;
+    }
 
     get selectedNewsIndex(): number {
         return this._selectedNewsIndex;
+    }
+    get selectedInfoIndex(): number {
+        return this._selectedInfoIndex;
+    }
+
+    // SETTERS
+
+    set user(value: userModel.UserModel) {
+        this._user = value;
+        this.notifyPropertyChange("user", value);
     }
 
     // SELECT NEWS CATEGORY
@@ -76,14 +111,30 @@ export class AppViewModel extends observable.Observable {
         }
     }
 
+    // SELECT INFO CATEGORY
+    set selectedInfoIndex(value: number) {
+        if (this._selectedInfoIndex !== value) {
+            this._selectedInfoIndex = value;
+            this.notify({ object: this, eventName: observable.Observable.propertyChangeEvent, propertyName: "selectedInfoIndex", value: value });
+
+            this.set("infoHeader", infoCategories[value].title);
+
+        }
+    }
+
+    /*******************************
+     * PUBLIC FUNCTIONS
+     *******************************/
+
     // SELECT VIEW IN SIDEDRAWER
     public selectView(index: number, titleText: string) {
         this.selectedViewIndex = index;
         this.notify({ object: this, eventName: observable.Observable.propertyChangeEvent, propertyName: "selectedViewIndex", value: this.selectedViewIndex });
         this.set("actionBarTitle", titleText);
         this.set("isNewsPage", this.selectedViewIndex === 10);
+        this.set("isInfoPage", this.selectedViewIndex === 50);
     }
-    
+
     private filterNews() {
         this._posts = posts.filter(s => {
             if (typeof s.categories !== 'undefined') {
@@ -103,7 +154,7 @@ export class AppViewModel extends observable.Observable {
     public onAgendaDataLoaded() {
         this.set("isAgendaLoading", false);
         this._agendaItems = agendaItems;
-        
+
         this.notify({ object: this, eventName: observable.Observable.propertyChangeEvent, propertyName: "agendaItems", value: this._agendaItems });
     }
 
@@ -115,7 +166,7 @@ function pushPosts(postsFromFirebase: Array<postModel.Post>) {
     // console.log('postsFromFirebase.length: ' + postsFromFirebase.length);
 
     // Sort the posts by date descending
-    postsFromFirebase.sort(function(a, b) {
+    postsFromFirebase.sort(function (a, b) {
         return (Date.parse(b.publishedDate.toString().substr(0, 10))) - (Date.parse(a.publishedDate.toString().substr(0, 10)));
     });
 
@@ -124,7 +175,6 @@ function pushPosts(postsFromFirebase: Array<postModel.Post>) {
     for (var i = 0; i < postsFromFirebase.length; i++) {
         var newPost = new postModel.PostModel(postsFromFirebase[i]);
         posts.push(newPost);
-        
     }
 }
 
@@ -150,19 +200,19 @@ export class FirebaseModel {
 
     // LOGIN & USER AUTHENTICATION
 
-    public doLoginAnonymously = function() {
+    public doLoginAnonymously = function () {
         firebase.login({
             type: firebase.LoginType.ANONYMOUS
         }).then(
-            function(result) {
-                dialogs.alert({
+            function (result) {
+                dialogModel.alert({
                     title: "Login OK",
                     message: JSON.stringify(result),
                     okButtonText: "Nice!"
                 });
             },
-            function(errorMessage) {
-                dialogs.alert({
+            function (errorMessage) {
+                dialogModel.alert({
                     title: "Login error",
                     message: errorMessage,
                     okButtonText: "OK, pity"
@@ -173,70 +223,70 @@ export class FirebaseModel {
 
 
     public doQuery(typeQuery, callback) {
-    
+
         var path = "posts",
             orderByRule = {
-                    type: firebase.QueryOrderByType.KEY,
-                    value: null
-                };
-        
-            
+                type: firebase.QueryOrderByType.KEY,
+                value: null
+            };
+
+
         switch (typeQuery) {
             case "posts":
                 path = "/posts";
                 orderByRule.type = firebase.QueryOrderByType.CHILD;
                 orderByRule.value = 'publishedDate';
-                
-            break;
+
+                break;
             case "agenda":
                 path = "/agenda";
-            break;
+                break;
             case "programma-thuis":
                 path = "/programmaT";
-            break;
+                break;
             case "programma-uit":
                 path = "/programmaU";
-            break;
+                break;
             case "uitslagen-thuis":
                 path = "/uitslagenT";
-            break;
+                break;
             case "uitslagen-uit":
                 path = "/uitslagenU";
-            break;
+                break;
             default:
                 path = "/posts";
         }
-        
-        var onValueEvent = function(result) {
+
+        var onValueEvent = function (result) {
             // note that the query returns 1 match at a time,
             // in the order specified in the query
             //console.log("Query result: " + JSON.stringify(result));
 
             if (result.error) {
-                dialogs.alert({
+                dialogModel.alert({
                     title: "Fout downloaden gegevens " + typeQuery,
                     message: result.error,
                     okButtonText: "OK"
                 });
             } else {
-                
+
                 switch (typeQuery) {
                     case "posts":
-                    pushPosts(<Array<postModel.Post>>result.value);
-                    break;
+                        pushPosts(<Array<postModel.Post>>result.value);
+                        break;
                     case "agenda":
-                    pushAgendaItems(<Array<agendaModel.Agenda>>result.value);
-                    break;
+                        pushAgendaItems(<Array<agendaModel.Agenda>>result.value);
+                        break;
                     case "uitslagen-thuis":
-                    //path = "/uitslagenT";
-                    break;
+                        //path = "/uitslagenT";
+                        break;
                     case "uitslagen-uit":
-                    //path = "/uitslagenU";
-                    break;
+                        //path = "/uitslagenU";
+                        break;
                     default:
-                    null;
+                        null;
                 }
-                
+
                 callback();
             }
         };
@@ -249,11 +299,11 @@ export class FirebaseModel {
                 orderBy: orderByRule
             }
         ).then(
-            function() {
+            function () {
                 // console.log("firebase.doQueryPosts done; added a listener");
             },
-            function(errorMessage) {
-                dialogs.alert({
+            function (errorMessage) {
+                dialogModel.alert({
                     title: "Fout lezen gegevens " + typeQuery,
                     message: errorMessage,
                     okButtonText: "OK"
@@ -265,9 +315,9 @@ export class FirebaseModel {
 
 export var firebaseViewModel = new FirebaseModel();
 
-firebaseViewModel.doQuery('posts', function() {
+firebaseViewModel.doQuery('posts', function () {
     appModel.onNewsDataLoaded();
 });
-firebaseViewModel.doQuery('agenda', function() {
+firebaseViewModel.doQuery('agenda', function () {
     null;
 });

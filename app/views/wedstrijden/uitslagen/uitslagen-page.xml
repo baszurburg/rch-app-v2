@@ -1,0 +1,107 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd"
+   xmlns:PullRefresh="nativescript-pulltorefresh"
+  loaded="pageLoaded" actionBarHidden="true">
+
+  <GridLayout rows="auto, *" swipe="backSwipe">
+    <!-- HEADER -->
+    <StackLayout class="page-header">
+      <GridLayout class="action-bar" colSpan="2">
+        <StackLayout tap="backTap" orientation="horizontal" class="action-wrap" horizontalAlignment="left">
+          <Image stretch="none" class="icon-image" src="res://ic_arrow_back"/>
+          <Label text="Back" class="back-text" />
+        </StackLayout>
+        <Label text="Uitslagen" class="action-bar-title" />
+      </GridLayout>
+      
+      <!-- Tabs News Type -->
+      <GridLayout class="darker">
+        <SegmentedBar selectedBackgroundColor="#00acf6" selectedIndex="{{ selectedUitslagenIndex }}">
+          <SegmentedBar.items>
+            <SegmentedBarItem title="Thuis" />
+            <SegmentedBarItem title="Uit" />
+          </SegmentedBar.items>
+        </SegmentedBar>
+      </GridLayout>
+
+        <Label class="header-title" horizontalAlignment="center" margin="15">
+        <Label.formattedText>
+          <FormattedString>
+            <FormattedString.spans>
+              <Span text="{{ uitslagenHeader }}" fontAttributes="Bold" />
+            </FormattedString.spans>
+          </FormattedString>
+        </Label.formattedText>
+      </Label>
+           
+    </StackLayout>
+
+    <!-- Content -->
+    <StackLayout row="1" class="content-container-sm" visibility="{{ selectedUitslagenIndex === 0 ? 'visible' : 'collapsed' }}">
+  
+       <PullRefresh:PullToRefresh refresh="refreshUitslagenThuisList">
+
+          <!-- List -->
+          <ListView items="{{ uitslagenThuisItems }}" row="1" separatorColor="#dddddd">
+              <ListView.itemTemplate>
+
+                <StackLayout>
+
+                    <StackLayout visibility="{{ newDate ? 'visible' : 'collapsed' }}">
+                      <Label text="{{ Datum }}" class="programma-datum" />
+                    </StackLayout>
+
+                    <GridLayout columns="auto, auto, auto, *" rows="auto, auto" class="programma-list-view-row">
+                        <Label row="0" col="0" text="{{ Thuis }}" class="l-mr-1 uitslagen-tijd" textWrap="true" />
+                        <Label row="0" col="1" text="-" class="l-mr-1" />
+                        <Label row="0" col="2" text="{{ Uit }}" class="l-mr-1"  textWrap="true" />
+                        <Label row="0" col="3" text="{{ Uitslag }}" class="l-mr-1 h-bold" horizontalAlignment="right" />
+                        <Label row="1" col="0" text="details" class="l-mr-1 programma-tijd" />                        
+                    </GridLayout>
+                
+                </StackLayout>
+              
+              </ListView.itemTemplate>
+          </ListView>
+
+       </PullRefresh:PullToRefresh>
+       
+       <ActivityIndicator busy="{{ isUitslagenLoading }}" row="1" horizontalAlignment="center" verticalAlignment="center" />
+
+    </StackLayout>
+
+    <StackLayout row="1" class="content-container-sm" visibility="{{ selectedUitslagenIndex === 1 ? 'visible' : 'collapsed' }}">
+  
+       <PullRefresh:PullToRefresh refresh="refreshUitslagenUitList">
+
+          <ListView items="{{ uitslagenUitItems }}" row="1" separatorColor="#dddddd">
+              
+              <ListView.itemTemplate>
+
+              <StackLayout>
+
+                    <StackLayout visibility="{{ newDate ? 'visible' : 'collapsed' }}">
+                      <Label text="{{ Datum }}" class="programma-datum" />
+                    </StackLayout>
+
+                    <GridLayout columns="auto, auto, auto, *" rows="auto, auto" class="programma-list-view-row">
+                        <Label row="0" col="0" text="{{ Thuis }}" class="l-mr-1 uitslagen-tijd" textWrap="true" />
+                        <Label row="0" col="1" text="-" class="l-mr-1" />
+                        <Label row="0" col="2" text="{{ Uit }}" class="l-mr-1"  textWrap="true" />
+                        <Label row="0" col="3" text="{{ Uitslag }}" class="l-mr-1 h-bold" horizontalAlignment="right" />
+                        <Label row="1" col="0" text="details" class="l-mr-1 programma-tijd" />                        
+                    </GridLayout>
+              
+              </StackLayout>
+              
+              </ListView.itemTemplate>
+          </ListView>
+
+       </PullRefresh:PullToRefresh>
+       
+       <ActivityIndicator busy="{{ isUitslagenLoading }}" row="1" horizontalAlignment="center" verticalAlignment="center" />
+              
+    </StackLayout>
+
+
+  </GridLayout>
+</Page>

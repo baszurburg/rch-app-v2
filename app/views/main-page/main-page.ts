@@ -12,7 +12,11 @@ import scrollView = require("ui/scroll-view");
 import postModel = require("../../shared/models/posts/posts");
 import appViewModel = require("../../shared/view-models/app-view-model");
 
-var fbase = appViewModel.firebaseViewModel;
+import settingsModel = require("../../shared/services/settings/settings");
+
+var settings = new settingsModel.SettingsModel();
+
+//var fbase = appViewModel.firebaseViewModel;
 
 export function pageLoaded(args: observable.EventData) {
     var page = <pages.Page>args.object;
@@ -29,7 +33,23 @@ export function pageLoaded(args: observable.EventData) {
         iosFrame.navBarVisibility = "never";
     }
 
+//
+    
+    // console.log("appViewModel.appModel.user: " + appViewModel.appModel.user);
+    // console.log("appViewModel.appModel.user.email: " + appViewModel.appModel.user.email);
+    
+    // console.log("appViewModel.appModel.user: " + appViewModel.appModel.user);
+    // console.log("appViewModel.appModel.user.email: " + appViewModel.appModel.user.email);    
+    
+    // console.log("settings.user: " + settings.user);
+    // console.log("settings.user.email: " + settings.user.email);
+    // console.log("settings.user.['email']: " + settings.user['email']);
+    
+     
+
+//
     page.bindingContext = appViewModel.appModel;
+    
 }
 
 export function selectNews(args: listView.ItemEventData) {
@@ -37,7 +57,7 @@ export function selectNews(args: listView.ItemEventData) {
     var page = view.getAncestor(<view.View>args.object, "Page")
 
     frame.topmost().navigate({
-        moduleName: "views/news-page/news-page",
+        moduleName: "views/news/news-page",
         context: post
     });
 
@@ -57,6 +77,8 @@ export function showSlideout(args: gestures.GestureEventData) {
     var slideBar = <any>page.getViewById("SideDrawer");
     slideBar.showDrawer();
 }
+
+
 
 export function refreshNewsList(args) {
 
@@ -80,6 +102,13 @@ export function refreshAgendaList(args) {
     });
         
 }
+
+// GO TO Functions
+
+exports.goToLogin = function() {
+    var topmost = frame.topmost();
+    topmost.navigate("views/account/login/login-page");
+};
 
 export function goToUrl(args: gestures.GestureEventData) {
     var url = (<any>args.view).tag;

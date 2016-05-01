@@ -36,9 +36,17 @@ function disableScroll(listView: list.ListView) {
     }
 }
 
+export function shareButtonTap(args) {
+    var item = <postModel.PostModel>args.object.bindingContext
+    share(item);
+}
+
 export function shareTap(args: gestures.GestureEventData) {
     var item = <postModel.PostModel>args.view.bindingContext;
+    share(item);
+}
 
+function share(item) {
     var shareText = item.name + " ";
     shareText += item.content.brief + " ";
     shareText += item.externalLink + " ";
@@ -65,14 +73,6 @@ export function backTap(args: gestures.GestureEventData) {
     frame.topmost().goBack();
 }
 
-// export function showMapTap(args: gestures.GestureEventData) {
-//     var session = <appViewModel.SessionModel>args.view.bindingContext;
-
-//     frame.topmost().navigate({
-//         moduleName: "views/map-page/map-page",
-//         context: session
-//     });
-// }
 
 export function backSwipe(args: gestures.SwipeGestureEventData) {
     if (args.direction === gestures.SwipeDirection.right) {
@@ -88,7 +88,7 @@ export function backSwipe(args: gestures.SwipeGestureEventData) {
  */
 function renderContentExtended(page) {
 
-    page.bindingContext
+    //page.bindingContext
     var post = <postModel.PostModel>page.bindingContext;
     var layout = page.getViewById("contentExtended");
     var content = post.content.extended;

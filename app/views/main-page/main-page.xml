@@ -17,9 +17,10 @@
           <Button tap="selectView" tag="30" class="{{ selectedViewIndex === 30 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Teams" />
           <Button tap="selectView" tag="40" class="{{ selectedViewIndex === 40 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Agenda" />
           <Button tap="selectView" tag="50" class="{{ selectedViewIndex === 50 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Club info" />
-          <Button tap="selectView" tag="60" class="{{ selectedViewIndex === 60 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Jeugd info" />
           <Button tap="selectView" tag="90" class="{{ selectedViewIndex === 90 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Sponsors" />
-          <Button tap="selectView" tag="100" class="{{ selectedViewIndex === 100 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Settings" />
+          <Button tap="selectView" tag="200" class="{{ selectedViewIndex === 200 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Tools & Links" />
+          <Button tap="selectView" tag="500" class="{{ selectedViewIndex === 500 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Settings" />
+          <Button tap="goToLogin" tag="600" class="{{ selectedViewIndex === 600 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Login" />
         </StackLayout>
         
         <StackLayout style="background-color: #053140;" row="1">
@@ -87,15 +88,38 @@
             </SegmentedBar>
           </GridLayout>
 
-            <Label class="header-title" horizontalAlignment="center" margin="15" visibility="{{ isNewsPage ? 'visible' : 'collapsed' }}">
+         <Label class="header-title" horizontalAlignment="center" margin="15" visibility="{{ isNewsPage ? 'visible' : 'collapsed' }}">
             <Label.formattedText>
-              <FormattedString>
-                <FormattedString.spans>
-                  <Span text="{{ newsHeader }}" fontAttributes="Bold" />
-                </FormattedString.spans>
-              </FormattedString>
+                <FormattedString>
+                    <FormattedString.spans>
+                    <Span text="{{ newsHeader }}" fontAttributes="Bold" />
+                    </FormattedString.spans>
+                </FormattedString>
             </Label.formattedText>
-          </Label>
+        </Label>
+
+
+          <!-- Tabs Info Type -->
+          <!-- TODO : put it in the right place -->
+          <GridLayout class="darker" visibility="{{ isInfoPage ? 'visible' : 'collapsed' }}">
+            <SegmentedBar selectedBackgroundColor="#00acf6" selectedIndex="{{ selectedInfoIndex }}">
+              <SegmentedBar.items>
+                <SegmentedBarItem title="Algemeen" />
+                <SegmentedBarItem title="Jeugd" />
+              </SegmentedBar.items>
+            </SegmentedBar>
+          </GridLayout>
+
+         <Label class="header-title" horizontalAlignment="center" margin="15" visibility="{{ isInfoPage ? 'visible' : 'collapsed' }}">
+            <Label.formattedText>
+                <FormattedString>
+                    <FormattedString.spans>
+                    <Span text="{{ infoHeader }}" fontAttributes="Bold" />
+                    </FormattedString.spans>
+                </FormattedString>
+            </Label.formattedText>
+        </Label>
+
           
         </StackLayout>
         
@@ -147,7 +171,7 @@
             
             <StackLayout class="content-offset">
 
-                <Label class="info l-pt-2 l-pb-2" tap="goToView" tag="views/wedstrijden/programma-page/programma-page">
+                <Label class="info l-pt-2 l-pb-2" tap="goToView" tag="views/wedstrijden/programma/programma-page">
                     <Label.formattedText>
                     <FormattedString>
                         <FormattedString.spans>
@@ -160,7 +184,7 @@
                 <!-- Line -->
                 <StackLayout class="horizontal-line" margin="0 0 0 0"/>         
                 
-                <Label class="info l-pt-2 l-pb-2" tap="goToView" tag="views/wedstrijden/uitslagen-page/uitslagen-page">
+                <Label class="info l-pt-2 l-pb-2" tap="goToView" tag="views/wedstrijden/uitslagen/uitslagen-page">
                     <Label.formattedText>
                     <FormattedString>
                         <FormattedString.spans>
@@ -246,7 +270,7 @@
 
 
         <!-- CLUB Info View -->
-        <StackLayout row="1" visibility="{{ selectedViewIndex === 50 ? 'visible' : 'collapsed'}}">
+        <StackLayout row="1" visibility="{{ (isInfoPage && selectedInfoIndex === 0) ? 'visible' : 'collapsed'}}">
             
             <StackLayout>
                 <Image src="~/images/kantine-rch.jpg" />  
@@ -289,7 +313,7 @@
         </StackLayout>
 
         <!-- Jeugd Info View -->
-        <StackLayout row="1" visibility="{{ selectedViewIndex === 60 ? 'visible' : 'collapsed'}}">
+        <StackLayout row="1" visibility="{{ (isInfoPage && selectedInfoIndex === 1) ? 'visible' : 'collapsed'}}">
             
             <StackLayout>
                 <Image src="~/images/e2-20160123-3.jpg" />  
@@ -331,7 +355,7 @@
         <!-- Sponsors -->
         <StackLayout row="1" visibility="{{ selectedViewIndex === 90 ? 'visible' : 'collapsed'}}" class="content-container-sm">
 
-            <GridLayout rows="*,*,*" columns="*,*">
+            <GridLayout rows="auto,auto,auto" columns="*,*">
                 <Image src="~/images/sponsors/hbr.jpg" row="0" col="0" tap="goToUrl" tag="http://www.hbr.nl"/> 
                 <Image src="~/images/sponsors/ajewe.jpg" row="0" col="1" tap="goToUrl" tag="http://www.ajewesport.nl/" /> 
                 <Image src="~/images/sponsors/asc.jpg" row="1" col="0" tap="goToUrl" tag="http://www.allroundsportcare.nl/" /> 
@@ -342,9 +366,26 @@
 
         </StackLayout>
 
+        <!-- TOOLS -->
+        <StackLayout row="1" visibility="{{ selectedViewIndex === 200 ? 'visible' : 'collapsed'}}" class="content-offset">
+          <Label text="Tools & links" />
+          <Label text="- zoek een club" />
+        </StackLayout>
+
         <!-- SETTINGS -->
-        <StackLayout row="1" visibility="{{ selectedViewIndex === 100 ? 'visible' : 'collapsed'}}" class="content-offset">
+        <StackLayout row="1" visibility="{{ selectedViewIndex === 500 ? 'visible' : 'collapsed'}}" class="content-offset">
           <Label text="settings" />
+          <Label text="user data:" />
+          <Label text="{{user}}" />
+          <Label text="{{user.email}}" />
+          <Label text="{{user.userId}}" />
+
+
+          <Label text="Maak een link naar de profiel pagina..." />
+          <Label text="permanent cache as well" />
+          <Label text="Redirect vanaf de account pagina's" />
+          <Label text="Hide de profiel pagina wanneer niet ingelogd." />
+
         </StackLayout>
 
       </GridLayout>

@@ -10,7 +10,7 @@ import view = require("ui/core/view");
 import platform = require("platform");
 import scrollView = require("ui/scroll-view");
 import imageSource = require("image-source");
-import programmaModel = require("../../../shared/models/programma/programma");
+import uitslagenModel = require("../../../shared/models/uitslagen/uitslagen");
 
 //import appViewModel = require("../../../shared/view-models/app-view-model");
 import firebase = require("nativescript-plugin-firebase");
@@ -30,7 +30,7 @@ export function pageLoaded(args: observable.EventData) {
         iosFrame.navBarVisibility = "never";
     }
     
-    page.bindingContext = programmaViewModel;
+    page.bindingContext = uitslagenViewModel;
     
 }
 
@@ -48,144 +48,143 @@ export function backSwipe(args: gestures.SwipeGestureEventData) {
 ////////////////////////////
 // MODELS
 ////////////////////////////
-interface ProgrammaCategory {
+interface UitslagenCategory {
     Id: string;
     title: string;
 }
 
-var programmaCategories: Array<ProgrammaCategory> = [
+var uitslagenCategories: Array<UitslagenCategory> = [
     { title: "R.C.H. Thuis", Id: '0' },
-    { title: "R.C.H. Uit", Id: '1' },
-    { title: "R.C.H. Toernooien", Id: '2' }
+    { title: "R.C.H. Uit", Id: '1' }
 ];
 
-var programmaThuisItems: Array<programmaModel.ProgrammaModel> = new Array<programmaModel.ProgrammaModel>();
-var programmaUitItems: Array<programmaModel.ProgrammaModel> = new Array<programmaModel.ProgrammaModel>();
+var uitslagenThuisItems: Array<uitslagenModel.UitslagModel> = new Array<uitslagenModel.UitslagModel>();
+var uitslagenUitItems: Array<uitslagenModel.UitslagModel> = new Array<uitslagenModel.UitslagModel>();
 
-export class ProgrammaViewModel extends observable.Observable {
-    private _selectedProgrammaIndex;
-    private _programmaT: Array<programmaModel.ProgrammaModel>;
-    private _programmaU: Array<programmaModel.ProgrammaModel>;
+export class UitslagenViewModel extends observable.Observable {
+    private _selectedUitslagenIndex;
+    private _uitslagenT: Array<uitslagenModel.UitslagModel>;
+    private _uitslagenU: Array<uitslagenModel.UitslagModel>;
 
     constructor() {
         super();
 
-        this.selectedProgrammaIndex = 0;
-        this.set("isProgrammaLoading", true);
+        this.selectedUitslagenIndex = 0;
+        this.set("isUitslagenLoading", true);
     }
     
-    get programmaThuis(): Array<programmaModel.ProgrammaModel> {
-        return this._programmaT;
+    get uitslagenThuis(): Array<uitslagenModel.UitslagModel> {
+        return this._uitslagenT;
     }
-    get programmaUit(): Array<programmaModel.ProgrammaModel> {
-        return this._programmaU;
+    get uitslagenUit(): Array<uitslagenModel.UitslagModel> {
+        return this._uitslagenU;
     }
 
-    get selectedProgrammaIndex(): number {
-        return this._selectedProgrammaIndex;
+    get selectedUitslagenIndex(): number {
+        return this._selectedUitslagenIndex;
     }
     
    // SELECT PROGRAMMA CATEGORY
-    set selectedProgrammaIndex(value: number) {
-        if (this._selectedProgrammaIndex !== value) {
-            this._selectedProgrammaIndex = value;
-            this.notify({ object: this, eventName: observable.Observable.propertyChangeEvent, propertyName: "selectedProgrammaIndex", value: value });
+    set selectedUitslagenIndex(value: number) {
+        if (this._selectedUitslagenIndex !== value) {
+            this._selectedUitslagenIndex = value;
+            this.notify({ object: this, eventName: observable.Observable.propertyChangeEvent, propertyName: "selectedUitslagenIndex", value: value });
 
-            this.set("programmaHeader", programmaCategories[value].title);
+            this.set("uitslagenHeader", uitslagenCategories[value].title);
         }
     }
     
-    public onProgrammaThuisDataLoaded() {
-        // console.log("onProgrammaThuisDataLoaded");
-        this.set("isProgrammaLoading", false);
-        this._programmaT = programmaThuisItems;
+    public onUitslagenThuisDataLoaded() {
+        // console.log("onUitslagenThuisDataLoaded");
+        this.set("isUitslagenLoading", false);
+        this._uitslagenT = uitslagenThuisItems;
         
-        //console.log("_programmaT: " + this._programmaT.length + this._programmaT);
+        //console.log("_uitslagenT: " + this._uitslagenT.length + this._uitslagenT);
         
-        this.notify({ object: this, eventName: observable.Observable.propertyChangeEvent, propertyName: "programmaThuisItems", value: this._programmaT });
+        this.notify({ object: this, eventName: observable.Observable.propertyChangeEvent, propertyName: "uitslagenThuisItems", value: this._uitslagenT });
     }
      
-    public onProgrammaUitDataLoaded() {
-        // console.log("onProgrammaThuisDataLoaded");
-        this.set("isProgrammaLoading", false);
-        this._programmaU = programmaUitItems;
+    public onUitslagenUitDataLoaded() {
+        // console.log("onUitslagenThuisDataLoaded");
+        this.set("isUitslagenLoading", false);
+        this._uitslagenU = uitslagenUitItems;
         
-        this.notify({ object: this, eventName: observable.Observable.propertyChangeEvent, propertyName: "programmaUitItems", value: this._programmaU });
+        this.notify({ object: this, eventName: observable.Observable.propertyChangeEvent, propertyName: "uitslagenUitItems", value: this._uitslagenU });
     }   
 }
 
-var programmaViewModel = new ProgrammaViewModel;
+var uitslagenViewModel = new UitslagenViewModel;
 
-function pushprogrammaThuisItems(itemsFromFirebase: Array<programmaModel.Programma>) {
+function pushuitslagenThuisItems(itemsFromFirebase: Array<uitslagenModel.Uitslag>) {
 
     var dateMinusOne = "";
-    programmaThuisItems = [];
+    uitslagenThuisItems = [];
 
     for (var i = 0; i < itemsFromFirebase.length; i++) {
-        var programmaItem = new programmaModel.ProgrammaModel(itemsFromFirebase[i]);
+        var uitslagenItem = new uitslagenModel.UitslagModel(itemsFromFirebase[i]);
         
         if (i > 0) {
-            if (programmaItem.Datum !== dateMinusOne) {
-                programmaItem.newDate = true;
+            if (uitslagenItem.Datum !== dateMinusOne) {
+                uitslagenItem.newDate = true;
             }
             else {
-                programmaItem.newDate = false;
+                uitslagenItem.newDate = false;
             }
         } else {
-            programmaItem.newDate = true;
+            uitslagenItem.newDate = true;
         }
 
-        dateMinusOne = programmaItem.Datum;
-        programmaThuisItems.push(programmaItem);
+        dateMinusOne = uitslagenItem.Datum;
+        uitslagenThuisItems.push(uitslagenItem);
     }
 
-    programmaViewModel.onProgrammaThuisDataLoaded();
+    uitslagenViewModel.onUitslagenThuisDataLoaded();
 }
 
-function pushprogrammaUitItems(itemsFromFirebase: Array<programmaModel.Programma>) {
+function pushuitslagenUitItems(itemsFromFirebase: Array<uitslagenModel.Uitslag>) {
 
     var dateMinusOne = "";
-    programmaUitItems = [];
+    uitslagenUitItems = [];
 
     for (var i = 0; i < itemsFromFirebase.length; i++) {
-        var programmaItem = new programmaModel.ProgrammaModel(itemsFromFirebase[i]);
+        var uitslagenItem = new uitslagenModel.UitslagModel(itemsFromFirebase[i]);
         
         if (i > 0) {
-            if (programmaItem.Datum !== dateMinusOne) {
-                programmaItem.newDate = true;
+            if (uitslagenItem.Datum !== dateMinusOne) {
+                uitslagenItem.newDate = true;
             }
             else {
-                programmaItem.newDate = false;
+                uitslagenItem.newDate = false;
             }
         }else {
-            programmaItem.newDate = true;
+            uitslagenItem.newDate = true;
         }
 
-        dateMinusOne = programmaItem.Datum;
+        dateMinusOne = uitslagenItem.Datum;
         
-        programmaUitItems.push(programmaItem);
+        uitslagenUitItems.push(uitslagenItem);
     }
 
-    programmaViewModel.onProgrammaUitDataLoaded();
+    uitslagenViewModel.onUitslagenUitDataLoaded();
 }
 
-export function refreshProgrammaThuisList(args) {
+export function refreshUitslagenThuisList(args) {
 
     // Get reference to the PullToRefresh;
     var pullRefresh = args.object;
     
-   firebaseViewModel.doQuery('programma-thuis', function() {
+   firebaseViewModel.doQuery('uitslagen-thuis', function() {
         pullRefresh.refreshing = false;
     });
         
 }
 
-export function refreshProgrammaUitList(args) {
+export function refreshUitslagenUitList(args) {
 
     // Get reference to the PullToRefresh;
     var pullRefresh = args.object;
     
-   firebaseViewModel.doQuery('programma-uit', function() {
+   firebaseViewModel.doQuery('uitslagen-uit', function() {
         pullRefresh.refreshing = false;
     });
         
@@ -199,21 +198,21 @@ export class FirebaseModel {
 
     public doQuery(typeQuery, callback) {
     
-        var path = "/programmaT",
+        var path = "/uitslagenT",
             orderByRule = {
                     type: firebase.QueryOrderByType.KEY,
                     value: null
                 };
             
         switch (typeQuery) {
-            case "programma-thuis":
-                path = "/programmaT";
+            case "uitslagen-thuis":
+                path = "/uitslagenT";
             break;
-            case "programma-uit":
-                path = "/programmaU";
+            case "uitslagen-uit":
+                path = "/uitslagenU";
             break;
             default:
-                path = "/programmaT";
+                path = "/uitslagenT";
         }
         
         var onValueEvent = function(result) {
@@ -230,11 +229,11 @@ export class FirebaseModel {
             } else {
                 
                 switch (typeQuery) {
-                    case "programma-thuis":
-                        pushprogrammaThuisItems(<Array<programmaModel.ProgrammaModel>>result.value);
+                    case "uitslagen-thuis":
+                        pushuitslagenThuisItems(<Array<uitslagenModel.UitslagModel>>result.value);
                     break;
-                    case "programma-uit":
-                        pushprogrammaUitItems(<Array<programmaModel.ProgrammaModel>>result.value);
+                    case "uitslagen-uit":
+                        pushuitslagenUitItems(<Array<uitslagenModel.UitslagModel>>result.value);
                     break;
                     case "uitslagen-thuis":
                     //path = "/uitslagenT";
@@ -274,9 +273,9 @@ export class FirebaseModel {
 
 var firebaseViewModel = new FirebaseModel();
 
-firebaseViewModel.doQuery('programma-thuis', function() {
+firebaseViewModel.doQuery('uitslagen-thuis', function() {
     null;
 });
-firebaseViewModel.doQuery('programma-uit', function() {
+firebaseViewModel.doQuery('uitslagen-uit', function() {
     null;
 });

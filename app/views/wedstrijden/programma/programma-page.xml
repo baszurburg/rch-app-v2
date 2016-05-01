@@ -39,8 +39,6 @@
     <!-- Content -->
     <StackLayout row="1" class="content-container-sm" visibility="{{ selectedProgrammaIndex === 0 ? 'visible' : 'collapsed' }}">
   
-       <Label text="Programma" /> 
-  
        <PullRefresh:PullToRefresh refresh="refreshProgrammaThuisList">
 
           <!-- List -->
@@ -53,11 +51,11 @@
                       <Label text="{{ Datum }}" class="programma-datum" />
                     </StackLayout>
 
-                    <GridLayout columns="auto, auto, auto, auto" class="programma-list-view-row">
-                        <Label col="0" text="{{ Tijd }}" class="l-mr-1 programma-tijd"/>
-                        <Label col="1" text="{{ Thuis }}" class="l-mr-1" textWrap="true" />
-                        <Label col="2" text="-" class="l-mr-1" />
-                        <Label col="3" text="{{ Uit }}" textWrap="true" />
+                    <GridLayout columns="auto, auto, auto" rows="auto, auto" class="programma-list-view-row">
+                        <Label row="0" col="0" text="{{ Thuis }}" class="l-mr-1" textWrap="true" />
+                        <Label row="0" col="1" text="-" class="l-mr-1" />
+                        <Label row="0" col="2" text="{{ Uit }}" textWrap="true" />
+                        <Label row="1" col="0" text="{{ Tijd }}" class="l-mr-1 programma-tijd"/>
                     </GridLayout>
                 
                 </StackLayout>
@@ -86,10 +84,10 @@
                     </StackLayout>
 
                   <GridLayout columns="auto, auto, auto, auto" class="programma-list-view-row">
-                      <Label col="0" text="{{ Tijd }}" class="l-mr-1 programma-tijd"/>
-                      <Label col="1" text="{{ Thuis }}" class="l-mr-1" textWrap="true" />
-                      <Label col="2" text="-" class="l-mr-1" />
-                      <Label col="3" text="{{ Uit }}" textWrap="true" />
+                        <Label row="0" col="0" text="{{ Thuis }}" class="l-mr-1" textWrap="true" />
+                        <Label row="0" col="1" text="-" class="l-mr-1" />
+                        <Label row="0" col="2" text="{{ Uit }}" textWrap="true" />
+                        <Label row="1" col="0" text="{{ Tijd }}" class="l-mr-1 programma-tijd"/>
                   </GridLayout>
               
               </StackLayout>

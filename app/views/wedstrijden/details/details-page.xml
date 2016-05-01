@@ -9,10 +9,10 @@
           <Image stretch="none" class="icon-image" src="res://ic_arrow_back"/>
           <Label text="Back" class="back-text" />
         </StackLayout>
-       <Label text="Nieuws" class="action-bar-title" />
+       <Label text="Wedstrid deatils" class="action-bar-title" />
 
         <StackLayout orientation="horizontal" horizontalAlignment="right">
-          <!-- ToDo: Make here a llink to the team page when it is a verslag -->
+          <!-- ToDo: Make here a link to the team page when it is a verslag -->
           <GridLayout class="action-wrap" tap="showMapTap" columns="auto" horizontalAlignment="right"  visibility="{{ team ? 'visible' : 'collapsed' }}">
             <Image stretch="none" class="icon-image" src="res://ic_map"/>
           </GridLayout>
@@ -30,26 +30,13 @@
     
       <StackLayout>
       
-        <StackLayout>
-            <Image id="news-image" src="{{ image.secure_url }}" />  
-        </StackLayout>
-
         <StackLayout class="content-container" >
-            <Label text="{{ name }}" textWrap="true" class="page-title" />
-            <Label text="{{ dateFormatted }}" class="info-smaller" />
+            <Label text="Wedstrid detail pagina" class="page-title" />
             
-            <!-- Content -->
-            <StackLayout id="contentExtended" class="content-body"></StackLayout>
+            <Label text="nou ja, wedstijd detils zoals ; ..." /> 
             
-            <Button class="share-button" text="Deel dit artikel"/>
+            <Button class="button share-button material-icon" tap="shareButtonTap" text="&#xf35b; Deel dit artikel"/>
             
-            <!-- Line -->
-            <StackLayout class="horizontal-line" margin="0 0 0 0"/>
-
-            <!-- More news -->
-            <Label text="Meer nieuws" class="section-header" />
-            <Label text="binnenkort..." class="info" />
-
         <!-- ToDo: Make here a list view met related posts -->
         </StackLayout>
       </StackLayout>

@@ -33,6 +33,11 @@
 // HELPER CLASSES
 //---------------------------------
 
+// text
+.h-bold {
+    font-weight: bold;
+}
+
 // Padding
 .l-p-1 {padding: @spacer; }
 .l-p-2 {padding: @spacer * 2;}
@@ -124,6 +129,39 @@
 // --------------------------------
 // COMPONENTS
 //--------------------------------- 
+
+
+// BUTTONS
+//---------------------------------
+.button {
+  margin-left: 16;
+  margin-right: 16;
+}
+
+.button-login {
+    background-color: @blue-darker;
+    color: white;
+    font-size: 15;
+    margin-bottom: 15;
+}
+
+.button-link {
+    background-color: transparent;
+    font-family: 'Material-Design-Iconic-Font';
+}
+
+.share-button {
+    max-width: 300;
+    background-color: @gray-lighter;
+}
+
+// FORM
+//---------------------------------
+
+TextField { 
+  margin-left: 16;
+  margin-right: 16;
+}
 
 
 // SEGMENTED BAR
@@ -356,19 +394,12 @@ SegmentedBar {
 }
 
 .programma-datum {
-    background-color: @gray-lighter;
-    padding: 4 4 4 12; 
+    background-color: @blue-darker;
+    color: white;
+    padding: 8 4 8 12; 
 }
 
 .programma-tijd {
     color: @rch-blue;
 }
 
-
-// BUTTONS
-//---------------------------------
-
-.share-button {
-    max-width: 300;
-    background-color: @gray-lightest;
-}

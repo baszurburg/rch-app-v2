@@ -1,0 +1,36 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd"
+   xmlns:PullRefresh="nativescript-pulltorefresh"
+  loaded="pageLoaded" actionBarHidden="true">
+
+  <GridLayout rows="auto, *" swipe="backSwipe">
+    <!-- HEADER -->
+    <StackLayout class="page-header">
+      <GridLayout class="action-bar">
+        <StackLayout tap="backTap" orientation="horizontal" class="action-wrap" horizontalAlignment="left">
+          <Image stretch="none" class="icon-image" src="res://ic_arrow_back"/>
+          <Label text="Back" class="back-text" />
+        </StackLayout>
+        
+        <Label text="Login" class="action-bar-title" />
+      </GridLayout>
+    </StackLayout>
+
+    <!-- Content -->
+    <ScrollView row="1" id="scroll">
+        <StackLayout row="1" class="content-offset">
+
+        <Label text="Wanner je bent ingelogd kun je ..." />
+        <Image src="res://logo" stretch="none" horizontalAlignment="center"></Image>
+        <TextField id="email" text="{{ user.email }}" hint="Email Adres" keyboardType="email" autocorrect="false" autocapitalizationType="none" returnKeyType="next" returnPress="focusPassword" />
+        <TextField id="password" secure="true" text="{{ user.password }}" hint="Password" returnKeyType="done" returnPress="logIn" />
+        <ActivityIndicator busy="{{ authenticating }}" />
+        <Button id="submit-button" text="Login" tap="logIn" class="button button-login" />
+        
+        <label id="forgot-password-label" android:text="WACHTWOORD VERGETEN?" ios:text="Wachtwoord vergeten?" tap="forgotPassword" />
+        
+        <Button text="&#xf1ff; Maak een account" class="button-link" tap="goToRegister" />
+        
+        </StackLayout>
+    </ScrollView>
+  </GridLayout>
+</Page>
