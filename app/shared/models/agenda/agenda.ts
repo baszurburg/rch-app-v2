@@ -27,6 +27,8 @@ export class AgendaModel extends observable.Observable implements Agenda {
     constructor(source?: Agenda) {
         super();
 
+        console.log("in constructor agenda model");
+
         if (source) {
             this._id = source.id;
             this._allDay = source.allDay;

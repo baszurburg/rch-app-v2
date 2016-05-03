@@ -60,6 +60,8 @@ export class AppViewModel extends observable.Observable {
     constructor() {
         super();
 
+        console.log("in constructor app view model");
+
         this.selectedNewsIndex = 0;
         this.selectedInfoIndex = 0;
         this.selectedViewIndex = 5;
@@ -76,13 +78,14 @@ export class AppViewModel extends observable.Observable {
 
     get isAuthenticated(): boolean {
         try {
-            console.log("typeof(this._user.userId) !== 'undefined' : " + (typeof(this._user.userId) !== 'undefined'));
-            this.isAuthenticated = (typeof(this._user.userId) !== "undefined");
+            console.log("typeof(this._user.userId) !== 'undefined' : " + (typeof(this._user.userId) !== 'undefined') + " " + typeof(this._user.userId));
+            if (this._isAuthenticated !== (typeof(this._user.userId) !== "undefined")) {
+                this.isAuthenticated = (typeof(this._user.userId) !== "undefined");                 
+            }
             return this._isAuthenticated;
         }
         catch (error) {
-            this.isAuthenticated = false;
-            return this._isAuthenticated;
+            return false;
         }
 
     }
@@ -113,12 +116,12 @@ export class AppViewModel extends observable.Observable {
     }
     
     set isAuthenticated(value: boolean) {
-        this._isAuthenticated = value;
-        this.notifyPropertyChange("isAuthenticated", value);
+        if (this._isAuthenticated !== value) {
+            this._isAuthenticated = value;
+            this.notifyPropertyChange("isAuthenticated", value);            
+        }
     }
     
-    
-
     // SELECT NEWS CATEGORY
     set selectedNewsIndex(value: number) {
         if (this._selectedNewsIndex !== value) {

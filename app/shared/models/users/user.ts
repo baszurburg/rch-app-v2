@@ -31,6 +31,10 @@ export class UserModel implements User {
 
     constructor(source?: User) {
         //super();
+        
+        console.log("in constructor user model");
+
+        
         if (source) {
             this._userId = source.userId;
             this._email = source.email;

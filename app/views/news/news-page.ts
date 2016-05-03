@@ -25,7 +25,7 @@ function disableScroll(listView: list.ListView) {
     if (listView.android) {
         listView.android.setSelector(new android.graphics.drawable.ColorDrawable(0));
         listView.android.setOnTouchListener(new android.view.View.OnTouchListener({
-            onTouch: function(view: android.view.View, motionEvent: android.view.MotionEvent) {
+            onTouch: function (view: android.view.View, motionEvent: android.view.MotionEvent) {
                 return (motionEvent.getAction() === android.view.MotionEvent.ACTION_MOVE);
             }
         }));
@@ -173,9 +173,9 @@ function complexContent(layout, content) {
                     spans[spanIndex] = new spanModule.Span();
                     spans[spanIndex].underline = 1;
                     if (prevKey = keyString) {
-                     spans[spanIndex].text = " " + linkArray[1]["text"].toString();                       
+                        spans[spanIndex].text = " " + linkArray[1]["text"].toString();
                     } else {
-                     spans[spanIndex].text = linkArray[1]["text"].toString();                       
+                        spans[spanIndex].text = linkArray[1]["text"].toString();
                     }
 
                     strings[labelIndex].spans.push(spans[spanIndex]);

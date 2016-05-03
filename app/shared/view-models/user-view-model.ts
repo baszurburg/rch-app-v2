@@ -15,10 +15,12 @@ export class UserViewModel extends observable.Observable {
     constructor() {
         super();
 
+        console.log("in constructor user view model");
+
         this._user = settings.user;
 
         this._email = this._user.email;
-        
+
     }
 
     get user(): userModel.UserModel {
@@ -52,9 +54,9 @@ export class UserViewModel extends observable.Observable {
                 that._user.userId = response.uid;
                 that._user.email = that._email;
                 settings.user = that._user;
-                
+
                 console.log("settings.user: " + settings.user);
-                console.log("settings.user.email: " + settings.user.email); 
+                console.log("settings.user.email: " + settings.user.email);
                 console.log(response.uid);
             },
             function (errorMessage) {
@@ -108,7 +110,7 @@ export class UserViewModel extends observable.Observable {
             function (result) {
                 settings.removeUserInAppSettings();
                 dialogModel.alert({
-                    title: "Logout OK",
+                    title: "Je bent uitgelogd",
                     okButtonText: "OK, bye!"
                 });
             },
@@ -116,7 +118,7 @@ export class UserViewModel extends observable.Observable {
                 dialogModel.alert({
                     title: "Logout error",
                     message: error,
-                    okButtonText: "Hmmkay"
+                    okButtonText: "OK"
                 });
             }
         );

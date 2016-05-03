@@ -10,14 +10,13 @@ import platform = require("platform");
 import button = require("ui/button");
 import scrollView = require("ui/scroll-view");
 import userModel = require("../../shared/models/users/user");
-import navigation = require("../../shared/services/navigation/navigation");
 import postModel = require("../../shared/models/posts/posts");
+import userViewModel = require("../../shared/view-models/user-view-model");
 import appViewModel = require("../../shared/view-models/app-view-model");
 
-//var fbase = appViewModel.firebaseViewModel;
 var isAuthenticated: boolean;
 var user: userModel.UserModel;
-
+var userView = new userViewModel.UserViewModel();
 
 export function pageLoaded(args: observable.EventData) {
     var page = <pages.Page>args.object;
@@ -101,6 +100,11 @@ export function refreshAgendaList(args) {
     });
         
 }
+
+export function logOut() {
+    userView.logOut();
+}
+
 
 // GO TO Functions
 

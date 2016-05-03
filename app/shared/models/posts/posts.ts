@@ -40,6 +40,8 @@ export class PostModel extends observable.Observable implements Post {
     constructor(source?: Post) {
         super();
 
+        console.log("in constructor posts model");
+
         if (source) {
             this.__id = source._id;
             this._categories = source.categories;
