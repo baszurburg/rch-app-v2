@@ -34,6 +34,7 @@ export function pageLoaded(args: observable.EventData) {
     }
 
     console.log("in mainPage loaded")
+    
     var user = appViewModel.appModel.user;
     var isAuthenticated = appViewModel.appModel.isAuthenticated;
 

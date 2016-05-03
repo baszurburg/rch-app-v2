@@ -16,25 +16,26 @@ import appViewModel = require("../../shared/view-models/app-view-model");
 
 export function pageNavigatingTo(args: pages.NavigatedData) {
     var page = <pages.Page>args.object;
+    
     page.bindingContext = page.navigationContext;
 
     renderContentExtended(page);
 }
 
-function disableScroll(listView: list.ListView) {
-    if (listView.android) {
-        listView.android.setSelector(new android.graphics.drawable.ColorDrawable(0));
-        listView.android.setOnTouchListener(new android.view.View.OnTouchListener({
-            onTouch: function (view: android.view.View, motionEvent: android.view.MotionEvent) {
-                return (motionEvent.getAction() === android.view.MotionEvent.ACTION_MOVE);
-            }
-        }));
-    }
-    if (listView.ios) {
-        listView.ios.scrollEnabled = false;
-        listView.ios.allowsSelection = false;
-    }
-}
+// function disableScroll(listView: list.ListView) {
+//     if (listView.android) {
+//         listView.android.setSelector(new android.graphics.drawable.ColorDrawable(0));
+//         listView.android.setOnTouchListener(new android.view.View.OnTouchListener({
+//             onTouch: function (view: android.view.View, motionEvent: android.view.MotionEvent) {
+//                 return (motionEvent.getAction() === android.view.MotionEvent.ACTION_MOVE);
+//             }
+//         }));
+//     }
+//     if (listView.ios) {
+//         listView.ios.scrollEnabled = false;
+//         listView.ios.allowsSelection = false;
+//     }
+// }
 
 export function shareButtonTap(args) {
     var item = <postModel.PostModel>args.object.bindingContext

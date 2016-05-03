@@ -13,8 +13,8 @@
 
         <StackLayout orientation="horizontal" horizontalAlignment="right">
           <!-- ToDo: Make here a link to the team page when it is a verslag -->
-          <GridLayout class="action-wrap" tap="showMapTap" columns="auto" horizontalAlignment="right"  visibility="{{ team ? 'visible' : 'collapsed' }}">
-            <Image stretch="none" class="icon-image" src="res://ic_map"/>
+          <GridLayout class="action-wrap" tap="showMapTap" columns="auto" horizontalAlignment="right">
+            <Label class="icon-material" text="&#xf332;"/>
           </GridLayout>
 
           <GridLayout class="action-wrap" tap="shareTap" columns="auto" horizontalAlignment="right">
@@ -31,11 +31,24 @@
       <StackLayout>
       
         <StackLayout class="content-container" >
-            <Label text="Wedstrid detail pagina" class="page-title" />
+            <Label text="Wedstrijd detail pagina" class="page-title" />
             
-            <Label text="nou ja, wedstijd detils zoals ; ..." /> 
+            <Label text="nou ja, wedstijd details zoals:" /> 
             
-            <Button class="button share-button material-icon" tap="shareButtonTap" text="&#xf35b; Deel dit artikel"/>
+            <Label text="{{WedNr}}" /> 
+            <Label text="{{Type}}" /> 
+            <Label text="{{Datum}}" /> 
+            <Label text="{{Tijd}}" />
+            <Label text="{{Thuis}}" /> 
+            <Label text="{{Uit}}" />  
+            
+            <Label text="Hier komen ook" /> 
+            <Label text="- routebeschrijving" />            
+            <Label text="- voeg toe aan agenda" />            
+            <Label text="- kaartje" />            
+            <Label text="- club logo's" />            
+                      
+            <Button class="button share-button material-icon" tap="shareButtonTap" text="&#xf332; Voeg toe aan agenda"/>
             
         <!-- ToDo: Make here a list view met related posts -->
         </StackLayout>

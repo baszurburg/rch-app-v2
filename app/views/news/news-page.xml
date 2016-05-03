@@ -40,8 +40,9 @@
             
             <!-- Content -->
             <StackLayout id="contentExtended" class="content-body"></StackLayout>
-            
-            <Button class="button share-button material-icon" tap="shareButtonTap" text="&#xf35b; Deel dit artikel"/>
+
+            <Button class="button share-button material-icon l-p-1" tap="shareButtonTap" text="&#xf35b; Deel dit bericht" />
+
             
         <!-- ToDo: Make here a list view met related posts -->
         </StackLayout>

@@ -42,6 +42,18 @@ export function backSwipe(args: gestures.SwipeGestureEventData) {
     }
 }
 
+export function selectProgrammaDetails(args: listView.ItemEventData) {
+    var programmaItem = <programmaModel.ProgrammaModel>args.view.bindingContext;
+    var page = view.getAncestor(<view.View>args.object, "Page")
+
+    console.log("In selectProgrammaDetails: " + programmaItem);
+
+    frame.topmost().navigate({
+        moduleName: "views/wedstrijden/details/details-page",
+        context: programmaItem
+    });
+
+}
 
 ////////////////////////////
 // MODELS

@@ -42,7 +42,7 @@
        <PullRefresh:PullToRefresh refresh="refreshProgrammaThuisList">
 
           <!-- List -->
-          <ListView items="{{ programmaThuisItems }}" row="1" separatorColor="#dddddd">
+          <ListView items="{{ programmaThuisItems }}" row="1" separatorColor="#dddddd" itemTap="selectProgrammaDetails">
               <ListView.itemTemplate>
 
                 <StackLayout>
@@ -73,7 +73,7 @@
   
        <PullRefresh:PullToRefresh refresh="refreshProgrammaUitList">
 
-          <ListView items="{{ programmaUitItems }}" row="1" separatorColor="#dddddd">
+          <ListView items="{{ programmaUitItems }}" row="1" separatorColor="#dddddd" itemTap="selectProgrammaDetails">
               
               <ListView.itemTemplate>
 
@@ -83,7 +83,7 @@
                       <Label text="{{ Datum }}" class="programma-datum" />
                     </StackLayout>
 
-                  <GridLayout columns="auto, auto, auto, auto" class="programma-list-view-row">
+                  <GridLayout columns="auto, auto, auto, auto" rows="auto, auto" class="programma-list-view-row">
                         <Label row="0" col="0" text="{{ Thuis }}" class="l-mr-1" textWrap="true" />
                         <Label row="0" col="1" text="-" class="l-mr-1" />
                         <Label row="0" col="2" text="{{ Uit }}" textWrap="true" />

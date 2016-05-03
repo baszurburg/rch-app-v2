@@ -21,7 +21,7 @@
           <Button tap="selectView" tag="400" class="{{ selectedViewIndex === 400 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Sponsors" />
           <Button tap="selectView" tag="500" class="{{ selectedViewIndex === 500 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Settings" />
           <Button tap="goToLogin" class="slide-out-btn-selected" text="Login" visibility="{{ !isAuthenticated ? 'visible' : 'collapsed'}}"/>
-          <Button tap="logout" class="slide-out-btn-selected" text="Logout" visibility="{{ isAuthenticated ? 'visible' : 'collapsed'}}"/>
+          <Button tap="logOut" class="slide-out-btn-selected" text="Logout" visibility="{{ isAuthenticated ? 'visible' : 'collapsed'}}"/>
           
         </StackLayout>
         
