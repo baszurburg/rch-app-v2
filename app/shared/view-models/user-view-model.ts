@@ -52,6 +52,7 @@ export class UserViewModel extends observable.Observable {
                 that._user.userId = response.uid;
                 that._user.email = that._email;
                 settings.user = that._user;
+                
                 console.log("settings.user: " + settings.user);
                 console.log("settings.user.email: " + settings.user.email); 
                 console.log(response.uid);

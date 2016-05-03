@@ -1,24 +1,36 @@
 "use strict";
-var observable = require("data/observable");
-var UserModel = (function (_super) {
-    __extends(UserModel, _super);
+//export class UserModel extends observable.Observable implements User {
+var UserModel = (function () {
     function UserModel(source) {
-        _super.call(this);
+        this._userName = '';
         this._userId = '';
         this._email = '';
+        this._role = 'user';
+        this._teams = [];
         this._password = '';
+        //super();
         if (source) {
             this._userId = source.userId;
             this._email = source.email;
             this._password = source.password;
         }
     }
-    Object.defineProperty(UserModel.prototype, "userId", {
+    Object.defineProperty(UserModel.prototype, "userName", {
         // GETTERS
+        get: function () {
+            return this._userName;
+        },
+        //SETTERS
+        set: function (value) {
+            this._userName = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(UserModel.prototype, "userId", {
         get: function () {
             return this._userId;
         },
-        //SETTERS
         set: function (value) {
             this._userId = value;
         },
@@ -35,6 +47,26 @@ var UserModel = (function (_super) {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(UserModel.prototype, "role", {
+        get: function () {
+            return this._role;
+        },
+        set: function (value) {
+            this._role = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(UserModel.prototype, "teams", {
+        get: function () {
+            return this._teams;
+        },
+        set: function (value) {
+            this._teams = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(UserModel.prototype, "password", {
         get: function () {
             return this._password;
@@ -46,6 +78,6 @@ var UserModel = (function (_super) {
         configurable: true
     });
     return UserModel;
-}(observable.Observable));
+}());
 exports.UserModel = UserModel;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidXNlci5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbInVzZXIudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IjtBQUFBLElBQU8sVUFBVSxXQUFXLGlCQUFpQixDQUFDLENBQUM7QUFZL0M7SUFBK0IsNkJBQXFCO0lBQ2hELG1CQUFZLE1BQWE7UUFDckIsaUJBQU8sQ0FBQztRQVFKLFlBQU8sR0FBVyxFQUFFLENBQUM7UUFDckIsV0FBTSxHQUFXLEVBQUUsQ0FBQztRQUNwQixjQUFTLEdBQVcsRUFBRSxDQUFDO1FBVDNCLEVBQUUsQ0FBQyxDQUFDLE1BQU0sQ0FBQyxDQUFDLENBQUM7WUFDVCxJQUFJLENBQUMsT0FBTyxHQUFHLE1BQU0sQ0FBQyxNQUFNLENBQUM7WUFDN0IsSUFBSSxDQUFDLE1BQU0sR0FBRyxNQUFNLENBQUMsS0FBSyxDQUFDO1lBQzNCLElBQUksQ0FBQyxTQUFTLEdBQUcsTUFBTSxDQUFDLFFBQVEsQ0FBQztRQUNyQyxDQUFDO0lBQ0wsQ0FBQztJQU9ELHNCQUFJLDZCQUFNO1FBRFYsVUFBVTthQUNWO1lBQ0ksTUFBTSxDQUFDLElBQUksQ0FBQyxPQUFPLENBQUM7UUFDeEIsQ0FBQztRQVFELFNBQVM7YUFDVCxVQUFXLEtBQWE7WUFDcEIsSUFBSSxDQUFDLE9BQU8sR0FBRyxLQUFLLENBQUM7UUFDekIsQ0FBQzs7O09BWEE7SUFDRCxzQkFBSSw0QkFBSzthQUFUO1lBQ0ksTUFBTSxDQUFDLElBQUksQ0FBQyxNQUFNLENBQUM7UUFDdkIsQ0FBQzthQVNELFVBQVUsS0FBYTtZQUNuQixJQUFJLENBQUMsTUFBTSxHQUFHLEtBQUssQ0FBQztRQUN4QixDQUFDOzs7T0FYQTtJQUNELHNCQUFJLCtCQUFRO2FBQVo7WUFDSSxNQUFNLENBQUMsSUFBSSxDQUFDLFNBQVMsQ0FBQztRQUMxQixDQUFDO2FBU0QsVUFBYSxLQUFhO1lBQ3RCLElBQUksQ0FBQyxTQUFTLEdBQUcsS0FBSyxDQUFDO1FBQzNCLENBQUM7OztPQVhBO0lBWUwsZ0JBQUM7QUFBRCxDQUFDLEFBbkNELENBQStCLFVBQVUsQ0FBQyxVQUFVLEdBbUNuRDtBQW5DWSxpQkFBUyxZQW1DckIsQ0FBQSJ9
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidXNlci5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbInVzZXIudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IjtBQW9CQSx3RUFBd0U7QUFDeEU7SUFVSSxtQkFBWSxNQUFhO1FBUmpCLGNBQVMsR0FBVyxFQUFFLENBQUM7UUFDdkIsWUFBTyxHQUFXLEVBQUUsQ0FBQztRQUNyQixXQUFNLEdBQVcsRUFBRSxDQUFDO1FBQ3BCLFVBQUssR0FBVyxNQUFNLENBQUM7UUFDdkIsV0FBTSxHQUFnQixFQUFFLENBQUM7UUFDekIsY0FBUyxHQUFXLEVBQUUsQ0FBQztRQUkzQixVQUFVO1FBQ1YsRUFBRSxDQUFDLENBQUMsTUFBTSxDQUFDLENBQUMsQ0FBQztZQUNULElBQUksQ0FBQyxPQUFPLEdBQUcsTUFBTSxDQUFDLE1BQU0sQ0FBQztZQUM3QixJQUFJLENBQUMsTUFBTSxHQUFHLE1BQU0sQ0FBQyxLQUFLLENBQUM7WUFDM0IsSUFBSSxDQUFDLFNBQVMsR0FBRyxNQUFNLENBQUMsUUFBUSxDQUFDO1FBQ3JDLENBQUM7SUFDTCxDQUFDO0lBSUQsc0JBQUksK0JBQVE7UUFEWixVQUFVO2FBQ1Y7WUFDSSxNQUFNLENBQUMsSUFBSSxDQUFDLFNBQVMsQ0FBQztRQUMxQixDQUFDO1FBaUJELFNBQVM7YUFDVCxVQUFhLEtBQWE7WUFDdEIsSUFBSSxDQUFDLFNBQVMsR0FBRyxLQUFLLENBQUM7UUFDM0IsQ0FBQzs7O09BcEJBO0lBQ0Qsc0JBQUksNkJBQU07YUFBVjtZQUNJLE1BQU0sQ0FBQyxJQUFJLENBQUMsT0FBTyxDQUFDO1FBQ3hCLENBQUM7YUFrQkQsVUFBVyxLQUFhO1lBQ3BCLElBQUksQ0FBQyxPQUFPLEdBQUcsS0FBSyxDQUFDO1FBQ3pCLENBQUM7OztPQXBCQTtJQUNELHNCQUFJLDRCQUFLO2FBQVQ7WUFDSSxNQUFNLENBQUMsSUFBSSxDQUFDLE1BQU0sQ0FBQztRQUN2QixDQUFDO2FBa0JELFVBQVUsS0FBYTtZQUNuQixJQUFJLENBQUMsTUFBTSxHQUFHLEtBQUssQ0FBQztRQUN4QixDQUFDOzs7T0FwQkE7SUFDRCxzQkFBSSwyQkFBSTthQUFSO1lBQ0ksTUFBTSxDQUFDLElBQUksQ0FBQyxLQUFLLENBQUM7UUFDdEIsQ0FBQzthQWtCRCxVQUFTLEtBQWE7WUFDbEIsSUFBSSxDQUFDLEtBQUssR0FBRyxLQUFLLENBQUM7UUFDdkIsQ0FBQzs7O09BcEJBO0lBQ0Qsc0JBQUksNEJBQUs7YUFBVDtZQUNJLE1BQU0sQ0FBQyxJQUFJLENBQUMsTUFBTSxDQUFDO1FBQ3ZCLENBQUM7YUFrQkQsVUFBVSxLQUFrQjtZQUN4QixJQUFJLENBQUMsTUFBTSxHQUFHLEtBQUssQ0FBQztRQUN4QixDQUFDOzs7T0FwQkE7SUFDRCxzQkFBSSwrQkFBUTthQUFaO1lBQ0ksTUFBTSxDQUFDLElBQUksQ0FBQyxTQUFTLENBQUM7UUFDMUIsQ0FBQzthQWtCRCxVQUFhLEtBQWE7WUFDdEIsSUFBSSxDQUFDLFNBQVMsR0FBRyxLQUFLLENBQUM7UUFDM0IsQ0FBQzs7O09BcEJBO0lBcUJMLGdCQUFDO0FBQUQsQ0FBQyxBQTNERCxJQTJEQztBQTNEWSxpQkFBUyxZQTJEckIsQ0FBQSJ9

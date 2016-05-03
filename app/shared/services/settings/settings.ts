@@ -17,6 +17,7 @@ export class SettingsModel extends observable.Observable {
 
     }
 
+
     get user(): userModel.UserModel {
         this.getUserFromAppSettings();
         return this._user;
@@ -26,7 +27,6 @@ export class SettingsModel extends observable.Observable {
         this._user = value;
         this.updateUserInAppSettings();
         this.notifyPropertyChange("user", value);
-
     }
 
     // functions to get the Application Settings
@@ -52,6 +52,7 @@ export class SettingsModel extends observable.Observable {
     public removeUserInAppSettings() {
         console.log("removing user: ");
         localSettings.remove(USER);
+        this.user = new userModel.UserModel();
     }
 
 }

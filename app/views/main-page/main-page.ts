@@ -9,14 +9,15 @@ import search = require("ui/search-bar");
 import platform = require("platform");
 import button = require("ui/button");
 import scrollView = require("ui/scroll-view");
+import userModel = require("../../shared/models/users/user");
+import navigation = require("../../shared/services/navigation/navigation");
 import postModel = require("../../shared/models/posts/posts");
 import appViewModel = require("../../shared/view-models/app-view-model");
 
-import settingsModel = require("../../shared/services/settings/settings");
-
-var settings = new settingsModel.SettingsModel();
-
 //var fbase = appViewModel.firebaseViewModel;
+var isAuthenticated: boolean;
+var user: userModel.UserModel;
+
 
 export function pageLoaded(args: observable.EventData) {
     var page = <pages.Page>args.object;
@@ -33,6 +34,10 @@ export function pageLoaded(args: observable.EventData) {
         iosFrame.navBarVisibility = "never";
     }
 
+    console.log("in mainPage loaded")
+    var user = appViewModel.appModel.user;
+    var isAuthenticated = appViewModel.appModel.isAuthenticated;
+
 //
     
     // console.log("appViewModel.appModel.user: " + appViewModel.appModel.user);
@@ -41,12 +46,6 @@ export function pageLoaded(args: observable.EventData) {
     // console.log("appViewModel.appModel.user: " + appViewModel.appModel.user);
     // console.log("appViewModel.appModel.user.email: " + appViewModel.appModel.user.email);    
     
-    // console.log("settings.user: " + settings.user);
-    // console.log("settings.user.email: " + settings.user.email);
-    // console.log("settings.user.['email']: " + settings.user['email']);
-    
-     
-
 //
     page.bindingContext = appViewModel.appModel;
     

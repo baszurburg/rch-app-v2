@@ -17,10 +17,11 @@
           <Button tap="selectView" tag="30" class="{{ selectedViewIndex === 30 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Teams" />
           <Button tap="selectView" tag="40" class="{{ selectedViewIndex === 40 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Agenda" />
           <Button tap="selectView" tag="50" class="{{ selectedViewIndex === 50 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Club info" />
-          <Button tap="selectView" tag="90" class="{{ selectedViewIndex === 90 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Sponsors" />
           <Button tap="selectView" tag="200" class="{{ selectedViewIndex === 200 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Tools & Links" />
+          <Button tap="selectView" tag="400" class="{{ selectedViewIndex === 400 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Sponsors" />
           <Button tap="selectView" tag="500" class="{{ selectedViewIndex === 500 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Settings" />
-          <Button tap="goToLogin" tag="600" class="{{ selectedViewIndex === 600 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Login" />
+          <Button tap="goToLogin" class="{{ selectedViewIndex === 600 ? 'slide-out-btn' : 'slide-out-btn-selected' }}" text="Login" />
+
         </StackLayout>
         
         <StackLayout style="background-color: #053140;" row="1">
@@ -352,8 +353,14 @@
 
         </StackLayout>
 
+        <!-- TOOLS -->
+        <StackLayout row="1" visibility="{{ selectedViewIndex === 200 ? 'visible' : 'collapsed'}}" class="content-offset">
+          <Label text="Tools & links" />
+          <Label text="- zoek een club" />
+        </StackLayout>
+
         <!-- Sponsors -->
-        <StackLayout row="1" visibility="{{ selectedViewIndex === 90 ? 'visible' : 'collapsed'}}" class="content-container-sm">
+        <StackLayout row="1" visibility="{{ selectedViewIndex === 400 ? 'visible' : 'collapsed'}}" class="content-container-sm">
 
             <GridLayout rows="auto,auto,auto" columns="*,*">
                 <Image src="~/images/sponsors/hbr.jpg" row="0" col="0" tap="goToUrl" tag="http://www.hbr.nl"/> 
@@ -366,20 +373,18 @@
 
         </StackLayout>
 
-        <!-- TOOLS -->
-        <StackLayout row="1" visibility="{{ selectedViewIndex === 200 ? 'visible' : 'collapsed'}}" class="content-offset">
-          <Label text="Tools & links" />
-          <Label text="- zoek een club" />
-        </StackLayout>
 
         <!-- SETTINGS -->
         <StackLayout row="1" visibility="{{ selectedViewIndex === 500 ? 'visible' : 'collapsed'}}" class="content-offset">
           <Label text="settings" />
-          <Label text="user data:" />
+          <Label text="user data - user - mail - id - name:" />
           <Label text="{{user}}" />
           <Label text="{{user.email}}" />
           <Label text="{{user.userId}}" />
-
+          <Label text="{{user.userName}}" />
+          
+          <Label text="isAuthenticated" />
+          <Label text="{{isAuthenticated}}" />
 
           <Label text="Maak een link naar de profiel pagina..." />
           <Label text="permanent cache as well" />

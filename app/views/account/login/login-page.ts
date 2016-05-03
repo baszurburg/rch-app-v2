@@ -73,6 +73,7 @@ exports.logIn = function() {
     user.login()
         .then(function(a) {
             enableForm();
+            
         });
 };
 

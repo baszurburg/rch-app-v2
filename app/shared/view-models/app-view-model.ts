@@ -53,6 +53,7 @@ export class AppViewModel extends observable.Observable {
     private _posts: Array<postModel.PostModel>;
     private _agendaItems: Array<agendaModel.AgendaModel>;
     private _user: userModel.UserModel;
+    private _isAuthenticated: boolean;
 
     public selectedViewIndex: number;
 
@@ -69,6 +70,20 @@ export class AppViewModel extends observable.Observable {
         this.set("isInfosPage", false);
 
         this.user = settings.user;
+        this._isAuthenticated = this.isAuthenticated;
+
+    }
+
+    get isAuthenticated(): boolean {
+        try {
+            console.log("typeof(this._user.userId) !== 'undefined' : " + (typeof(this._user.userId) !== 'undefined'));
+            this.isAuthenticated = (typeof(this._user.userId) !== "undefined");
+            return this._isAuthenticated;
+        }
+        catch (error) {
+            this.isAuthenticated = false;
+            return this._isAuthenticated;
+        }
 
     }
 
@@ -96,6 +111,13 @@ export class AppViewModel extends observable.Observable {
         this._user = value;
         this.notifyPropertyChange("user", value);
     }
+    
+    set isAuthenticated(value: boolean) {
+        this._isAuthenticated = value;
+        this.notifyPropertyChange("isAuthenticated", value);
+    }
+    
+    
 
     // SELECT NEWS CATEGORY
     set selectedNewsIndex(value: number) {
