@@ -1,0 +1,104 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd"
+  navigatingTo="pageNavigatingTo" actionBarHidden="true">
+
+  <GridLayout rows="auto, *" swipe="backSwipe">
+    <!-- HEADER -->
+    <GridLayout rows="auto, auto" class="page-header">
+      
+      <GridLayout class="action-bar" colSpan="2">
+        <StackLayout tap="backTap" orientation="horizontal" class="action-wrap" horizontalAlignment="left">
+          <Image stretch="none" class="icon-image" src="res://ic_arrow_back"/>
+          <Label text="Back" class="back-text" />
+        </StackLayout>
+        <Label text="Teams" class="action-bar-title" />
+
+        <StackLayout orientation="horizontal" horizontalAlignment="right">
+          <!-- ToDo: Make here a link to the team page when it is a verslag -->
+          <GridLayout class="action-wrap" tap="showMapTap" columns="auto" horizontalAlignment="right"  visibility="{{ team ? 'visible' : 'collapsed' }}">
+            <Image stretch="none" class="icon-image" src="res://ic_map"/>
+          </GridLayout>
+
+          <GridLayout class="action-wrap" tap="shareTap" columns="auto" horizontalAlignment="right">
+            <Image stretch="none" class="icon-image" src="res://ic_share"/>
+          </GridLayout>
+        </StackLayout>
+  
+      </GridLayout>
+
+      <!-- Tabs Team Type -->
+      <GridLayout row="1" class="darker">
+        <SegmentedBar selectedBackgroundColor="#00acf6" selectedIndex="{{ selectedTeamIndex }}">
+          <SegmentedBar.items>
+            <SegmentedBarItem title="Team info" />
+            <SegmentedBarItem title="Programma" />
+            <SegmentedBarItem title="Verslagen" />
+          </SegmentedBar.items>
+        </SegmentedBar>
+      </GridLayout>
+
+
+    </GridLayout>
+
+    <!-- Team Info -->
+    <ScrollView row="1" id="scroll" visibility="{{ selectedTeamIndex === 0 ? 'visible' : 'collapsed'}}">
+    
+      <StackLayout>
+      
+       <StackLayout>
+            <Image id="news-image" src="{{ image.secure_url }}" />  
+        </StackLayout>
+      
+
+        <StackLayout class="content-container" >
+            <Label text="{{ name }}" textWrap="true" class="page-title" />
+            <Label text="{{ klasse }}" textWrap="true" />
+ 
+            <Label text="Spelers" class="info" />           
+            <HtmlView html="{{ spelers }}" />
+            <Label text="Sponsors" class="info" />           
+            <HtmlView html="{{ sponsors }}" />
+
+            
+            <!-- Content -->
+
+            <Button class="button share-button material-icon l-p-1" tap="shareButtonTap" text="&#xf35b; Deel dit bericht" />
+
+        </StackLayout>
+      </StackLayout>
+    </ScrollView>
+    
+     <!-- Programma Info -->
+    <ScrollView row="1" id="scroll" visibility="{{ selectedTeamIndex === 1 ? 'visible' : 'collapsed'}}">
+    
+      <StackLayout>
+      
+        <StackLayout class="content-container" >
+            <Label text="Programma en uitslagen" textWrap="true" class="page-title" />
+            
+            <!-- Content -->
+
+            <Button class="button share-button material-icon l-p-1" tap="shareButtonTap" text="&#xf35b; Deel dit bericht" />
+
+        </StackLayout>
+      </StackLayout>
+    </ScrollView>
+
+     <!-- Programma Info -->
+    <ScrollView row="1" id="scroll" visibility="{{ selectedTeamIndex === 2 ? 'visible' : 'collapsed'}}">
+    
+      <StackLayout>
+      
+        <StackLayout class="content-container" >
+            <Label text="Verslagen" textWrap="true" class="page-title" />
+            
+            <!-- Content -->
+
+            <Button class="button share-button material-icon l-p-1" tap="shareButtonTap" text="&#xf35b; Deel dit bericht" />
+
+        </StackLayout>
+      </StackLayout>
+    </ScrollView>
+
+    
+  </GridLayout>
+</Page>

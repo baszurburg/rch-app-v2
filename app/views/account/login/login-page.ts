@@ -71,9 +71,9 @@ exports.logIn = function() {
     disableForm();
         
     user.login()
-        .then(function(a) {
+        .then(function() {
             enableForm();
-            
+            // add here a redirect to the main page!?
         });
 };
 

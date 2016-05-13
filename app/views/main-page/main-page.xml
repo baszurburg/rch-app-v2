@@ -101,6 +101,17 @@
         </Label>
 
 
+
+         <Label class="header-title" horizontalAlignment="center" margin="15" visibility="{{ isTeamPage ? 'visible' : 'collapsed' }}">
+            <Label.formattedText>
+                <FormattedString>
+                    <FormattedString.spans>
+                    <Span text="{{ TeamHeader }}" fontAttributes="Bold" />
+                    </FormattedString.spans>
+                </FormattedString>
+            </Label.formattedText>
+        </Label>
+
           <!-- Tabs Info Type -->
           <!-- TODO : put it in the right place -->
           <GridLayout class="darker" visibility="{{ isInfoPage ? 'visible' : 'collapsed' }}">
@@ -218,19 +229,44 @@
         </StackLayout>
 
         <!-- TEAMS -->
-        <StackLayout row="1" visibility="{{ selectedViewIndex === 30 ? 'visible' : 'collapsed'}}" class="content-offset">
-          <Label class="info" tap="goToUrl" tag="http://www.rch-voetbal.nl/voetbal-elftallen-teams">
-            <Label.formattedText>
-              <FormattedString>
-                <FormattedString.spans>
-                  <Span text="Teams" fontAttributes="Bold" />
-                  <Span text=" (R.C.H. site)" fontSize="10" />
-                </FormattedString.spans>
-              </FormattedString>
-            </Label.formattedText>
-          </Label>
+        <StackLayout row="1" visibility="{{ selectedViewIndex === 30 ? 'visible' : 'collapsed'}}">
+
+            <PullRefresh:PullToRefresh refresh="refreshTeamsList">
+
+            <!-- List Teams -->
+            <ListView items="{{ teams }}" row="1" separatorColor="#dddddd" class="listView" itemTap="selectTeam">
+                <ListView.itemTemplate>
+
+                <StackLayout class="list-view-row">
+
+                    <GridLayout columns="auto, *" class="list-view-row-inner">
+
+                        <GridLayout class="" columns="auto" rows="auto">
+                            <Image stretch="aspectFit" class="news-image-thumb" src="{{ image.imageThumb }}" visibility="{{ image.imageThumb ? 'visible' : 'collapsed' }}" />
+                            <Image stretch="aspectFit" class="news-image-thumb" src="~/images/image-placeholder.png" visibility="{{ !image.imageThumb ? 'visible' : 'collapsed' }}" />
+                        </GridLayout>
+
+                        <StackLayout col="1">
+                        
+                            <Label text="{{ name }}" textWrap="true" class="info-bigger"/>
+                            <Label text="Selecteer voor details" class="info-smaller" />
+
+                        </StackLayout>
+                                        
+                    </GridLayout>
+                
+                </StackLayout>
+                
+                </ListView.itemTemplate>
+            </ListView>
+
+            </PullRefresh:PullToRefresh>
+
+            <ActivityIndicator busy="{{ isTeamsLoading }}" row="1" horizontalAlignment="center" verticalAlignment="center" />
+
 
         </StackLayout>
+        
 
         <!-- AGENDA View -->
         <StackLayout row="1" visibility="{{ selectedViewIndex === 40 ? 'visible' : 'collapsed'}}">
@@ -239,7 +275,7 @@
                 <Image src="~/images/rch-evenement.jpg" />  
             </StackLayout>
             
-            <StackLayout class="content-offset">
+            <StackLayout class="content-offset-vertical">
 
                 <Label class="info-blue">
                     <Label.formattedText>
@@ -255,9 +291,9 @@
 
                     <ListView items="{{ agendaItems }}" separatorColor="#dddddd">
                         <ListView.itemTemplate>
-                            <StackLayout>
-                                <Label text="{{ title }}" textWrap="true" class="info-bigger"/>
-                                <Label text="{{ eventDateTime }}" textWrap="true" class="info-smaller" />
+                            <StackLayout class="content-container-sm">
+                                <Label row="0" colspan="2" text="{{ title }}" textWrap="true" class="info-bigger"/>
+                                <Label row="1" colspan="2" text="{{ eventDateTime }}" textWrap="true" class="info-smaller" />
                             </StackLayout>
                         </ListView.itemTemplate>
                     </ListView>
@@ -386,6 +422,9 @@
           
           <Label text="isAuthenticated" />
           <Label text="{{isAuthenticated}}" />
+
+          <Label class="info l-pt-1 l-pb-1" text="Wijzig account gegevens" tap="goToView" tag="views/account/edit/edit-account" />  
+
 
           <Label text="Maak een link naar de profiel pagina..." />
           <Label text="permanent cache as well" />

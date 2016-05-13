@@ -41,7 +41,7 @@
        <PullRefresh:PullToRefresh refresh="refreshUitslagenThuisList">
 
           <!-- List -->
-          <ListView items="{{ uitslagenThuisItems }}" row="1" separatorColor="#dddddd">
+          <ListView items="{{ uitslagenThuisItems }}" row="1" separatorColor="#dddddd" itemTap="selectUitslagenDetails">
               <ListView.itemTemplate>
 
                 <StackLayout>

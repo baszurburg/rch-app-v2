@@ -28,7 +28,9 @@
         <Image src="res://logo" stretch="none" horizontalAlignment="center" />
 
         <TextField id="email" text="{{ user.email }}" hint="Email Adres" keyboardType="email" autocorrect="false" autocapitalizationType="none" returnKeyType="next" returnPress="focusPassword" />
+        <Border class="textFieldBorder" />
         <TextField id="password" secure="true" text="{{ user.password }}" hint="Password" returnKeyType="done" returnPress="logIn" />
+        <Border class="textFieldBorder" />
         <ActivityIndicator busy="{{ authenticating }}" />
         <Button id="submit-button" text="Maak een account" tap="register" />
       </StackLayout>

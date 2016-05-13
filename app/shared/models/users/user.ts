@@ -10,7 +10,7 @@ export interface Team {
 }
 
 export interface User {
-    userName: string;
+    name: string;
     userId: string;
     email: string;
     role: string;
@@ -21,7 +21,7 @@ export interface User {
 //export class UserModel extends observable.Observable implements User {
 export class UserModel implements User {
     
-    private _userName: string = '';
+    private _name: string = '';
     private _userId: string = '';
     private _email: string = '';
     private _role: string = 'user';
@@ -44,8 +44,8 @@ export class UserModel implements User {
 
 
     // GETTERS
-    get userName(): string {
-        return this._userName;
+    get name(): string {
+        return this._name;
     }
     get userId(): string {
         return this._userId;
@@ -64,8 +64,8 @@ export class UserModel implements User {
     }
     
     //SETTERS
-    set userName(value: string) {
-        this._userName = value;
+    set name(value: string) {
+        this._name = value;
     }
     set userId(value: string) {
         this._userId = value;

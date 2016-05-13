@@ -19,14 +19,17 @@
     <ScrollView row="1" id="scroll">
         <StackLayout row="1" class="content-offset">
 
-        <Label text="Wanner je bent ingelogd kun je ..." />
-        <Image src="res://logo" stretch="none" horizontalAlignment="center"></Image>
+        <Image src="res://logo" stretch="none" horizontalAlignment="center" class="l-mb-1"></Image>
+        <Label text="Wanner je bent ingelogd kun je ..." class="l-mb-1" />
+
         <TextField id="email" text="{{ user.email }}" hint="Email Adres" keyboardType="email" autocorrect="false" autocapitalizationType="none" returnKeyType="next" returnPress="focusPassword" />
+        <Border class="textFieldBorder" />
         <TextField id="password" secure="true" text="{{ user.password }}" hint="Password" returnKeyType="done" returnPress="logIn" />
+        <Border class="textFieldBorder" />
         <ActivityIndicator busy="{{ authenticating }}" />
         <Button id="submit-button" text="Login" tap="logIn" class="button button-login" />
         
-        <label id="forgot-password-label" android:text="WACHTWOORD VERGETEN?" ios:text="Wachtwoord vergeten?" tap="forgotPassword" />
+        <label id="forgot-password-label" android:text="WACHTWOORD VERGETEN?" ios:text="Wachtwoord vergeten?" tap="forgotPassword" class="l-mb-2" />
         
         <Button text="&#xf1ff; Maak een account" class="button-link" tap="goToRegister" />
         

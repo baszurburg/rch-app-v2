@@ -44,6 +44,19 @@ export function backSwipe(args: gestures.SwipeGestureEventData) {
     }
 }
 
+export function selectUitslagenDetails(args: listView.ItemEventData) {
+    var uitslagenItem = <uitslagenModel.UitslagModel>args.view.bindingContext;
+    var page = view.getAncestor(<view.View>args.object, "Page")
+
+    console.log("In selectUitslagenDetails: " + uitslagenItem);
+
+    frame.topmost().navigate({
+        moduleName: "views/wedstrijden/details/details-page",
+        context: uitslagenItem
+    });
+
+}
+
 
 ////////////////////////////
 // MODELS
@@ -84,7 +97,7 @@ export class UitslagenViewModel extends observable.Observable {
         return this._selectedUitslagenIndex;
     }
     
-   // SELECT PROGRAMMA CATEGORY
+   // SELECT uitslagen CATEGORY
     set selectedUitslagenIndex(value: number) {
         if (this._selectedUitslagenIndex !== value) {
             this._selectedUitslagenIndex = value;

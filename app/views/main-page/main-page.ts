@@ -11,6 +11,7 @@ import button = require("ui/button");
 import scrollView = require("ui/scroll-view");
 import userModel = require("../../shared/models/users/user");
 import postModel = require("../../shared/models/posts/posts");
+import teamModel = require("../../shared/models/teams/teams");
 import userViewModel = require("../../shared/view-models/user-view-model");
 import appViewModel = require("../../shared/view-models/app-view-model");
 
@@ -59,7 +60,16 @@ export function selectNews(args: listView.ItemEventData) {
         moduleName: "views/news/news-page",
         context: post
     });
+}
 
+export function selectTeam(args: listView.ItemEventData) {
+    var team = <teamModel.TeamModel>args.view.bindingContext;
+    var page = view.getAncestor(<view.View>args.object, "Page")
+
+    frame.topmost().navigate({
+        moduleName: "views/teams/teams-page",
+        context: team
+    });
 }
 
 export function selectView(args: observable.EventData) {
@@ -90,6 +100,18 @@ export function refreshNewsList(args) {
     });
     
 }
+
+export function refreshTeamsList(args) {
+
+    var pullRefresh = args.object;
+    
+    appViewModel.firebaseViewModel.doQuery('teams', function() {
+        appViewModel.appModel.onTeamsDataLoaded();
+        pullRefresh.refreshing = false;
+    });
+    
+}
+
 
 export function refreshAgendaList(args) {
 

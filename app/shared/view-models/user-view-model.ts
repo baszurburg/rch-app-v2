@@ -11,6 +11,11 @@ export class UserViewModel extends observable.Observable {
     private _user: userModel.UserModel;
     private _email = "";
     private _password = "";
+    
+    private _name = "";
+    private _oldPassword = "";
+    private _newPassword = "";
+    private _confirmPassword = "";
 
     constructor() {
         super();
@@ -20,6 +25,7 @@ export class UserViewModel extends observable.Observable {
         this._user = settings.user;
 
         this._email = this._user.email;
+        this._name = this._user.name;
 
     }
 
@@ -29,8 +35,17 @@ export class UserViewModel extends observable.Observable {
     get email(): string {
         return this._email;
     }
-    get password(): string {
-        return this._password;
+    get name(): string {
+        return this._name;
+    }
+    get oldPassword(): string {
+        return this._oldPassword;
+    }
+    get newPassword(): string {
+        return this._newPassword;
+    }
+    get confirmPassword(): string {
+        return this._confirmPassword;
     }
 
     set user(value: userModel.UserModel) {
@@ -43,12 +58,25 @@ export class UserViewModel extends observable.Observable {
         this._password = value;
     }
 
+    set name(value: string) {
+        this._name = value;
+    }
+    set oldPassword(value: string) {
+        this._oldPassword = value;
+    }
+    set newPassword(value: string) {
+        this._newPassword = value;
+    }
+    set confirmPassword(value: string) {
+        this._confirmPassword = value;
+    }
+
     public login() {
         var that = this;
         return firebase.login({
             type: firebase.LoginType.PASSWORD,
             email: this._email,
-            password: this.password
+            password: this._password
         }).then(
             function (response) {
                 that._user.userId = response.uid;
@@ -63,7 +91,7 @@ export class UserViewModel extends observable.Observable {
                 dialogModel.alert({
                     title: "Login fout",
                     message: errorMessage,
-                    okButtonText: "OK, pity"
+                    okButtonText: "OK"
                 });
             });
     }
@@ -104,6 +132,30 @@ export class UserViewModel extends observable.Observable {
                 });
             });
     };
+
+    public changePassword() {
+        var that = this;
+        return firebase.changePassword({
+            email: this._email,
+            oldPassword: this._oldPassword,
+            newPassword: this._newPassword
+        }).then(
+            function (response) {
+                that._user.name = that._name;
+                settings.user = that._user;
+
+                console.log("pw change settings.user: " + settings.user);
+                console.log("pw change  settings.user.email: " + settings.user.email);
+            },
+            function (errorMessage) {
+                dialogModel.alert({
+                    title: "Wijziging niet gelukt",
+                    message: errorMessage,
+                    okButtonText: "OK"
+                });
+            });
+    }
+
 
     public logOut = function () {
         firebase.logout().then(

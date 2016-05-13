@@ -117,6 +117,11 @@
     background-color: #ffffff;
 }
 
+.content-offset-vertical {
+    padding: 12 0;
+    background-color: #ffffff;
+}
+
 .content-container {
     margin: 12 0;
     padding: 0 12;
@@ -173,13 +178,19 @@
 
 
 // Form fieldset
-TextField {
-    background-color: #FAFAFA;
-    border-width: 1;
-    border-style: solid;
-    border-color: #C7C7CC;
-    border-radius: 2;
+
+.textFieldBorder {
+    background-color: #D1D1D1;
+    height: 1;
+    margin: 0 16 0 16;
 }
+
+.detailsTextFieldBorder {
+    background-color: #D1D1D1;
+    height: 1;
+    margin: 0;
+}
+
 
 // SEGMENTED BAR
 //---------------------------------
@@ -411,7 +422,8 @@ SegmentedBar {
 }
 
 .programma-datum {
-    background-color: @gray-lighter;
+    background-color: @blue-darker;
+    color: white;
     padding: 6 4 6 12; 
 }
 

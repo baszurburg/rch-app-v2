@@ -1,0 +1,44 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd"
+   xmlns:PullRefresh="nativescript-pulltorefresh"
+  loaded="pageLoaded" actionBarHidden="true">
+
+  <GridLayout rows="auto, *" swipe="backSwipe">
+    <!-- HEADER -->
+    <StackLayout class="page-header">
+      <GridLayout class="action-bar">
+        <StackLayout tap="backTap" orientation="horizontal" class="action-wrap" horizontalAlignment="left">
+          <Image stretch="none" class="icon-image" src="res://ic_arrow_back"/>
+          <Label text="Back" class="back-text" />
+        </StackLayout>
+        
+        <Label text="Wijzig account" class="action-bar-title" />
+      </GridLayout>
+    </StackLayout>
+
+    <!-- Content -->
+    <ScrollView row="1" id="scroll">
+        <StackLayout row="1" class="content-offset">
+
+        <Label text="Wijzig je account gegevens ..." />
+
+        <TextField id="name" hint="name" text="{{ user.name }}" autocorrect="false" autocapitalizationType="none" returnKeyType="next" returnPress="focusPassword"/>
+        <Border class="textFieldBorder" />
+        <Label text="{{ user.email }}" />
+        <Border class="textFieldBorder" />
+
+        <TextField id="oldPassword" hint="oud wachtwoord" text="{{ user.oldPassword }}" secure="true" />
+        <Border class="textFieldBorder" />
+        <TextField id="newPassword" hint="nieuw wachtwoord" text="{{ user.newPassword }}" secure="true" class="l-mt-1" />
+        <Border class="textFieldBorder" />
+        <TextField id="confirmPassword" hint="bevestig wachtwoord" text="{{ user.confirmPassword }}" secure="true" />
+        <Border class="textFieldBorder" />
+
+        <ActivityIndicator busy="{{ updating }}" />
+        <Button id="submit-button" text="Opslaan" tap="save" class="button button-login" />
+        
+        <label id="forgot-password-label" android:text="WACHTWOORD VERGETEN?" ios:text="Wachtwoord vergeten?" tap="forgotPassword" />
+                
+        </StackLayout>
+    </ScrollView>
+  </GridLayout>
+</Page>

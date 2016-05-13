@@ -43,6 +43,8 @@ export function pageNavigatingTo(args: pages.NavigatedData) {
 // }
 
 export function shareButtonTap(args) {
+    console.log('In wedstrijd details - args.object.bindingContext: ' + args.object.bindingContext);
+    
     var item = <programmaModel.ProgrammaModel>args.object.bindingContext
     share(item);
 }

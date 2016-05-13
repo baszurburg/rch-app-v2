@@ -8,12 +8,14 @@ import types = require("utils/types");
 import settingsModel = require("../services/settings/settings");
 import userModel = require("../models/users/user");
 import postModel = require("../models/posts/posts");
+import teamModel = require("../models/teams/teams");
 import agendaModel = require("../models/agenda/agenda");
 import firebase = require("nativescript-plugin-firebase");
 
 //var LOADING_ERROR = "Could not load latest news. Check your Internet connection and try again.";
 
 var posts: Array<postModel.PostModel> = new Array<postModel.PostModel>();
+var teams: Array<teamModel.TeamModel> = new Array<teamModel.TeamModel>();
 var agendaItems: Array<agendaModel.AgendaModel> = new Array<agendaModel.AgendaModel>();
 var settings = new settingsModel.SettingsModel();
 
@@ -50,7 +52,9 @@ var infoCategories: Array<NewsCategory> = [
 export class AppViewModel extends observable.Observable {
     private _selectedNewsIndex;
     private _selectedInfoIndex;
+    //private _selectedTeamIndex;
     private _posts: Array<postModel.PostModel>;
+    private _teams: Array<teamModel.TeamModel>;
     private _agendaItems: Array<agendaModel.AgendaModel>;
     private _user: userModel.UserModel;
     private _isAuthenticated: boolean;
@@ -64,9 +68,11 @@ export class AppViewModel extends observable.Observable {
 
         this.selectedNewsIndex = 0;
         this.selectedInfoIndex = 0;
+        //this.selectedTeamIndex = 0;
         this.selectedViewIndex = 5;
         this.set("actionBarTitle", "Thuis");
         this.set("isNewsLoading", true);
+        this.set("isTeamsLoading", true);
         this.set("isAgendaLoading", true);
         this.set("isNewsPage", false);
         this.set("isInfosPage", false);
@@ -104,6 +110,9 @@ export class AppViewModel extends observable.Observable {
     get selectedNewsIndex(): number {
         return this._selectedNewsIndex;
     }
+    // get selectedTeamIndex(): number {
+    //     return this._selectedTeamIndex;
+    // }    
     get selectedInfoIndex(): number {
         return this._selectedInfoIndex;
     }
@@ -136,6 +145,7 @@ export class AppViewModel extends observable.Observable {
         }
     }
 
+
     // SELECT INFO CATEGORY
     set selectedInfoIndex(value: number) {
         if (this._selectedInfoIndex !== value) {
@@ -157,6 +167,7 @@ export class AppViewModel extends observable.Observable {
         this.notify({ object: this, eventName: observable.Observable.propertyChangeEvent, propertyName: "selectedViewIndex", value: this.selectedViewIndex });
         this.set("actionBarTitle", titleText);
         this.set("isNewsPage", this.selectedViewIndex === 10);
+        this.set("isTeamPage", this.selectedViewIndex === 30);
         this.set("isInfoPage", this.selectedViewIndex === 50);
     }
 
@@ -176,10 +187,15 @@ export class AppViewModel extends observable.Observable {
         this.filterNews();
     }
 
+    public onTeamsDataLoaded() {
+        this.set("isTeamsLoading", false);
+        this._teams = teams;
+        this.notify({ object: this, eventName: observable.Observable.propertyChangeEvent, propertyName: "teams", value: this._teams });
+    }
+
     public onAgendaDataLoaded() {
         this.set("isAgendaLoading", false);
         this._agendaItems = agendaItems;
-
         this.notify({ object: this, eventName: observable.Observable.propertyChangeEvent, propertyName: "agendaItems", value: this._agendaItems });
     }
 
@@ -201,6 +217,25 @@ function pushPosts(postsFromFirebase: Array<postModel.Post>) {
         var newPost = new postModel.PostModel(postsFromFirebase[i]);
         posts.push(newPost);
     }
+}
+
+function pushTeams(teamsFromFirebase: Array<teamModel.Team>) {
+
+    console.log('teamsFromFirebase.length: ' + teamsFromFirebase.length);
+
+    // Sort the teams by sort order
+    teamsFromFirebase.sort(function (a, b) {
+        return (a.order - b.order);
+    });
+
+    teams = [];
+
+    for (var i = 0; i < teamsFromFirebase.length; i++) {
+        var newTeam = new teamModel.TeamModel(teamsFromFirebase[i]);
+        teams.push(newTeam);
+    }
+
+    appModel.onTeamsDataLoaded();
 }
 
 function pushAgendaItems(itemsFromFirebase: Array<agendaModel.Agenda>) {
@@ -261,8 +296,12 @@ export class FirebaseModel {
                 path = "/posts";
                 orderByRule.type = firebase.QueryOrderByType.CHILD;
                 orderByRule.value = 'publishedDate';
-
                 break;
+            case "teams":
+                path = "/teams";
+                orderByRule.type = firebase.QueryOrderByType.CHILD;
+                orderByRule.value = 'order';
+                break;                
             case "agenda":
                 path = "/agenda";
                 break;
@@ -299,6 +338,9 @@ export class FirebaseModel {
                     case "posts":
                         pushPosts(<Array<postModel.Post>>result.value);
                         break;
+                    case "teams":
+                        pushTeams(<Array<teamModel.Team>>result.value);
+                        break;    
                     case "agenda":
                         pushAgendaItems(<Array<agendaModel.Agenda>>result.value);
                         break;
@@ -340,8 +382,13 @@ export class FirebaseModel {
 
 export var firebaseViewModel = new FirebaseModel();
 
+// ToDo: Consider loading data only when the page is requested. Check then (maybe... or not!!) also if the data is already loaded 
+
 firebaseViewModel.doQuery('posts', function () {
     appModel.onNewsDataLoaded();
+});
+firebaseViewModel.doQuery('teams', function () {
+    appModel.onTeamsDataLoaded();
 });
 firebaseViewModel.doQuery('agenda', function () {
     null;
