@@ -45,18 +45,18 @@
       <StackLayout>
       
        <StackLayout>
-            <Image id="news-image" src="{{ image.secure_url }}" />  
+            <Image id="news-image" src="{{ team.image.secure_url }}" />  
         </StackLayout>
       
 
         <StackLayout class="content-container" >
-            <Label text="{{ name }}" textWrap="true" class="page-title" />
-            <Label text="{{ klasse }}" textWrap="true" />
+            <Label text="{{ team.name }}" textWrap="true" class="page-title" />
+            <Label text="{{ team.klasse }}" textWrap="true" />
  
             <Label text="Spelers" class="info" />           
-            <HtmlView html="{{ spelers }}" />
+            <HtmlView html="{{ team.spelers }}" />
             <Label text="Sponsors" class="info" />           
-            <HtmlView html="{{ sponsors }}" />
+            <HtmlView html="{{ team.sponsors }}" />
 
             
             <!-- Content -->

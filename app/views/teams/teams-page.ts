@@ -16,13 +16,17 @@ import settingsModel = require("../../shared/services/settings/settings");
 import teamModel = require("../../shared/models/teams/teams");
 import appViewModel = require("../../shared/view-models/app-view-model");
 
-var settings = new settingsModel.SettingsModel();
 // ToDo: Check the imports
 
+var settings = new settingsModel.SettingsModel();
+var page;
+
 export function pageNavigatingTo(args: pages.NavigatedData) {
-    var page = <pages.Page>args.object;
+    page = <pages.Page>args.object;
     
-    page.bindingContext = page.navigationContext;
+    var teamViewModel = new TeamViewModel();
+    
+    page.bindingContext = teamViewModel;
 
 }
 
@@ -45,10 +49,11 @@ var teamCategories: Array<TeamCategory> = [
 //  TEAM VIEWMODEL
 //////////////////////////////////////////////////////
 
-export class TeamViewModel extends observable.Observable {
+class TeamViewModel extends observable.Observable {
     private _selectedTeamIndex;
     private _isAuthenticated: boolean;
     private _user: userModel.UserModel;
+    private _team: teamModel.TeamModel;
 
     constructor() {
         super();
@@ -57,6 +62,7 @@ export class TeamViewModel extends observable.Observable {
 
         this.selectedTeamIndex = 0;
 
+        this.team = page.navigationContext;
         this.user = settings.user;
         this._isAuthenticated = this.isAuthenticated;
 
@@ -66,6 +72,11 @@ export class TeamViewModel extends observable.Observable {
         this.user = settings.user;
         return this._user;
     }
+
+    get team(): teamModel.TeamModel {
+        return this._team;
+    } 
+
 
     get isAuthenticated(): boolean {
         try {
@@ -92,6 +103,10 @@ export class TeamViewModel extends observable.Observable {
         this.notifyPropertyChange("user", value);
     }
 
+    set team(value: teamModel.TeamModel) {
+        this._team = value;
+    }
+
     set isAuthenticated(value: boolean) {
         if (this._isAuthenticated !== value) {
             this._isAuthenticated = value;
@@ -102,6 +117,7 @@ export class TeamViewModel extends observable.Observable {
 
     // SELECT TEAM CATEGORY
     set selectedTeamIndex(value: number) {
+        console.log("teamspage - set selected index: " + this._selectedTeamIndex + " - " + value);
         if (this._selectedTeamIndex !== value) {
             this._selectedTeamIndex = value;
             this.notify({ object: this, eventName: observable.Observable.propertyChangeEvent, propertyName: "selectedTeamIndex", value: value });
@@ -112,9 +128,6 @@ export class TeamViewModel extends observable.Observable {
     }
 
 }
-
-export var teamViewModel = new TeamViewModel();
-
 
 
 // function disableScroll(listView: list.ListView) {

@@ -51,9 +51,65 @@
             <Label text="{{ actionBarTitle }}" class="action-bar-title" />
           </GridLayout>
 
+          <!-- Tabs News Type -->
+          <GridLayout class="darker" visibility="{{ isNewsPage ? 'visible' : 'collapsed' }}">
+            <SegmentedBar selectedBackgroundColor="#00acf6" selectedIndex="{{ selectedNewsIndex }}">
+              <SegmentedBar.items>
+                <SegmentedBarItem title="Algemeen" />
+                <SegmentedBarItem title="Jeugd" />
+                <SegmentedBarItem title="Verslagen" />
+              </SegmentedBar.items>
+            </SegmentedBar>
+          </GridLayout>
+
+          <Label class="header-title" horizontalAlignment="center" margin="15" visibility="{{ isNewsPage ? 'visible' : 'collapsed' }}">
+              <Label.formattedText>
+                  <FormattedString>
+                    <FormattedString.spans>
+                      <Span text="{{ newsHeader }}" fontAttributes="Bold" />
+                    </FormattedString.spans>
+                </FormattedString>
+              </Label.formattedText>
+          </Label>
+
+            <Label class="header-title" horizontalAlignment="center" margin="15" visibility="{{ isTeamPage ? 'visible' : 'collapsed' }}">
+                <Label.formattedText>
+                    <FormattedString>
+                        <FormattedString.spans>
+                        <Span text="{{ TeamHeader }}" fontAttributes="Bold" />
+                        </FormattedString.spans>
+                    </FormattedString>
+                </Label.formattedText>
+            </Label>
+
+          <!-- Tabs Info Type -->
+          <!-- TODO : put it in the right place -->
+          <GridLayout class="darker" visibility="{{ isInfoPage ? 'visible' : 'collapsed' }}">
+            <SegmentedBar selectedBackgroundColor="#00acf6" selectedIndex="{{ selectedInfoIndex }}">
+              <SegmentedBar.items>
+                <SegmentedBarItem title="Algemeen" />
+                <SegmentedBarItem title="Jeugd" />
+              </SegmentedBar.items>
+            </SegmentedBar>
+          </GridLayout>
+
+          <Label class="header-title" horizontalAlignment="center" margin="15" visibility="{{ isInfoPage ? 'visible' : 'collapsed' }}">
+            <Label.formattedText>
+                <FormattedString>
+                    <FormattedString.spans>
+                    <Span text="{{ infoHeader }}" fontAttributes="Bold" />
+                    </FormattedString.spans>
+                </FormattedString>
+            </Label.formattedText>
+          </Label>
+
+        </StackLayout>
+
+
+        <!-- START CONTENT VIEWS>
 
         <!-- THUIS -->
-        <StackLayout row="1" class="bg-white" visibility="{{ selectedViewIndex === 5 ? 'visible' : 'collapsed'}}">
+          <StackLayout row="1" class="bg-white" visibility="{{ selectedViewIndex === 5 ? 'visible' : 'collapsed'}}">
         
             <StackLayout class="content-container-xxs">
                 <Image src="~/images/rch-jeugd-facebook.jpg" />
@@ -79,62 +135,6 @@
 
         </StackLayout>
 
-          <!-- Tabs News Type -->
-          <GridLayout class="darker" visibility="{{ isNewsPage ? 'visible' : 'collapsed' }}">
-            <SegmentedBar selectedBackgroundColor="#00acf6" selectedIndex="{{ selectedNewsIndex }}">
-              <SegmentedBar.items>
-                <SegmentedBarItem title="Algemeen" />
-                <SegmentedBarItem title="Jeugd" />
-                <SegmentedBarItem title="Verslagen" />
-              </SegmentedBar.items>
-            </SegmentedBar>
-          </GridLayout>
-
-         <Label class="header-title" horizontalAlignment="center" margin="15" visibility="{{ isNewsPage ? 'visible' : 'collapsed' }}">
-            <Label.formattedText>
-                <FormattedString>
-                    <FormattedString.spans>
-                    <Span text="{{ newsHeader }}" fontAttributes="Bold" />
-                    </FormattedString.spans>
-                </FormattedString>
-            </Label.formattedText>
-        </Label>
-
-
-
-         <Label class="header-title" horizontalAlignment="center" margin="15" visibility="{{ isTeamPage ? 'visible' : 'collapsed' }}">
-            <Label.formattedText>
-                <FormattedString>
-                    <FormattedString.spans>
-                    <Span text="{{ TeamHeader }}" fontAttributes="Bold" />
-                    </FormattedString.spans>
-                </FormattedString>
-            </Label.formattedText>
-        </Label>
-
-          <!-- Tabs Info Type -->
-          <!-- TODO : put it in the right place -->
-          <GridLayout class="darker" visibility="{{ isInfoPage ? 'visible' : 'collapsed' }}">
-            <SegmentedBar selectedBackgroundColor="#00acf6" selectedIndex="{{ selectedInfoIndex }}">
-              <SegmentedBar.items>
-                <SegmentedBarItem title="Algemeen" />
-                <SegmentedBarItem title="Jeugd" />
-              </SegmentedBar.items>
-            </SegmentedBar>
-          </GridLayout>
-
-         <Label class="header-title" horizontalAlignment="center" margin="15" visibility="{{ isInfoPage ? 'visible' : 'collapsed' }}">
-            <Label.formattedText>
-                <FormattedString>
-                    <FormattedString.spans>
-                    <Span text="{{ infoHeader }}" fontAttributes="Bold" />
-                    </FormattedString.spans>
-                </FormattedString>
-            </Label.formattedText>
-        </Label>
-
-          
-        </StackLayout>
         
         <!-- NEWS Views -->
 
