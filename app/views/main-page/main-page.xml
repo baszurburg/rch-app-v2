@@ -138,12 +138,12 @@
         
         <!-- NEWS Views -->
 
-        <StackLayout row="1" visibility="{{ isNewsPage ? 'visible' : 'collapsed' }}">
+        <GridLayout row="1" visibility="{{ isNewsPage ? 'visible' : 'collapsed' }}">
 
             <PullRefresh:PullToRefresh refresh="refreshNewsList">
 
             <!-- List -->
-            <ListView items="{{ posts }}" row="1" separatorColor="#dddddd" class="listView" itemTap="selectNews">
+            <ListView items="{{ posts }}" separatorColor="#dddddd" class="listView" itemTap="selectNews">
                 <ListView.itemTemplate>
 
                 <StackLayout class="list-view-row">
@@ -173,7 +173,7 @@
 
             <ActivityIndicator busy="{{ isNewsLoading }}" row="1" horizontalAlignment="center" verticalAlignment="center" />
 
-        </StackLayout>
+        </GridLayout>
 
         <!-- WEDSTRIJDEN View -->
         <StackLayout row="1" visibility="{{ selectedViewIndex === 20 ? 'visible' : 'collapsed'}}">
@@ -229,12 +229,12 @@
         </StackLayout>
 
         <!-- TEAMS -->
-        <StackLayout row="1" visibility="{{ selectedViewIndex === 30 ? 'visible' : 'collapsed'}}">
+        <GridLayout row="1" visibility="{{ selectedViewIndex === 30 ? 'visible' : 'collapsed'}}">
 
             <PullRefresh:PullToRefresh refresh="refreshTeamsList">
 
             <!-- List Teams -->
-            <ListView items="{{ teams }}" row="1" separatorColor="#dddddd" class="listView" itemTap="selectTeam">
+            <ListView items="{{ teams }}" separatorColor="#dddddd" class="listView" itemTap="selectTeam">
                 <ListView.itemTemplate>
 
                 <StackLayout class="list-view-row">
@@ -265,19 +265,19 @@
             <ActivityIndicator busy="{{ isTeamsLoading }}" row="1" horizontalAlignment="center" verticalAlignment="center" />
 
 
-        </StackLayout>
+        </GridLayout>
         
 
         <!-- AGENDA View -->
-        <StackLayout row="1" visibility="{{ selectedViewIndex === 40 ? 'visible' : 'collapsed'}}">
+        <GridLayout row="1" rows="auto, *" visibility="{{ selectedViewIndex === 40 ? 'visible' : 'collapsed'}}">
    
-            <StackLayout>
+            <StackLayout row="0">
                 <Image src="~/images/rch-evenement.jpg" />  
             </StackLayout>
             
-            <StackLayout class="content-offset-vertical">
+            <GridLayout rows="auto, *" class="content-offset-vertical" row="1">
 
-                <Label class="info-blue">
+                <Label class="info-blue l-pl-1">
                     <Label.formattedText>
                     <FormattedString>
                         <FormattedString.spans>
@@ -287,7 +287,7 @@
                     </Label.formattedText>
                 </Label>
 
-                <PullRefresh:PullToRefresh refresh="refreshAgendaList">
+                <PullRefresh:PullToRefresh refresh="refreshAgendaList" row="1">
 
                     <ListView items="{{ agendaItems }}" separatorColor="#dddddd">
                         <ListView.itemTemplate>
@@ -300,11 +300,9 @@
 
                 </PullRefresh:PullToRefresh>
                 
-            </StackLayout>
-          
+            </GridLayout>
 
-
-        </StackLayout>
+        </GridLayout>
 
 
         <!-- CLUB Info View -->

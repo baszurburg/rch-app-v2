@@ -37,12 +37,12 @@
     </StackLayout>
 
     <!-- Content -->
-    <StackLayout row="1" class="content-container-sm" visibility="{{ selectedProgrammaIndex === 0 ? 'visible' : 'collapsed' }}">
+    <GridLayout row="1" class="content-container-sm" visibility="{{ selectedProgrammaIndex === 0 ? 'visible' : 'collapsed' }}">
   
        <PullRefresh:PullToRefresh refresh="refreshProgrammaThuisList">
 
           <!-- List -->
-          <ListView items="{{ programmaThuisItems }}" row="1" separatorColor="#dddddd" itemTap="selectProgrammaDetails">
+          <ListView items="{{ programmaThuisItems }}" separatorColor="#dddddd" itemTap="selectProgrammaDetails">
               <ListView.itemTemplate>
 
                 <StackLayout>
@@ -67,13 +67,13 @@
        
        <ActivityIndicator busy="{{ isProgrammaLoading }}" row="1" horizontalAlignment="center" verticalAlignment="center" />
 
-    </StackLayout>
+    </GridLayout>
 
-    <StackLayout row="1" class="content-container-sm" visibility="{{ selectedProgrammaIndex === 1 ? 'visible' : 'collapsed' }}">
+    <GridLayout row="1" class="content-container-sm" visibility="{{ selectedProgrammaIndex === 1 ? 'visible' : 'collapsed' }}">
   
        <PullRefresh:PullToRefresh refresh="refreshProgrammaUitList">
 
-          <ListView items="{{ programmaUitItems }}" row="1" separatorColor="#dddddd" itemTap="selectProgrammaDetails">
+          <ListView items="{{ programmaUitItems }}" separatorColor="#dddddd" itemTap="selectProgrammaDetails">
               
               <ListView.itemTemplate>
 
@@ -99,7 +99,7 @@
        
        <ActivityIndicator busy="{{ isProgrammaLoading }}" row="1" horizontalAlignment="center" verticalAlignment="center" />
               
-    </StackLayout>
+    </GridLayout>
 
     <StackLayout row="1" class="content-container-sm" visibility="{{ selectedProgrammaIndex === 2 ? 'visible' : 'collapsed' }}">
   

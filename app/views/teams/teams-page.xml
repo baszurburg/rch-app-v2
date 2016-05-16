@@ -51,13 +51,86 @@
 
         <StackLayout class="content-container" >
             <Label text="{{ team.name }}" textWrap="true" class="page-title" />
-            <Label text="{{ team.klasse }}" textWrap="true" />
+            <Label text="{{ team.klasse }}" textWrap="true" class="info-smaller" />
+
+            <StackLayout visibility="{{ team.trainers ? 'visible' : 'collapsed'}}" class="l-mt-1 l-mb-1">
+                
+                <Label text="Trainers" class="info" /> 
+                          
+                <GridLayout rows="*">
+
+                    <ListView items="{{ team.trainers }}" separatorColor="#dddddd">
+                        <ListView.itemTemplate>
+
+                        <GridLayout columns="auto, *" rows="60">
+
+                            <GridLayout col="0">
+                                <Image stretch="aspectFit" class="person-image-thumb" src="{{ photo.secure_url }}" visibility="{{ photo.secure_url ? 'visible' : 'collapsed' }}" />
+                                <Image stretch="aspectFit" class="person-image-thumb" src="~/images/image-placeholder.png" visibility="{{ !photo.secure_url ? 'visible' : 'collapsed' }}" />
+                            </GridLayout>
+
+                            <GridLayout col="1" row="1" rows="auto, auto" columns="*, *" class="info-smaller">
+                            
+                                <Label row="0" col="0" text="{{ name.first }}" class="l-mr-1" />
+                                <Label row="0" col="1" text="{{ name.last }}" />
+                                <Label row="1" col="0" text="{{ email }}" class="l-mr-1" />
+                                <Label row="1" col="1" text="{{ phone }}" />
+
+                            </GridLayout>
+                                            
+                        </GridLayout>
+
+
+                        </ListView.itemTemplate>
+                    </ListView>
+
+                </GridLayout> 
+            </StackLayout>
+ 
+ 
+             <GridLayout visibility="{{ team.leiders ? 'visible' : 'collapsed'}}" class="l-mt-1 l-mb-1">
+                
+                <Label text="Leiders" class="info" /> 
+                          
+                <GridLayout rows="*">
+
+                    <ListView items="{{ team.leiders }}" separatorColor="#dddddd">
+                        <ListView.itemTemplate>
+
+                        <GridLayout columns="auto, *" rows="60">
+
+                            <GridLayout col="0">
+                                <Image stretch="aspectFit" class="person-image-thumb" src="{{ photo.secure_url }}" visibility="{{ photo.secure_url ? 'visible' : 'collapsed' }}" />
+                                <Image stretch="aspectFit" class="person-image-thumb" src="~/images/image-placeholder.png" visibility="{{ !photo.secure_url ? 'visible' : 'collapsed' }}" />
+                            </GridLayout>
+
+                            <GridLayout col="1" row="0" rows="auto, auto" columns="*, *" class="info-smaller">
+                            
+                                <Label row="0" col="0" text="{{ name.first }}" class="l-mr-1" />
+                                <Label row="0" col="1" text="{{ name.last }}" />
+                                <Label row="1" col="0" text="{{ email }}" class="l-mr-1" />
+                                <Label row="1" col="1" text="{{ phone }}" />
+
+                            </GridLayout>
+                                            
+                        </GridLayout>
+
+                        </ListView.itemTemplate>
+                    </ListView>
+
+                </GridLayout> 
+            </GridLayout>
  
             <Label text="Spelers" class="info" />           
             <HtmlView html="{{ team.spelers }}" />
-            <Label text="Sponsors" class="info" />           
-            <HtmlView html="{{ team.sponsors }}" />
+            
+            <Label text="Overige informatie" class="info" />           
+            <HtmlView html="{{ team.content.extended }}" />
 
+            <StackLayout visibility="{{ team.sponsors ? 'visible' : 'collapsed'}}">            
+              <Label text="Sponsors" class="info" />           
+              <HtmlView html="{{ team.sponsors }}" />
+            </StackLayout>
             
             <!-- Content -->
 

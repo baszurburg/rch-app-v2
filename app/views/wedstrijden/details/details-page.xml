@@ -31,11 +31,9 @@
       <StackLayout>
       
         <StackLayout class="content-container" >
-            <Label text="Wedstrijd detail pagina" class="page-title" />
-            
-            <Label text="nou ja, wedstijd details zoals:" /> 
-            
-            <Label text="{{WedNr}}" /> 
+            <Label text="Wedstrijd detail pagina" class="page-title l-mb-1" />
+           
+            <Label text="Wedstrijdnummer: {{WedNr}}" /> 
             <Label text="{{Type}}" /> 
             <Label text="{{Datum}}" /> 
             <Label text="{{Tijd}}" />
@@ -43,9 +41,9 @@
             <Label text="{{Uit}}" />  
             
             <!-- Line -->
-            <StackLayout class="horizontal-line" margin="0 0 0 0"/>   
+            <StackLayout class="horizontal-line" margin="6 0 6 0"/>   
             
-            <Label text="Hier komen ook" /> 
+            <Label text="Hier komen ook:" /> 
             <Label text="- routebeschrijving" />            
             <Label text="- voeg toe aan agenda" />            
             <Label text="- kaartje" />            
