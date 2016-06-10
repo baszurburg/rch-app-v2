@@ -62,14 +62,14 @@
                     <ListView items="{{ team.trainers }}" separatorColor="#dddddd">
                         <ListView.itemTemplate>
 
-                        <GridLayout columns="auto, *" rows="60">
+                        <GridLayout columns="auto, *" rows="*">
 
                             <GridLayout col="0">
                                 <Image stretch="aspectFit" class="person-image-thumb" src="{{ photo.secure_url }}" visibility="{{ photo.secure_url ? 'visible' : 'collapsed' }}" />
                                 <Image stretch="aspectFit" class="person-image-thumb" src="~/images/image-placeholder.png" visibility="{{ !photo.secure_url ? 'visible' : 'collapsed' }}" />
                             </GridLayout>
 
-                            <GridLayout col="1" row="1" rows="auto, auto" columns="*, *" class="info-smaller">
+                            <GridLayout col="1" row="0" rows="auto, auto" columns="*, *" class="info-smaller">
                             
                                 <Label row="0" col="0" text="{{ name.first }}" class="l-mr-1" />
                                 <Label row="0" col="1" text="{{ name.last }}" />
